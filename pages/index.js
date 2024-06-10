@@ -1,0 +1,13 @@
+// pages/index.js
+import React from 'react';
+import Form from '../components/Form'; // Assuming you have a Form component in the components directory
+
+export default function Home() {
+  return (
+    <div>
+      <h1>Welcome to Magic Page</h1>
+      <Form />
+    </div>
+  );
+}
+
