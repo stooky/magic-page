@@ -1,6 +1,6 @@
 // utils/zapier.js
 export const callZapierWebhook = async (email, website) => {
-    const apiUrl = '../api/zapier-api-route'; // Your API route
+    const apiUrl = '../components/api/zapier-api-route'; // Your API route
 
     const payload = {
         email: email,
