@@ -22,6 +22,25 @@ const Form = () => {
     const [jokeIndex, setJokeIndex] = useState(0);
     const [showJoke, setShowJoke] = useState(false);
     const [loading, setLoading] = useState(false);
+    const [theme, setTheme] = useState('light');
+
+    useEffect(() => {
+        // Function to detect the preferred color scheme
+        const detectTheme = () => {
+            if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                setTheme('dark');
+            } else {
+                setTheme('light');
+            }
+        };
+
+        detectTheme();
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', detectTheme);
+
+        return () => {
+            window.matchMedia('(prefers-color-scheme: dark)').removeEventListener('change', detectTheme);
+        };
+    }, []);
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -43,7 +62,7 @@ const Form = () => {
                 setLoading(false);
             }
             index = (index + 1) % 3; // Cycle through 3 jokes
-        }, 3000);
+        }, 4000); // Increase duration to 4 seconds
     };
 
     return (
@@ -103,8 +122,8 @@ const Form = () => {
                 <div style={{ marginTop: '20px', textAlign: 'center' }}>
                     <div style={{
                         fontSize: '18px',
-                        color: '#333',
-                        animation: 'fade-in-out 3s infinite'
+                        color: theme === 'dark' ? '#fff' : '#333', // Adjust color based on theme
+                        animation: 'fade-in-out 4s infinite'
                     }}>
                         {jokes[jokeIndex]}
                     </div>
