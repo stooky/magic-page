@@ -47,7 +47,8 @@ const Form = () => {
     };
 
     return (
-        <div style={{ padding: '20px', fontFamily: 'Arial, sans-serif' }}>
+        <div style={{ padding: '20px', fontFamily: 'Arial, sans-serif', color: '#fff' }}>
+            <h1>Welcome to Magic Page</h1>
             <form onSubmit={handleSubmit}>
                 <label htmlFor="email" style={{ display: 'block', marginBottom: '5px' }}>Email:</label>
                 <input
@@ -63,7 +64,9 @@ const Form = () => {
                         marginBottom: '10px',
                         borderRadius: '4px',
                         border: '1px solid #ccc',
-                        boxSizing: 'border-box'
+                        boxSizing: 'border-box',
+                        color: '#000',  // Set text color to black
+                        backgroundColor: '#fff'  // Ensure background is white
                     }}
                 />
                 <label htmlFor="website" style={{ display: 'block', marginBottom: '5px' }}>Website URL:</label>
@@ -80,7 +83,9 @@ const Form = () => {
                         marginBottom: '10px',
                         borderRadius: '4px',
                         border: '1px solid #ccc',
-                        boxSizing: 'border-box'
+                        boxSizing: 'border-box',
+                        color: '#000',  // Set text color to black
+                        backgroundColor: '#fff'  // Ensure background is white
                     }}
                 />
                 <button type="submit" style={{
