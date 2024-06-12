@@ -1,6 +1,6 @@
 // pages/index.js
 import React from 'react';
-import Form from '../components/Form'; // Assuming you have a Form component in the components directory
+import Form from '../../components/Form'; // Assuming you have a Form component in the components directory
 
 export default function Home() {
   return (
