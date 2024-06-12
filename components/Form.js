@@ -2,19 +2,10 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
-import { callZapierWebhook } from '../components/utils/zapier'; // Import the function
+import { callZapierWebhook } from '../utils/zapier';
 
 const jokes = [
-    "Why don't scientists trust atoms? Because they make up everything!",
-    "I told my wife she was drawing her eyebrows too high. She looked surprised.",
-    "Parallel lines have so much in common. It’s a shame they’ll never meet.",
-    "My wife accused me of being immature. I told her to get out of my fort.",
-    "Why don't skeletons fight each other? They don't have the guts.",
-    "What do you call cheese that isn't yours? Nacho cheese.",
-    "Why couldn't the bicycle stand up by itself? It was two tired.",
-    "I'm reading a book on anti-gravity. It's impossible to put down!",
-    "Want to hear a joke about construction? I’m still working on it.",
-    "What do you get when you cross a snowman with a vampire? Frostbite."
+    // Your jokes array
 ];
 
 const Form = () => {
@@ -27,7 +18,6 @@ const Form = () => {
     const [zapierResponse, setZapierResponse] = useState(null);
 
     useEffect(() => {
-        // Function to detect the preferred color scheme
         const detectTheme = () => {
             if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
                 setTheme('dark');
@@ -55,10 +45,10 @@ const Form = () => {
         cycleJokes();
 
         try {
-            const response = await callZapierWebhook(website);
+            const response = await callZapierWebhook(email, website);
             setZapierResponse(response);
         } catch (error) {
-            setZapierResponse('Failed to call Zapier webhook.');
+            setZapierResponse(`Failed to call Zapier webhook: ${error.message}`);
         }
     };
 
@@ -71,7 +61,7 @@ const Form = () => {
                 clearInterval(intervalId);
                 setLoading(false);
             }
-        }, 4000); // Display each joke for 4 seconds
+        }, 4000);
     };
 
     return (
@@ -93,8 +83,8 @@ const Form = () => {
                         borderRadius: '4px',
                         border: '1px solid #ccc',
                         boxSizing: 'border-box',
-                        color: '#000',  // Set text color to black
-                        backgroundColor: '#fff'  // Ensure background is white
+                        color: '#000',
+                        backgroundColor: '#fff'
                     }}
                 />
                 <label htmlFor="website" style={{ display: 'block', marginBottom: '5px' }}>Website URL:</label>
@@ -112,8 +102,8 @@ const Form = () => {
                         borderRadius: '4px',
                         border: '1px solid #ccc',
                         boxSizing: 'border-box',
-                        color: '#000',  // Set text color to black
-                        backgroundColor: '#fff'  // Ensure background is white
+                        color: '#000',
+                        backgroundColor: '#fff'
                     }}
                 />
                 <button type="submit" style={{
@@ -131,7 +121,7 @@ const Form = () => {
                 <div style={{ marginTop: '20px', textAlign: 'center' }}>
                     <div style={{
                         fontSize: '18px',
-                        color: theme === 'dark' ? '#fff' : '#333', // Adjust color based on theme
+                        color: theme === 'dark' ? '#fff' : '#333',
                         animation: 'fade-in-out 4s infinite'
                     }}>
                         {jokes[jokeIndex]}
@@ -148,7 +138,7 @@ const Form = () => {
                     </div>
                     {zapierResponse && (
                         <div style={{ marginTop: '20px', color: theme === 'dark' ? '#fff' : '#333' }}>
-                            {zapierResponse}
+                            {JSON.stringify(zapierResponse)}
                         </div>
                     )}
                 </div>
