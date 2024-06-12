@@ -2,7 +2,7 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
-import { callZapierWebhook } from '../utils/zapier'; // Import the function
+import { callZapierWebhook } from '../components/utils/zapier'; // Import the function
 
 const jokes = [
     "Why don't scientists trust atoms? Because they make up everything!",
