@@ -2,7 +2,7 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
-import { callZapierWebhook } from '../utils/zapier';
+import { callZapierWebhook } from '../components/utils/zapier';
 
 const jokes = [
     // Your jokes array
