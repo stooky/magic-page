@@ -57,12 +57,12 @@ const Form = () => {
         let index = 0;
         const intervalId = setInterval(() => {
             setJokeIndex(index);
-            if (index === 2) {
+            index = (index + 1) % jokes.length;
+            if (index === 0) {
                 clearInterval(intervalId);
                 setLoading(false);
             }
-            index = (index + 1) % 3; // Cycle through 3 jokes
-        }, 4000); // Increase duration to 4 seconds
+        }, 4000); // Display each joke for 4 seconds
     };
 
     return (
@@ -127,18 +127,16 @@ const Form = () => {
                     }}>
                         {jokes[jokeIndex]}
                     </div>
-                    {loading && (
-                        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100px' }}>
-                            <div className="spinner" style={{
-                                width: '40px',
-                                height: '40px',
-                                border: '4px solid #ccc',
-                                borderTop: '4px solid #007bff',
-                                borderRadius: '50%',
-                                animation: 'spin 1s linear infinite'
-                            }}></div>
-                        </div>
-                    )}
+                    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100px' }}>
+                        <div className="spinner" style={{
+                            width: '40px',
+                            height: '40px',
+                            border: '4px solid #ccc',
+                            borderTop: '4px solid #007bff',
+                            borderRadius: '50%',
+                            animation: 'spin 1s linear infinite'
+                        }}></div>
+                    </div>
                 </div>
             )}
             <style jsx>{`
