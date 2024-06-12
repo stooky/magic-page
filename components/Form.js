@@ -2,6 +2,7 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
+import { callZapierWebhook } from '../utils/zapier'; // Import the function
 
 const jokes = [
     "Why don't scientists trust atoms? Because they make up everything!",
@@ -23,6 +24,7 @@ const Form = () => {
     const [showJoke, setShowJoke] = useState(false);
     const [loading, setLoading] = useState(false);
     const [theme, setTheme] = useState('light');
+    const [zapierResponse, setZapierResponse] = useState(null);
 
     useEffect(() => {
         // Function to detect the preferred color scheme
@@ -42,7 +44,7 @@ const Form = () => {
         };
     }, []);
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         if (!email || !website || !email.includes('@') || !website.startsWith('http')) {
             alert("Please enter a valid email and website URL.");
@@ -51,6 +53,13 @@ const Form = () => {
         setShowJoke(true);
         setLoading(true);
         cycleJokes();
+
+        try {
+            const response = await callZapierWebhook(website);
+            setZapierResponse(response);
+        } catch (error) {
+            setZapierResponse('Failed to call Zapier webhook.');
+        }
     };
 
     const cycleJokes = () => {
@@ -137,6 +146,11 @@ const Form = () => {
                             animation: 'spin 1s linear infinite'
                         }}></div>
                     </div>
+                    {zapierResponse && (
+                        <div style={{ marginTop: '20px', color: theme === 'dark' ? '#fff' : '#333' }}>
+                            {zapierResponse}
+                        </div>
+                    )}
                 </div>
             )}
             <style jsx>{`
