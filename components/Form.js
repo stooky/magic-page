@@ -101,7 +101,14 @@ const Form = () => {
             </form>
             {showJoke && (
                 <div style={{ marginTop: '20px', textAlign: 'center' }}>
-                    {loading ? (
+                    <div style={{
+                        fontSize: '18px',
+                        color: '#333',
+                        animation: 'fade-in-out 3s infinite'
+                    }}>
+                        {jokes[jokeIndex]}
+                    </div>
+                    {loading && (
                         <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100px' }}>
                             <div className="spinner" style={{
                                 width: '40px',
@@ -112,8 +119,6 @@ const Form = () => {
                                 animation: 'spin 1s linear infinite'
                             }}></div>
                         </div>
-                    ) : (
-                        <p style={{ fontSize: '18px', color: '#333' }}>{jokes[jokeIndex]}</p>
                     )}
                 </div>
             )}
@@ -121,6 +126,11 @@ const Form = () => {
                 @keyframes spin {
                     0% { transform: rotate(0deg); }
                     100% { transform: rotate(360deg); }
+                }
+                @keyframes fade-in-out {
+                    0% { opacity: 0; }
+                    50% { opacity: 1; }
+                    100% { opacity: 0; }
                 }
             `}</style>
         </div>
