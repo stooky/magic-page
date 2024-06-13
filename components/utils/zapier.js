@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 export const callZapierWebhook = async (email, website) => {
-    const webhookUrl = 'https://hooks.zapier.com/hooks/catch/15076287/3vv4bs9/'; // Replace with your Zapier webhook URL
+    const apiUrl = '/api/zapier-proxy'; // Your API route
 
     const payload = {
         email,
@@ -13,12 +13,9 @@ export const callZapierWebhook = async (email, website) => {
     console.log('Website:', website);
 
     try {
-        const response = await axios.post(webhookUrl, payload, {
+        const response = await axios.post(apiUrl, payload, {
             headers: {
-                'Content-Type': 'application/json',
-                'Access-Control-Allow-Origin': '*',
-                'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
-                'Access-Control-Allow-Headers': 'Content-Type, Authorization'
+                'Content-Type': 'application/json'
             }
         });
 
@@ -26,11 +23,6 @@ export const callZapierWebhook = async (email, website) => {
         return response.data;
     } catch (error) {
         console.error('Error calling Zapier webhook:', error);
-        if (error.response) {
-            console.error('Response data:', error.response.data);
-            console.error('Response status:', error.response.status);
-            console.error('Response headers:', error.response.headers);
-        }
         throw error;
     }
 };
