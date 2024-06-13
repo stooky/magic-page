@@ -1,3 +1,7 @@
+let latestResponse = null;
+
+export const getLatestZapierResponse = () => latestResponse;
+
 export default async function handler(req, res) {
     console.log('Zapier Callback received:');
     console.log('Method:', req.method);
@@ -13,6 +17,9 @@ export default async function handler(req, res) {
 
     console.log('Extracted status:', status);
     console.log('Extracted message:', message);
+
+    // Save the latest response
+    latestResponse = { status, message };
 
     // Process the callback data as needed
     return res.status(200).json({ status, message });
