@@ -33,6 +33,26 @@ const Form = () => {
         };
     }, []);
 
+    useEffect(() => {
+        let pollingInterval;
+        if (loading) {
+            pollingInterval = setInterval(async () => {
+                try {
+                    const response = await fetch('/api/get-latest-response');
+                    const data = await response.json();
+                    if (data.response && data.response.status) {
+                        setZapierResponse(data.response);
+                        setLoading(false); // Stop loading once response is received
+                        clearInterval(pollingInterval); // Clear the interval once we have the response
+                    }
+                } catch (error) {
+                    console.error('Error polling latest response:', error);
+                }
+            }, 2000); // Poll every 2 seconds
+        }
+        return () => clearInterval(pollingInterval);
+    }, [loading]);
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (!email || !website || !email.includes('@') || !website.startsWith('http')) {
@@ -49,7 +69,6 @@ const Form = () => {
         } catch (error) {
             setZapierResponse({ message: `Failed to call Zapier webhook: ${error.message}` });
         }
-        setLoading(false); // Ensure loading is set to false once the request is done
     };
 
     const cycleJokes = () => {
