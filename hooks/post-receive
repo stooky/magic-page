@@ -1,6 +1,0 @@
-#!/bin/bash
-GIT_WORK_TREE=/path/to/your/app git checkout -f
-cd /path/to/your/app
-npm install
-npm run restart
-

@@ -15,7 +15,10 @@ export const callZapierWebhook = async (email, website) => {
     try {
         const response = await axios.post(webhookUrl, payload, {
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+                'Access-Control-Allow-Headers': 'Content-Type, Authorization'
             }
         });
 
@@ -23,6 +26,11 @@ export const callZapierWebhook = async (email, website) => {
         return response.data;
     } catch (error) {
         console.error('Error calling Zapier webhook:', error);
+        if (error.response) {
+            console.error('Response data:', error.response.data);
+            console.error('Response status:', error.response.status);
+            console.error('Response headers:', error.response.headers);
+        }
         throw error;
     }
 };
