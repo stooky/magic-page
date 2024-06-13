@@ -1,27 +1,26 @@
-// utils/zapier.js
+import axios from 'axios';
+
 export const callZapierWebhook = async (email, website) => {
-    const apiUrl = '/api/zapier-api-route'; // Your API route
+    const webhookUrl = 'https://hooks.zapier.com/hooks/catch/15076287/3vv4bs9/'; // Replace with your Zapier webhook URL
 
     const payload = {
-        email: email,
-        website: website
+        email,
+        website
     };
 
+    console.log('Calling Zapier Webhook with the following details:');
+    console.log('Email:', email);
+    console.log('Website:', website);
+
     try {
-        const response = await fetch(apiUrl, {
-            method: 'POST',
+        const response = await axios.post(webhookUrl, payload, {
             headers: {
                 'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(payload)
+            }
         });
 
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
-        }
-
-        const data = await response.json();
-        return data;
+        console.log('Zapier Webhook Response:', response.data);
+        return response.data;
     } catch (error) {
         console.error('Error calling Zapier webhook:', error);
         throw error;
