@@ -47,8 +47,9 @@ const Form = () => {
             const response = await callZapierWebhook(email, website);
             setZapierResponse(response);
         } catch (error) {
-            setZapierResponse(`Failed to call Zapier webhook: ${error.message}`);
+            setZapierResponse({ message: `Failed to call Zapier webhook: ${error.message}` });
         }
+        setLoading(false); // Ensure loading is set to false once the request is done
     };
 
     const cycleJokes = () => {
@@ -135,11 +136,11 @@ const Form = () => {
                             animation: 'spin 1s linear infinite'
                         }}></div>
                     </div>
-                    {zapierResponse && (
-                        <div style={{ marginTop: '20px', color: theme === 'dark' ? '#fff' : '#333' }}>
-                            {zapierResponse.message}
-                        </div>
-                    )}
+                </div>
+            )}
+            {zapierResponse && (
+                <div style={{ marginTop: '20px', color: theme === 'dark' ? '#fff' : '#333' }}>
+                    {zapierResponse.message}
                 </div>
             )}
             <style jsx>{`
