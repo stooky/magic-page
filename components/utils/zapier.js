@@ -11,6 +11,7 @@ export const callZapierWebhook = async (email, website) => {
     console.log('Calling Zapier Webhook with the following details:');
     console.log('Email:', email);
     console.log('Website:', website);
+    console.log('Payload:', JSON.stringify(payload, null, 2));
 
     try {
         const response = await axios.post(apiUrl, payload, {
