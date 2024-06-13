@@ -1,9 +1,10 @@
+let latestZapierResponse = null;
+
 export default async function handler(req, res) {
     if (req.method !== 'POST') {
         return res.status(405).json({ message: 'Method not allowed' });
     }
 
-    // Extract the text data from the request body
     const { largeText } = req.body;
 
     if (!largeText) {
@@ -11,7 +12,8 @@ export default async function handler(req, res) {
     }
 
     try {
-        // Process the large text data as needed
+        // Store the large text data
+        latestZapierResponse = largeText;
         console.log('Received large text data:', largeText);
 
         // Send a response back to Zapier or to the client-side of your application
@@ -21,3 +23,5 @@ export default async function handler(req, res) {
         return res.status(500).json({ message: 'Failed to process large text data' });
     }
 }
+
+export const getLatestZapierResponse = () => latestZapierResponse;

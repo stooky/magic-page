@@ -1,4 +1,3 @@
-// components/Form.js
 "use client";
 
 import React, { useState, useEffect } from 'react';
@@ -32,6 +31,22 @@ const Form = () => {
         return () => {
             window.matchMedia('(prefers-color-scheme: dark)').removeEventListener('change', detectTheme);
         };
+    }, []);
+
+    useEffect(() => {
+        const intervalId = setInterval(async () => {
+            try {
+                const response = await fetch('/api/get-latest-response');
+                const data = await response.json();
+                if (data.response) {
+                    setZapierResponse(data.response);
+                }
+            } catch (error) {
+                console.error('Failed to fetch latest response:', error);
+            }
+        }, 5000); // Poll every 5 seconds
+
+        return () => clearInterval(intervalId);
     }, []);
 
     const handleSubmit = async (e) => {
@@ -90,7 +105,7 @@ const Form = () => {
                 <label htmlFor="website" style={{ display: 'block', marginBottom: '5px' }}>Website URL:</label>
                 <input
                     type="url"
-                    id="website"
+                    id="website'
                     value={website}
                     onChange={(e) => setWebsite(e.target.value)}
                     required
