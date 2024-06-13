@@ -15,7 +15,18 @@ export default async function handler(req, res) {
 
     try {
         // Ensure the body is parsed correctly
-        const body = typeof req.body === 'string' ? JSON.parse(req.body) : req.body;
+        let body;
+        if (typeof req.body === 'string') {
+            try {
+                body = JSON.parse(req.body.replace(/(\r\n|\n|\r)/gm, ""));
+            } catch (error) {
+                console.error('Error parsing body string:', error);
+                throw error;
+            }
+        } else {
+            body = req.body;
+        }
+        
         const { status, message } = body;
 
         console.log('Extracted status:', status);
