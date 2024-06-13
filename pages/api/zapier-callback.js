@@ -1,27 +1,19 @@
-let latestZapierResponse = null;
-
 export default async function handler(req, res) {
+    console.log('Zapier Callback received:');
+    console.log('Method:', req.method);
+    console.log('Headers:', JSON.stringify(req.headers, null, 2));
+    console.log('Body:', JSON.stringify(req.body, null, 2));
+
     if (req.method !== 'POST') {
+        console.log('Method not allowed:', req.method);
         return res.status(405).json({ message: 'Method not allowed' });
     }
 
-    const { largeText } = req.body;
+    const { status, message } = req.body;
 
-    if (!largeText) {
-        return res.status(400).json({ message: 'Missing large text data' });
-    }
+    console.log('Extracted status:', status);
+    console.log('Extracted message:', message);
 
-    try {
-        // Store the large text data
-        latestZapierResponse = largeText;
-        console.log('Received large text data:', largeText);
-
-        // Send a response back to Zapier or to the client-side of your application
-        return res.status(200).json({ message: 'Large text data received successfully' });
-    } catch (error) {
-        console.error('Error processing large text data:', error);
-        return res.status(500).json({ message: 'Failed to process large text data' });
-    }
+    // Process the callback data as needed
+    return res.status(200).json({ status, message });
 }
-
-export const getLatestZapierResponse = () => latestZapierResponse;

@@ -32,16 +32,12 @@ export default async function handler(req, res) {
         return res.status(200).json(response.data);
     } catch (error) {
         if (error.response) {
-            // The request was made and the server responded with a status code
-            // that falls out of the range of 2xx
             console.error('Error response data:', JSON.stringify(error.response.data, null, 2));
             console.error('Error response status:', error.response.status);
             console.error('Error response headers:', JSON.stringify(error.response.headers, null, 2));
         } else if (error.request) {
-            // The request was made but no response was received
             console.error('Error request:', JSON.stringify(error.request, null, 2));
         } else {
-            // Something happened in setting up the request that triggered an Error
             console.error('Error message:', error.message);
         }
         console.error('Error config:', JSON.stringify(error.config, null, 2));
