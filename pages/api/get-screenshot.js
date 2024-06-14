@@ -9,10 +9,19 @@ export default async function handler(req, res) {
     }
 
     const token = process.env.SCREENSHOTAPI_TOKEN;
+    
+    if (!token) {
+        console.error("ScreenshotAPI token is not set");
+        return res.status(500).json({ error: "ScreenshotAPI token is not set" });
+    }
+
     console.log("Requesting screenshot for URL:", url);
 
     try {
-        const response = await fetch(`https://shot.screenshotapi.net/screenshot?token=${token}&url=${encodeURIComponent(url)}&output=json&file_type=png`);
+        const apiUrl = `https://shot.screenshotapi.net/screenshot?token=${token}&url=${encodeURIComponent(url)}&output=json&file_type=png`;
+        console.log("API URL:", apiUrl);
+
+        const response = await fetch(apiUrl);
         const data = await response.json();
 
         if (response.ok) {
