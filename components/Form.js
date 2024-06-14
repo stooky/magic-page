@@ -169,8 +169,7 @@ const Form = () => {
                 </div>
             )}
             {zapierResponse && (
-                <div style={{ marginTop: '20px', color: theme === 'dark' ? '#fff' : '#333' }}>
-                    {zapierResponse.message}
+                <div style={{ marginTop: '20px', color: theme === 'dark' ? '#fff' : '#333' }} dangerouslySetInnerHTML={{ __html: formatResponse(zapierResponse) }}>
                 </div>
             )}
             <style jsx>{`
