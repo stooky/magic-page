@@ -150,7 +150,7 @@ const Form = () => {
         if (response && response.rawBody) {
             return `<strong>Error:</strong> ${response.message}<br/><br/><strong>Raw Body:</strong><br/>${response.rawBody.replace(/\n/g, '<br />')}`;
         }
-        return `<strong>Error:</strong> ${response.message}`;
+        return `<strong>Error:</:</strong> ${response.message}`;
     };
 
     return (

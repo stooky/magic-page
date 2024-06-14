@@ -9,7 +9,7 @@ export default async function handler(req, res) {
     }
 
     const token = process.env.SCREENSHOTAPI_TOKEN;
-    
+
     if (!token) {
         console.error("ScreenshotAPI token is not set");
         return res.status(500).json({ error: "ScreenshotAPI token is not set" });
