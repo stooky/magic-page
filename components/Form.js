@@ -1,6 +1,8 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
+import { v4 as uuidv4 } from 'uuid';
+import { callZapierWebhook } from '../components/utils/zapier';
 
 const phrases = [
     "We are learning about you.",
@@ -112,10 +114,14 @@ const Form = () => {
 
         try {
             // Fetch the screenshot of the website
+            console.log('Fetching screenshot for URL:', website);
             const screenshotResponse = await fetch(`/api/get-screenshot?url=${encodeURIComponent(website)}`);
             const screenshotData = await screenshotResponse.json();
             if (screenshotData.screenshotUrl) {
+                console.log('Received screenshot URL:', screenshotData.screenshotUrl);
                 setScreenshotUrl(screenshotData.screenshotUrl);
+            } else {
+                console.error('Error fetching screenshot:', screenshotData.error);
             }
 
             // Log the unique identifier when calling the Zapier webhook
