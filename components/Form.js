@@ -10,6 +10,13 @@ const phrases = [
     "Almost there ..."
 ];
 
+const formatResponse = (response) => {
+    if (response && response.message) {
+        return response.message.replace(/\n/g, '<br />');
+    }
+    return '';
+};
+
 const Form = () => {
     const [email, setEmail] = useState('');
     const [website, setWebsite] = useState('');
