@@ -92,6 +92,9 @@ const Form = () => {
             return;
         }
 
+        // Clear any previous responses from the backend
+        await fetch('/api/clear-response', { method: 'POST' });
+
         // Generate a unique identifier for the request
         const uniqueId = uuidv4(); // or use another method to generate a unique ID
 
