@@ -15,6 +15,7 @@ const Form = () => {
     const [website, setWebsite] = useState('');
     const [showJoke, setShowJoke] = useState(false);
     const [loading, setLoading] = useState(false);
+    const [callbackReceived, setCallbackReceived] = useState(true); // Track if a callback has been received
     const [theme, setTheme] = useState('light');
     const [zapierResponse, setZapierResponse] = useState(null);
     const [phraseIndex, setPhraseIndex] = useState(0);
@@ -40,6 +41,7 @@ const Form = () => {
     useEffect(() => {
         let pollingInterval;
         if (loading) {
+            setCallbackReceived(false); // Callback not received yet
             pollingInterval = setInterval(async () => {
                 try {
                     const response = await fetch('/api/get-latest-response');
@@ -47,6 +49,7 @@ const Form = () => {
                     if (data.response && data.response.status) {
                         setZapierResponse(data.response);
                         setLoading(false); // Stop loading once response is received
+                        setCallbackReceived(true); // Callback received
                         clearInterval(pollingInterval); // Clear the interval once we have the response
                         clearInterval(phraseInterval); // Clear the phrase interval once we have the response
                         setShowJoke(false); // Stop showing phrases
@@ -82,6 +85,12 @@ const Form = () => {
         clearInterval(phraseInterval);
         setPhraseIndex(0);
         setShowJoke(false);
+
+        // Check if the previous request has received a callback
+        if (!callbackReceived) {
+            alert("Please wait until the current request is processed.");
+            return;
+        }
 
         // Generate a unique identifier for the request
         const uniqueId = uuidv4(); // or use another method to generate a unique ID
@@ -170,14 +179,18 @@ const Form = () => {
                         backgroundColor: '#fff'
                     }}
                 />
-                <button type="submit" style={{
-                    padding: '10px 20px',
-                    backgroundColor: '#007bff',
-                    color: '#fff',
-                    border: 'none',
-                    borderRadius: '4px',
-                    cursor: 'pointer'
-                }}>
+                <button 
+                    type="submit" 
+                    style={{
+                        padding: '10px 20px',
+                        backgroundColor: callbackReceived ? '#007bff' : '#ccc',
+                        color: '#fff',
+                        border: 'none',
+                        borderRadius: '4px',
+                        cursor: callbackReceived ? 'pointer' : 'not-allowed'
+                    }}
+                    disabled={!callbackReceived}
+                >
                     Build AI Agent
                 </button>
             </form>
