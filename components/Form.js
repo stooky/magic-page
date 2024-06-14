@@ -4,10 +4,6 @@ import React, { useState, useEffect } from 'react';
 import { callZapierWebhook } from '../components/utils/zapier';
 import { v4 as uuidv4 } from 'uuid';
 
-const jokes = [
-    // Your jokes array
-];
-
 const phrases = [
     "We are learning about you.",
     "Oh, this is very interesting.",
@@ -17,7 +13,6 @@ const phrases = [
 const Form = () => {
     const [email, setEmail] = useState('');
     const [website, setWebsite] = useState('');
-    const [jokeIndex, setJokeIndex] = useState(0);
     const [showJoke, setShowJoke] = useState(false);
     const [loading, setLoading] = useState(false);
     const [theme, setTheme] = useState('light');
@@ -109,6 +104,7 @@ const Form = () => {
     const cyclePhrases = () => {
         let index = 0;
         const intervalId = setInterval(() => {
+            console.log(`Setting phraseIndex to: ${index}`);
             setPhraseIndex(index);
             index = (index + 1) % phrases.length;
         }, 5000); // Change phrase every 5 seconds
