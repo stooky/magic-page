@@ -1,4 +1,4 @@
-import { getLatestZapierResponse } from './zapier-callback';
+import { getLatestZapierResponse, clearLatestZapierResponse } from './zapier-callback';
 
 export default async function handler(req, res) {
     console.log('get-latest-response API called:');
@@ -18,6 +18,9 @@ export default async function handler(req, res) {
         } else {
             console.log('No latest response found.');
         }
+
+        // Clear the latest response from memory
+        clearLatestZapierResponse();
 
         return res.status(200).json({ response });
     } catch (error) {

@@ -2,6 +2,10 @@ let latestResponse = null;
 
 export const getLatestZapierResponse = () => latestResponse;
 
+export const clearLatestZapierResponse = () => {
+    latestResponse = null;
+};
+
 export default async function handler(req, res) {
     console.log('Zapier Callback received:');
     console.log('Method:', req.method);
