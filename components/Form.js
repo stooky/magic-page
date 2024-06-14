@@ -110,7 +110,7 @@ const Form = () => {
         } catch (error) {
             // Log the error if the Zapier webhook call fails
             console.error('Failed to call Zapier Webhook:', error);
-            setZapierResponse({ message: `Failed to call Zapier webhook: ${error.message}` });
+            setZapierResponse({ status: 'error', message: `Failed to call Zapier webhook: ${error.message}` });
         }
     };
 
@@ -125,7 +125,7 @@ const Form = () => {
         if (response && response.rawBody) {
             return `<strong>Error:</strong> ${response.message}<br/><br/><strong>Raw Body:</strong><br/>${response.rawBody.replace(/\n/g, '<br />')}`;
         }
-        return '';
+        return `<strong>Error:</strong> ${response.message}`;
     };
 
     return (
