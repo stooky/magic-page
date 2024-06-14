@@ -154,101 +154,124 @@ const Form = () => {
     };
 
     return (
-        <div style={{ padding: '20px', fontFamily: 'Arial, sans-serif', color: '#fff' }}>
+        <div className="container">
             <h1>Welcome to Magic Page</h1>
             <form onSubmit={handleSubmit}>
-                <label htmlFor="email" style={{ display: 'block', marginBottom: '5px' }}>Email:</label>
+                <label htmlFor="email">Email:</label>
                 <input
                     type="email"
                     id="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     required
-                    style={{
-                        display: 'block',
-                        width: '100%',
-                        padding: '10px',
-                        marginBottom: '10px',
-                        borderRadius: '4px',
-                        border: '1px solid #ccc',
-                        boxSizing: 'border-box',
-                        color: '#000',
-                        backgroundColor: '#fff'
-                    }}
                 />
-                <label htmlFor="website" style={{ display: 'block', marginBottom: '5px' }}>Website URL:</label>
+                <label htmlFor="website">Website URL:</label>
                 <input
                     type="url"
                     id="website"
                     value={website}
                     onChange={(e) => setWebsite(e.target.value)}
                     required
-                    style={{
-                        display: 'block',
-                        width: '100%',
-                        padding: '10px',
-                        marginBottom: '10px',
-                        borderRadius: '4px',
-                        border: '1px solid #ccc',
-                        boxSizing: 'border-box',
-                        color: '#000',
-                        backgroundColor: '#fff'
-                    }}
                 />
-                <button 
-                    type="submit" 
-                    style={{
-                        padding: '10px 20px',
-                        backgroundColor: callbackReceived ? '#007bff' : '#ccc',
-                        color: '#fff',
-                        border: 'none',
-                        borderRadius: '4px',
-                        cursor: callbackReceived ? 'pointer' : 'not-allowed'
-                    }}
-                    disabled={!callbackReceived}
-                >
+                <button type="submit" disabled={!callbackReceived}>
                     Build AI Agent
                 </button>
             </form>
             {showJoke && (
-                <div style={{ marginTop: '20px', textAlign: 'center' }}>
-                    <div style={{
-                        fontSize: '24px',
-                        color: '#007bff',
-                        animation: 'fade-in-out 5s infinite'
-                    }}>
-                        {phrases[phraseIndex]}
-                    </div>
+                <div className="fade-text">
+                    {phrases[phraseIndex]}
                 </div>
             )}
-            <div style={{ display: 'flex', marginTop: '20px' }}>
+            <div className="content">
                 {screenshotUrl && (
-                    <div style={{ flex: '1', marginRight: '20px' }}>
+                    <div className="thumbnail">
                         <h2>Website Thumbnail</h2>
-                        <img src={screenshotUrl} alt="Website Thumbnail" style={{ width: '100%', borderRadius: '10px' }} />
+                        <img src={screenshotUrl} alt="Website Thumbnail" />
                     </div>
                 )}
                 {zapierResponse && zapierResponse.status === 'error' ? (
-                    <div style={{ 
-                        flex: '2',
-                        color: theme === 'dark' ? '#fff' : '#333',
-                        whiteSpace: 'pre-line' // Ensure line breaks are respected
-                    }} dangerouslySetInnerHTML={{ __html: formatErrorResponse(zapierResponse) }}>
-                    </div>
+                    <div className="response error" dangerouslySetInnerHTML={{ __html: formatErrorResponse(zapierResponse) }}></div>
                 ) : zapierResponse && (
-                    <div style={{ 
-                        flex: '2',
-                        color: theme === 'dark' ? '#fff' : '#333',
-                        whiteSpace: 'pre-line' // Ensure line breaks are respected
-                    }} dangerouslySetInnerHTML={{ __html: formatResponse(zapierResponse) }}>
-                    </div>
+                    <div className="response" dangerouslySetInnerHTML={{ __html: formatResponse(zapierResponse) }}></div>
                 )}
             </div>
             <style jsx>{`
+                .container {
+                    padding: 20px;
+                    font-family: Arial, sans-serif;
+                    color: #fff;
+                }
+                form {
+                    display: flex;
+                    flex-direction: column;
+                }
+                label {
+                    margin-bottom: 5px;
+                }
+                input {
+                    display: block;
+                    width: 100%;
+                    padding: 10px;
+                    margin-bottom: 10px;
+                    border-radius: 4px;
+                    border: 1px solid #ccc;
+                    box-sizing: border-box;
+                    color: #000;
+                    background-color: #fff;
+                }
+                button {
+                    padding: 10px 20px;
+                    background-color: #007bff;
+                    color: #fff;
+                    border: none;
+                    border-radius: 4px;
+                    cursor: pointer;
+                }
+                button:disabled {
+                    background-color: #ccc;
+                    cursor: not-allowed;
+                }
+                .fade-text {
+                    margin-top: 20px;
+                    text-align: center;
+                    font-size: 24px;
+                    color: #007bff;
+                    animation: fade-in-out 5s infinite;
+                }
+                .content {
+                    display: flex;
+                    margin-top: 20px;
+                    flex-direction: column;
+                }
+                .thumbnail {
+                    margin-bottom: 20px;
+                }
+                .thumbnail img {
+                    width: 100%;
+                    border-radius: 10px;
+                }
+                .response {
+                    white-space: pre-line; /* Ensure line breaks are respected */
+                }
+                .response.error {
+                    color: red;
+                }
                 @keyframes fade-in-out {
                     0% { opacity: 0; }
                     50% { opacity: 1; }
                     100% { opacity: 0; }
+                }
+                @media (min-width: 600px) {
+                    .content {
+                        flex-direction: row;
+                    }
+                    .thumbnail {
+                        flex: 1;
+                        margin-right: 20px;
+                    }
+                    .response {
+                        flex: 2;
+                    }
                 }
             `}</style>
         </div>
