@@ -7,7 +7,6 @@ import { v4 as uuidv4 } from 'uuid';
 const phrases = [
     "We are learning about you.",
     "Oh, this is very interesting.",
-    "You don't say! I never knew that!",
     "Almost there ..."
 ];
 
@@ -77,6 +76,9 @@ const Form = () => {
             alert("Please enter a valid email and website URL.");
             return;
         }
+
+        // Clear previous response
+        setZapierResponse(null);
 
         // Generate a unique identifier for the request
         const uniqueId = uuidv4(); // or use another method to generate a unique ID
