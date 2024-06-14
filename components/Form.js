@@ -10,13 +10,6 @@ const phrases = [
     "Almost there ..."
 ];
 
-const formatResponse = (response) => {
-    if (response && response.message) {
-        return response.message.replace(/\n/g, '<br />');
-    }
-    return '';
-};
-
 const Form = () => {
     const [email, setEmail] = useState('');
     const [website, setWebsite] = useState('');
@@ -25,6 +18,7 @@ const Form = () => {
     const [theme, setTheme] = useState('light');
     const [zapierResponse, setZapierResponse] = useState(null);
     const [phraseIndex, setPhraseIndex] = useState(0);
+    const [phraseInterval, setPhraseInterval] = useState(null);
 
     useEffect(() => {
         const detectTheme = () => {
@@ -54,6 +48,8 @@ const Form = () => {
                         setZapierResponse(data.response);
                         setLoading(false); // Stop loading once response is received
                         clearInterval(pollingInterval); // Clear the interval once we have the response
+                        clearInterval(phraseInterval); // Clear the phrase interval once we have the response
+                        setShowJoke(false); // Stop showing phrases
                     }
                 } catch (error) {
                     console.error('Error polling latest response:', error);
@@ -61,16 +57,17 @@ const Form = () => {
             }, 2000); // Poll every 2 seconds
         }
         return () => clearInterval(pollingInterval);
-    }, [loading]);
+    }, [loading, phraseInterval]);
 
     useEffect(() => {
-        let phraseInterval;
+        let intervalId;
         if (showJoke) {
-            phraseInterval = setInterval(() => {
+            intervalId = setInterval(() => {
                 setPhraseIndex(prevIndex => (prevIndex + 1) % phrases.length);
             }, 5000); // Change phrase every 5 seconds
+            setPhraseInterval(intervalId);
         }
-        return () => clearInterval(phraseInterval);
+        return () => clearInterval(intervalId);
     }, [showJoke]);
 
     const handleSubmit = async (e) => {
@@ -109,6 +106,13 @@ const Form = () => {
             console.error('Failed to call Zapier Webhook:', error);
             setZapierResponse({ message: `Failed to call Zapier webhook: ${error.message}` });
         }
+    };
+
+    const formatResponse = (response) => {
+        if (response && response.message) {
+            return response.message.replace(/\n/g, '<br />');
+        }
+        return '';
     };
 
     return (
@@ -176,7 +180,11 @@ const Form = () => {
                 </div>
             )}
             {zapierResponse && (
-                <div style={{ marginTop: '20px', color: theme === 'dark' ? '#fff' : '#333' }} dangerouslySetInnerHTML={{ __html: formatResponse(zapierResponse) }}>
+                <div style={{ 
+                    marginTop: '20px', 
+                    color: theme === 'dark' ? '#fff' : '#333',
+                    whiteSpace: 'pre-line' // Ensure line breaks are respected
+                }} dangerouslySetInnerHTML={{ __html: formatResponse(zapierResponse) }}>
                 </div>
             )}
             <style jsx>{`
