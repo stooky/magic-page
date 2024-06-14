@@ -19,19 +19,22 @@ export default async function handler(req, res) {
 
     try {
         const encodedUrl = encodeURIComponent(url);
-        const apiUrl = `https://shot.screenshotapi.net/screenshot?token=${token}&url=${encodedUrl}&output=json&file_type=png`;
+        const apiUrl = `https://shot.screenshotapi.net/screenshot?token=${token}&url=${encodedUrl}&output=image&file_type=png`;
         console.log("API URL:", apiUrl);
 
         const response = await fetch(apiUrl);
-        const data = await response.json();
-
-        if (response.ok) {
-            console.log("Screenshot URL:", data.screenshot);
-            return res.status(200).json({ screenshotUrl: data.screenshot });
-        } else {
-            console.error("Error fetching screenshot:", data.error);
-            return res.status(500).json({ error: data.error });
+        if (!response.ok) {
+            const errorData = await response.json();
+            console.error("Error fetching screenshot:", errorData);
+            return res.status(500).json({ error: errorData });
         }
+
+        const buffer = await response.buffer();
+        const base64Image = buffer.toString('base64');
+        const imageUrl = `data:image/png;base64,${base64Image}`;
+
+        console.log("Screenshot URL:", imageUrl);
+        return res.status(200).json({ screenshotUrl: imageUrl });
     } catch (error) {
         console.error("Failed to fetch screenshot:", error);
         return res.status(500).json({ error: "Failed to fetch screenshot" });
