@@ -2,9 +2,16 @@
 
 import React, { useState, useEffect } from 'react';
 import { callZapierWebhook } from '../components/utils/zapier';
+import { v4 as uuidv4 } from 'uuid';
 
 const jokes = [
     // Your jokes array
+];
+
+const phrases = [
+    "We are learning about you.",
+    "Oh, this is very interesting.",
+    "Almost there ..."
 ];
 
 const Form = () => {
@@ -15,6 +22,8 @@ const Form = () => {
     const [loading, setLoading] = useState(false);
     const [theme, setTheme] = useState('light');
     const [zapierResponse, setZapierResponse] = useState(null);
+    const [phraseIndex, setPhraseIndex] = useState(0);
+    const [phraseInterval, setPhraseInterval] = useState(null);
 
     useEffect(() => {
         const detectTheme = () => {
@@ -44,6 +53,8 @@ const Form = () => {
                         setZapierResponse(data.response);
                         setLoading(false); // Stop loading once response is received
                         clearInterval(pollingInterval); // Clear the interval once we have the response
+                        clearInterval(phraseInterval); // Clear the phrase interval once we have the response
+                        setShowJoke(false); // Stop showing phrases
                     }
                 } catch (error) {
                     console.error('Error polling latest response:', error);
@@ -51,7 +62,7 @@ const Form = () => {
             }, 2000); // Poll every 2 seconds
         }
         return () => clearInterval(pollingInterval);
-    }, [loading]);
+    }, [loading, phraseInterval]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -59,28 +70,49 @@ const Form = () => {
             alert("Please enter a valid email and website URL.");
             return;
         }
+
+        // Generate a unique identifier for the request
+        const uniqueId = uuidv4(); // or use another method to generate a unique ID
+
+        // Log the generated unique identifier
+        console.log('Generated Unique ID:', uniqueId);
+
+        // Store the unique identifier in session storage
+        sessionStorage.setItem('requestId', uniqueId);
+
+        // Log storing the unique identifier in session storage
+        console.log('Stored Unique ID in Session Storage:', sessionStorage.getItem('requestId'));
+
         setShowJoke(true);
         setLoading(true);
-        cycleJokes();
+        cyclePhrases();
 
         try {
-            const response = await callZapierWebhook(email, website);
+            // Log the unique identifier when calling the Zapier webhook
+            console.log('Calling Zapier Webhook with Unique ID:', uniqueId);
+
+            const response = await callZapierWebhook(email, website, uniqueId);
             setZapierResponse(response);
+
+            // Log the response received from the Zapier webhook
+            console.log('Received response from Zapier Webhook:', response);
         } catch (error) {
+            // Log the error if the Zapier webhook call fails
+            console.error('Failed to call Zapier Webhook:', error);
             setZapierResponse({ message: `Failed to call Zapier webhook: ${error.message}` });
         }
     };
 
-    const cycleJokes = () => {
+    const cyclePhrases = () => {
         let index = 0;
         const intervalId = setInterval(() => {
-            setJokeIndex(index);
-            index = (index + 1) % jokes.length;
-            if (index === 0) {
+            setPhraseIndex(index);
+            index = (index + 1) % phrases.length;
+            if (!loading) {
                 clearInterval(intervalId);
-                setLoading(false);
             }
-        }, 4000);
+        }, 5000); // Change phrase every 5 seconds
+        setPhraseInterval(intervalId);
     };
 
     return (
@@ -139,21 +171,11 @@ const Form = () => {
             {showJoke && (
                 <div style={{ marginTop: '20px', textAlign: 'center' }}>
                     <div style={{
-                        fontSize: '18px',
-                        color: theme === 'dark' ? '#fff' : '#333',
-                        animation: 'fade-in-out 4s infinite'
+                        fontSize: '24px',
+                        color: '#007bff',
+                        animation: 'fade-in-out 5s infinite'
                     }}>
-                        {jokes[jokeIndex]}
-                    </div>
-                    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100px' }}>
-                        <div className="spinner" style={{
-                            width: '40px',
-                            height: '40px',
-                            border: '4px solid #ccc',
-                            borderTop: '4px solid #007bff',
-                            borderRadius: '50%',
-                            animation: 'spin 1s linear infinite'
-                        }}></div>
+                        {phrases[phraseIndex]}
                     </div>
                 </div>
             )}
@@ -163,10 +185,6 @@ const Form = () => {
                 </div>
             )}
             <style jsx>{`
-                @keyframes spin {
-                    0% { transform: rotate(0deg); }
-                    100% { transform: rotate(360deg); }
-                }
                 @keyframes fade-in-out {
                     0% { opacity: 0; }
                     50% { opacity: 1; }
