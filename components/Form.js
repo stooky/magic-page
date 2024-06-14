@@ -7,6 +7,7 @@ import { v4 as uuidv4 } from 'uuid';
 const phrases = [
     "We are learning about you.",
     "Oh, this is very interesting.",
+    "You don't say! I never knew that!",
     "Almost there ..."
 ];
 
