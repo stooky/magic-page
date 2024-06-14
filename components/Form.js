@@ -18,7 +18,6 @@ const Form = () => {
     const [theme, setTheme] = useState('light');
     const [zapierResponse, setZapierResponse] = useState(null);
     const [phraseIndex, setPhraseIndex] = useState(0);
-    const [phraseInterval, setPhraseInterval] = useState(null);
 
     useEffect(() => {
         const detectTheme = () => {
@@ -48,19 +47,24 @@ const Form = () => {
                         setZapierResponse(data.response);
                         setLoading(false); // Stop loading once response is received
                         clearInterval(pollingInterval); // Clear the interval once we have the response
-                        clearInterval(phraseInterval); // Clear the phrase interval once we have the response
-                        setShowJoke(false); // Stop showing phrases
                     }
                 } catch (error) {
                     console.error('Error polling latest response:', error);
                 }
             }, 2000); // Poll every 2 seconds
         }
-        return () => {
-            clearInterval(pollingInterval);
-            clearInterval(phraseInterval);
-        };
-    }, [loading, phraseInterval]);
+        return () => clearInterval(pollingInterval);
+    }, [loading]);
+
+    useEffect(() => {
+        let phraseInterval;
+        if (showJoke) {
+            phraseInterval = setInterval(() => {
+                setPhraseIndex(prevIndex => (prevIndex + 1) % phrases.length);
+            }, 5000); // Change phrase every 5 seconds
+        }
+        return () => clearInterval(phraseInterval);
+    }, [showJoke]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -83,7 +87,6 @@ const Form = () => {
 
         setShowJoke(true);
         setLoading(true);
-        cyclePhrases();
 
         try {
             // Log the unique identifier when calling the Zapier webhook
@@ -99,16 +102,6 @@ const Form = () => {
             console.error('Failed to call Zapier Webhook:', error);
             setZapierResponse({ message: `Failed to call Zapier webhook: ${error.message}` });
         }
-    };
-
-    const cyclePhrases = () => {
-        let index = 0;
-        const intervalId = setInterval(() => {
-            console.log(`Setting phraseIndex to: ${index}`);
-            setPhraseIndex(index);
-            index = (index + 1) % phrases.length;
-        }, 5000); // Change phrase every 5 seconds
-        setPhraseInterval(intervalId);
     };
 
     return (
