@@ -121,6 +121,13 @@ const Form = () => {
         return '';
     };
 
+    const formatErrorResponse = (response) => {
+        if (response && response.rawBody) {
+            return `<strong>Error:</strong> ${response.message}<br/><br/><strong>Raw Body:</strong><br/>${response.rawBody.replace(/\n/g, '<br />')}`;
+        }
+        return '';
+    };
+
     return (
         <div style={{ padding: '20px', fontFamily: 'Arial, sans-serif', color: '#fff' }}>
             <h1>Welcome to Magic Page</h1>
@@ -153,55 +160,4 @@ const Form = () => {
                     required
                     style={{
                         display: 'block',
-                        width: '100%',
-                        padding: '10px',
-                        marginBottom: '10px',
-                        borderRadius: '4px',
-                        border: '1px solid #ccc',
-                        boxSizing: 'border-box',
-                        color: '#000',
-                        backgroundColor: '#fff'
-                    }}
-                />
-                <button type="submit" style={{
-                    padding: '10px 20px',
-                    backgroundColor: '#007bff',
-                    color: '#fff',
-                    border: 'none',
-                    borderRadius: '4px',
-                    cursor: 'pointer'
-                }}>
-                    Build AI Agent
-                </button>
-            </form>
-            {showJoke && (
-                <div style={{ marginTop: '20px', textAlign: 'center' }}>
-                    <div style={{
-                        fontSize: '24px',
-                        color: '#007bff',
-                        animation: 'fade-in-out 5s infinite'
-                    }}>
-                        {phrases[phraseIndex]}
-                    </div>
-                </div>
-            )}
-            {zapierResponse && (
-                <div style={{ 
-                    marginTop: '20px', 
-                    color: theme === 'dark' ? '#fff' : '#333',
-                    whiteSpace: 'pre-line' // Ensure line breaks are respected
-                }} dangerouslySetInnerHTML={{ __html: formatResponse(zapierResponse) }}>
-                </div>
-            )}
-            <style jsx>{`
-                @keyframes fade-in-out {
-                    0% { opacity: 0; }
-                    50% { opacity: 1; }
-                    100% { opacity: 0; }
-                }
-            `}</style>
-        </div>
-    );
-};
-
-export default Form;
+                        width: '100

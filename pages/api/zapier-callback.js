@@ -25,6 +25,7 @@ export default async function handler(req, res) {
                 body = JSON.parse(req.body.replace(/(\r\n|\n|\r)/gm, ""));
             } catch (error) {
                 console.error('Error parsing body string:', error);
+                latestResponse = { status: 'error', message: `Error parsing body string: ${error.message}`, rawBody: req.body };
                 throw error;
             }
         } else {
