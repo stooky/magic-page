@@ -18,7 +18,8 @@ export default async function handler(req, res) {
     console.log("Requesting screenshot for URL:", url);
 
     try {
-        const apiUrl = `https://shot.screenshotapi.net/screenshot?token=${token}&url=${encodeURIComponent(url)}&output=json&file_type=png`;
+        const encodedUrl = encodeURIComponent(url);
+        const apiUrl = `https://shot.screenshotapi.net/screenshot?token=${token}&url=${encodedUrl}&output=json&file_type=png`;
         console.log("API URL:", apiUrl);
 
         const response = await fetch(apiUrl);
