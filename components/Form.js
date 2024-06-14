@@ -77,8 +77,11 @@ const Form = () => {
             return;
         }
 
-        // Clear previous response
+        // Clear previous response and intervals
         setZapierResponse(null);
+        clearInterval(phraseInterval);
+        setPhraseIndex(0);
+        setShowJoke(false);
 
         // Generate a unique identifier for the request
         const uniqueId = uuidv4(); // or use another method to generate a unique ID
