@@ -61,7 +61,10 @@ const Form = () => {
                 }
             }, 2000); // Poll every 2 seconds
         }
-        return () => clearInterval(pollingInterval);
+        return () => {
+            clearInterval(pollingInterval);
+            clearInterval(phraseInterval);
+        };
     }, [loading, phraseInterval]);
 
     const handleSubmit = async (e) => {
@@ -108,9 +111,6 @@ const Form = () => {
         const intervalId = setInterval(() => {
             setPhraseIndex(index);
             index = (index + 1) % phrases.length;
-            if (!loading) {
-                clearInterval(intervalId);
-            }
         }, 5000); // Change phrase every 5 seconds
         setPhraseInterval(intervalId);
     };
