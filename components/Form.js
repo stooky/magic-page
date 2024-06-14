@@ -44,6 +44,7 @@ const Form = () => {
                         setZapierResponse(data.response);
                         setLoading(false); // Stop loading once response is received
                         clearInterval(pollingInterval); // Clear the interval once we have the response
+                        data.response="";
                     }
                 } catch (error) {
                     console.error('Error polling latest response:', error);
