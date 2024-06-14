@@ -1,8 +1,6 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
-import { callZapierWebhook } from '../components/utils/zapier';
-import { v4 as uuidv4 } from 'uuid';
 
 const phrases = [
     "We are learning about you.",
@@ -15,9 +13,10 @@ const Form = () => {
     const [website, setWebsite] = useState('');
     const [showJoke, setShowJoke] = useState(false);
     const [loading, setLoading] = useState(false);
-    const [callbackReceived, setCallbackReceived] = useState(true); // Track if a callback has been received
+    const [callbackReceived, setCallbackReceived] = useState(true);
     const [theme, setTheme] = useState('light');
     const [zapierResponse, setZapierResponse] = useState(null);
+    const [screenshotUrl, setScreenshotUrl] = useState(null);
     const [phraseIndex, setPhraseIndex] = useState(0);
     const [phraseInterval, setPhraseInterval] = useState(null);
 
@@ -41,23 +40,23 @@ const Form = () => {
     useEffect(() => {
         let pollingInterval;
         if (loading) {
-            setCallbackReceived(false); // Callback not received yet
+            setCallbackReceived(false);
             pollingInterval = setInterval(async () => {
                 try {
                     const response = await fetch('/api/get-latest-response');
                     const data = await response.json();
                     if (data.response && data.response.status) {
                         setZapierResponse(data.response);
-                        setLoading(false); // Stop loading once response is received
-                        setCallbackReceived(true); // Callback received
-                        clearInterval(pollingInterval); // Clear the interval once we have the response
-                        clearInterval(phraseInterval); // Clear the phrase interval once we have the response
-                        setShowJoke(false); // Stop showing phrases
+                        setLoading(false);
+                        setCallbackReceived(true);
+                        clearInterval(pollingInterval);
+                        clearInterval(phraseInterval);
+                        setShowJoke(false);
                     }
                 } catch (error) {
                     console.error('Error polling latest response:', error);
                 }
-            }, 2000); // Poll every 2 seconds
+            }, 2000);
         }
         return () => clearInterval(pollingInterval);
     }, [loading, phraseInterval]);
@@ -67,7 +66,7 @@ const Form = () => {
         if (showJoke) {
             intervalId = setInterval(() => {
                 setPhraseIndex(prevIndex => (prevIndex + 1) % phrases.length);
-            }, 5000); // Change phrase every 5 seconds
+            }, 5000);
             setPhraseInterval(intervalId);
         }
         return () => clearInterval(intervalId);
@@ -82,6 +81,7 @@ const Form = () => {
 
         // Clear previous response and intervals
         setZapierResponse(null);
+        setScreenshotUrl(null);
         clearInterval(phraseInterval);
         setPhraseIndex(0);
         setShowJoke(false);
@@ -96,7 +96,7 @@ const Form = () => {
         await fetch('/api/clear-response', { method: 'POST' });
 
         // Generate a unique identifier for the request
-        const uniqueId = uuidv4(); // or use another method to generate a unique ID
+        const uniqueId = uuidv4();
 
         // Log the generated unique identifier
         console.log('Generated Unique ID:', uniqueId);
@@ -111,6 +111,13 @@ const Form = () => {
         setLoading(true);
 
         try {
+            // Fetch the screenshot of the website
+            const screenshotResponse = await fetch(`/api/get-screenshot?url=${encodeURIComponent(website)}`);
+            const screenshotData = await screenshotResponse.json();
+            if (screenshotData.screenshotUrl) {
+                setScreenshotUrl(screenshotData.screenshotUrl);
+            }
+
             // Log the unique identifier when calling the Zapier webhook
             console.log('Calling Zapier Webhook with Unique ID:', uniqueId);
 
@@ -208,21 +215,29 @@ const Form = () => {
                     </div>
                 </div>
             )}
-            {zapierResponse && zapierResponse.status === 'error' ? (
-                <div style={{ 
-                    marginTop: '20px', 
-                    color: theme === 'dark' ? '#fff' : '#333',
-                    whiteSpace: 'pre-line' // Ensure line breaks are respected
-                }} dangerouslySetInnerHTML={{ __html: formatErrorResponse(zapierResponse) }}>
-                </div>
-            ) : zapierResponse && (
-                <div style={{ 
-                    marginTop: '20px', 
-                    color: theme === 'dark' ? '#fff' : '#333',
-                    whiteSpace: 'pre-line' // Ensure line breaks are respected
-                }} dangerouslySetInnerHTML={{ __html: formatResponse(zapierResponse) }}>
-                </div>
-            )}
+            <div style={{ display: 'flex', marginTop: '20px' }}>
+                {screenshotUrl && (
+                    <div style={{ flex: '1', marginRight: '20px' }}>
+                        <h2>Website Thumbnail</h2>
+                        <img src={screenshotUrl} alt="Website Thumbnail" style={{ width: '100%', borderRadius: '10px' }} />
+                    </div>
+                )}
+                {zapierResponse && zapierResponse.status === 'error' ? (
+                    <div style={{ 
+                        flex: '2',
+                        color: theme === 'dark' ? '#fff' : '#333',
+                        whiteSpace: 'pre-line' // Ensure line breaks are respected
+                    }} dangerouslySetInnerHTML={{ __html: formatErrorResponse(zapierResponse) }}>
+                    </div>
+                ) : zapierResponse && (
+                    <div style={{ 
+                        flex: '2',
+                        color: theme === 'dark' ? '#fff' : '#333',
+                        whiteSpace: 'pre-line' // Ensure line breaks are respected
+                    }} dangerouslySetInnerHTML={{ __html: formatResponse(zapierResponse) }}>
+                    </div>
+                )}
+            </div>
             <style jsx>{`
                 @keyframes fade-in-out {
                     0% { opacity: 0; }
