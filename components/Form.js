@@ -3,24 +3,19 @@
 import React, { useState, useEffect } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { callZapierWebhook } from '../components/utils/zapier';
-
-const phrases = [
-    "We are learning about you.",
-    "Oh, this is very interesting.",
-    "Almost there ..."
-];
+import screensConfig from '../config/screensConfig'; // Import screens configuration
 
 const Form = () => {
     const [email, setEmail] = useState('');
     const [website, setWebsite] = useState('');
-    const [showJoke, setShowJoke] = useState(false);
     const [loading, setLoading] = useState(false);
     const [callbackReceived, setCallbackReceived] = useState(true);
     const [theme, setTheme] = useState('light');
     const [zapierResponse, setZapierResponse] = useState(null);
     const [screenshotUrl, setScreenshotUrl] = useState(null);
-    const [phraseIndex, setPhraseIndex] = useState(0);
-    const [phraseInterval, setPhraseInterval] = useState(null);
+    const [currentScreenIndex, setCurrentScreenIndex] = useState(0);
+    const [responses, setResponses] = useState({});
+    const [showPoll, setShowPoll] = useState(false);
 
     useEffect(() => {
         const detectTheme = () => {
@@ -52,8 +47,7 @@ const Form = () => {
                         setLoading(false);
                         setCallbackReceived(true);
                         clearInterval(pollingInterval);
-                        clearInterval(phraseInterval);
-                        setShowJoke(false);
+                        setShowPoll(false);
                     }
                 } catch (error) {
                     console.error('Error polling latest response:', error);
@@ -61,18 +55,29 @@ const Form = () => {
             }, 2000);
         }
         return () => clearInterval(pollingInterval);
-    }, [loading, phraseInterval]);
+    }, [loading]);
 
-    useEffect(() => {
-        let intervalId;
-        if (showJoke) {
-            intervalId = setInterval(() => {
-                setPhraseIndex(prevIndex => (prevIndex + 1) % phrases.length);
-            }, 5000);
-            setPhraseInterval(intervalId);
+    const handleOptionChange = (option) => {
+        setResponses({
+            ...responses,
+            [currentScreenIndex]: option
+        });
+    };
+
+    const handleNext = () => {
+        if (currentScreenIndex < screensConfig.length - 1) {
+            setCurrentScreenIndex(currentScreenIndex + 1);
+        } else {
+            // End of poll questions, continue with existing functionality
+            setShowPoll(false);
         }
-        return () => clearInterval(intervalId);
-    }, [showJoke]);
+    };
+
+    const handlePrevious = () => {
+        if (currentScreenIndex > 0) {
+            setCurrentScreenIndex(currentScreenIndex - 1);
+        }
+    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -81,60 +86,35 @@ const Form = () => {
             return;
         }
 
-        // Clear previous response and intervals
         setZapierResponse(null);
         setScreenshotUrl(null);
-        clearInterval(phraseInterval);
-        setPhraseIndex(0);
-        setShowJoke(false);
 
-        // Check if the previous request has received a callback
         if (!callbackReceived) {
             alert("Please wait until the current request is processed.");
             return;
         }
 
-        // Clear any previous responses from the backend
         await fetch('/api/clear-response', { method: 'POST' });
 
-        // Generate a unique identifier for the request
         const uniqueId = uuidv4();
 
-        // Log the generated unique identifier
-        console.log('Generated Unique ID:', uniqueId);
-
-        // Store the unique identifier in session storage
         sessionStorage.setItem('requestId', uniqueId);
 
-        // Log storing the unique identifier in session storage
-        console.log('Stored Unique ID in Session Storage:', sessionStorage.getItem('requestId'));
-
-        setShowJoke(true);
         setLoading(true);
+        setShowPoll(true); // Show the poll questions
 
         try {
-            // Fetch the screenshot of the website
-            console.log('Fetching screenshot for URL:', website);
             const screenshotResponse = await fetch(`/api/get-screenshot?url=${encodeURIComponent(website)}`);
             const screenshotData = await screenshotResponse.json();
             if (screenshotData.screenshotUrl) {
-                console.log('Received screenshot URL:', screenshotData.screenshotUrl);
                 setScreenshotUrl(screenshotData.screenshotUrl);
             } else {
                 console.error('Error fetching screenshot:', screenshotData.error);
             }
 
-            // Log the unique identifier when calling the Zapier webhook
-            console.log('Calling Zapier Webhook with Unique ID:', uniqueId);
-
             const response = await callZapierWebhook(email, website, uniqueId);
             setZapierResponse(response);
-
-            // Log the response received from the Zapier webhook
-            console.log('Received response from Zapier Webhook:', response);
         } catch (error) {
-            // Log the error if the Zapier webhook call fails
-            console.error('Failed to call Zapier Webhook:', error);
             setZapierResponse({ status: 'error', message: `Failed to call Zapier webhook: ${error.message}` });
         }
     };
@@ -153,9 +133,11 @@ const Form = () => {
         return `<strong>Error:</strong> ${response.message}`;
     };
 
+    const currentScreen = screensConfig[currentScreenIndex];
+
     return (
         <div className="container">
-            <h1>Welcome to Magic Page</h1>
+            <h1>Magic Page</h1>
             <form onSubmit={handleSubmit}>
                 <label htmlFor="email">Email:</label>
                 <input
@@ -177,9 +159,29 @@ const Form = () => {
                     Build AI Agent
                 </button>
             </form>
-            {showJoke && (
-                <div className="fade-text">
-                    {phrases[phraseIndex]}
+            {showPoll && (
+                <div className="poll-container">
+                    <h2>{currentScreen.title}</h2>
+                    {currentScreen.options.map((option, index) => (
+                        <label key={index}>
+                            <input
+                                type="radio"
+                                value={option}
+                                checked={responses[currentScreenIndex] === option}
+                                onChange={() => handleOptionChange(option)}
+                            />
+                            {option}
+                        </label>
+                    ))}
+                    <img src={currentScreen.imageUrl} alt={currentScreen.title} />
+                    <div className="navigation-buttons">
+                        <button type="button" onClick={handlePrevious} disabled={currentScreenIndex === 0}>
+                            Previous
+                        </button>
+                        <button type="button" onClick={handleNext}>
+                            Next
+                        </button>
+                    </div>
                 </div>
             )}
             <div className="content">
@@ -231,51 +233,23 @@ const Form = () => {
                     background-color: #ccc;
                     cursor: not-allowed;
                 }
-                .fade-text {
+                .poll-container {
                     margin-top: 20px;
-                    text-align: center;
+                }
+                .poll-container h2 {
                     font-size: 24px;
-                    color: #007bff;
-                    animation: fade-in-out 5s infinite;
+                    margin-bottom: 10px;
                 }
-                .content {
-                    display: flex;
-                    margin-top: 20px;
-                    flex-direction: column;
+                .poll-container label {
+                    display: block;
+                    margin-bottom: 10px;
                 }
-                .thumbnail {
-                    margin-bottom: 20px;
-                }
-                .thumbnail img {
+                .poll-container img {
                     width: 100%;
                     border-radius: 10px;
+                    margin-top: 20px;
                 }
-                .response {
-                    white-space: pre-line; /* Ensure line breaks are respected */
-                }
-                .response.error {
-                    color: red;
-                }
-                @keyframes fade-in-out {
-                    0% { opacity: 0; }
-                    50% { opacity: 1; }
-                    100% { opacity: 0; }
-                }
-                @media (min-width: 600px) {
-                    .content {
-                        flex-direction: row;
-                    }
-                    .thumbnail {
-                        flex: 1;
-                        margin-right: 20px;
-                    }
-                    .response {
-                        flex: 2;
-                    }
-                }
-            `}</style>
-        </div>
-    );
-};
-
-export default Form;
+                .navigation-buttons {
+                    display: flex;
+                    justify-content: space-between;
+                    margin-top: 
