@@ -68,7 +68,6 @@ const Form = () => {
         if (currentScreenIndex < screensConfig.length - 1) {
             setCurrentScreenIndex(currentScreenIndex + 1);
         } else {
-            // End of poll questions, continue with existing functionality
             setShowPoll(false);
         }
     };
@@ -162,18 +161,22 @@ const Form = () => {
             {showPoll && (
                 <div className="poll-container">
                     <h2>{currentScreen.title}</h2>
-                    {currentScreen.options.map((option, index) => (
-                        <label key={index}>
-                            <input
-                                type="radio"
-                                value={option}
-                                checked={responses[currentScreenIndex] === option}
-                                onChange={() => handleOptionChange(option)}
-                            />
-                            {option}
-                        </label>
-                    ))}
-                    <img src={currentScreen.imageUrl} alt={currentScreen.title} />
+                    <div className="poll-content">
+                        <img src={currentScreen.imageUrl} alt={currentScreen.title} className="poll-image" />
+                        <div className="poll-options">
+                            {currentScreen.options.map((option, index) => (
+                                <label key={index}>
+                                    <input
+                                        type="radio"
+                                        value={option}
+                                        checked={responses[currentScreenIndex] === option}
+                                        onChange={() => handleOptionChange(option)}
+                                    />
+                                    {option}
+                                </label>
+                            ))}
+                        </div>
+                    </div>
                     <div className="navigation-buttons">
                         <button type="button" onClick={handlePrevious} disabled={currentScreenIndex === 0}>
                             Previous
@@ -240,14 +243,23 @@ const Form = () => {
                     font-size: 24px;
                     margin-bottom: 10px;
                 }
-                .poll-container label {
+                .poll-content {
+                    display: flex;
+                    align-items: center;
+                }
+                .poll-image {
+                    width: 150px;
+                    height: 150px;
+                    border-radius: 10px;
+                    margin-right: 20px;
+                }
+                .poll-options {
+                    display: flex;
+                    flex-direction: column;
+                }
+                .poll-options label {
                     display: block;
                     margin-bottom: 10px;
-                }
-                .poll-container img {
-                    width: 100%;
-                    border-radius: 10px;
-                    margin-top: 20px;
                 }
                 .navigation-buttons {
                     display: flex;
