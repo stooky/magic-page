@@ -252,4 +252,41 @@ const Form = () => {
                 .navigation-buttons {
                     display: flex;
                     justify-content: space-between;
-                    margin-top: 
+                    margin-top: 10px;
+                }
+                .content {
+                    display: flex;
+                    margin-top: 20px;
+                    flex-direction: column;
+                }
+                .thumbnail {
+                    margin-bottom: 20px;
+                }
+                .thumbnail img {
+                    width: 100%;
+                    border-radius: 10px;
+                }
+                .response {
+                    white-space: pre-line;
+                }
+                .response.error {
+                    color: red;
+                }
+                @media (min-width: 600px) {
+                    .content {
+                        flex-direction: row;
+                    }
+                    .thumbnail {
+                        flex: 1;
+                        margin-right: 20px;
+                    }
+                    .response {
+                        flex: 2;
+                    }
+                }
+            `}</style>
+        </div>
+    );
+};
+
+export default Form;
