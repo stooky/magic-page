@@ -62,19 +62,10 @@ const Form = () => {
             ...responses,
             [currentScreenIndex]: option
         });
-    };
-
-    const handleNext = () => {
         if (currentScreenIndex < screensConfig.length - 1) {
             setCurrentScreenIndex(currentScreenIndex + 1);
         } else {
-            setShowPoll(false);
-        }
-    };
-
-    const handlePrevious = () => {
-        if (currentScreenIndex > 0) {
-            setCurrentScreenIndex(currentScreenIndex - 1);
+            setShowPoll(false); // End of poll questions, hide the poll
         }
     };
 
@@ -177,14 +168,6 @@ const Form = () => {
                             ))}
                         </div>
                     </div>
-                    <div className="navigation-buttons">
-                        <button type="button" onClick={handlePrevious} disabled={currentScreenIndex === 0}>
-                            Previous
-                        </button>
-                        <button type="button" onClick={handleNext}>
-                            Next
-                        </button>
-                    </div>
                 </div>
             )}
             <div className="content">
@@ -260,11 +243,6 @@ const Form = () => {
                 .poll-options label {
                     display: block;
                     margin-bottom: 10px;
-                }
-                .navigation-buttons {
-                    display: flex;
-                    justify-content: space-between;
-                    margin-top: 10px;
                 }
                 .content {
                     display: flex;
