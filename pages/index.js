@@ -138,91 +138,30 @@ const MainContainer = () => {
                     padding: 20px;
                     font-family: Arial, sans-serif;
                     color: #fff;
-                }
-                form {
-                    display: flex;
-                    flex-direction: column;
-                }
-                label {
-                    margin-bottom: 5px;
-                }
-                input {
-                    display: block;
-                    width: 100%;
-                    padding: 10px;
-                    margin-bottom: 10px;
-                    border-radius: 4px;
-                    border: 1px solid #ccc;
-                    box-sizing: border-box;
-                    color: #000;
-                    background-color: #fff;
-                }
-                button {
-                    padding: 10px 20px;
-                    background-color: #007bff;
-                    color: #fff;
-                    border: none;
-                    border-radius: 4px;
-                    cursor: pointer;
-                }
-                button:disabled {
-                    background-color: #ccc;
-                    cursor: not-allowed;
-                }
-                .poll-container {
-                    margin-top: 20px;
-                }
-                .poll-container h2 {
-                    font-size: 24px;
-                    margin-bottom: 10px;
-                }
-                .poll-content {
-                    display: flex;
-                    align-items: center;
-                }
-                .poll-image {
-                    width: 150px;
-                    height: 150px;
-                    border-radius: 10px;
-                    margin-right: 20px;
-                }
-                .poll-options {
-                    display: flex;
-                    flex-direction: column;
-                }
-                .poll-options label {
-                    display: block;
-                    margin-bottom: 10px;
+                    text-align: center;
                 }
                 .content {
                     display: flex;
-                    margin-top: 20px;
                     flex-direction: column;
+                    align-items: center;
+                    margin-top: 20px;
                 }
                 .thumbnail {
                     margin-bottom: 20px;
+                    text-align: center;
                 }
                 .thumbnail img {
                     width: 100%;
+                    max-width: 400px; /* Adjust size here to make it twice as big */
                     border-radius: 10px;
                 }
                 .response {
                     white-space: pre-line;
+                    font-size: 1.2em;
+                    margin-top: 20px;
                 }
                 .response.error {
                     color: red;
-                }
-                @media (min-width: 600px) {
-                    .content {
-                        flex-direction: row;
-                    }
-                    .thumbnail {
-                        flex: 1;
-                        margin-right: 20px;
-                    }
-                    .response {
-                        flex: 2;
-                    }
                 }
             `}</style>
         </div>
