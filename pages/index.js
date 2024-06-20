@@ -3,36 +3,20 @@
 import React, { useState, useEffect } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { callZapierWebhook } from '../components/utils/zapier';
-import screensConfig from '../config/screensConfig'; // Import screens configuration
+import screensConfig from '../config/screensConfig';
+import FormComponent from '../components/FormComponent';
+import PollComponent from '../components/PollComponent';
+import useTheme from '../utils/theme';
 
-const Form = () => {
-    const [email, setEmail] = useState('');
-    const [website, setWebsite] = useState('');
+const MainContainer = () => {
     const [loading, setLoading] = useState(false);
     const [callbackReceived, setCallbackReceived] = useState(true);
-    const [theme, setTheme] = useState('light');
     const [zapierResponse, setZapierResponse] = useState(null);
     const [screenshotUrl, setScreenshotUrl] = useState(null);
     const [currentScreenIndex, setCurrentScreenIndex] = useState(0);
     const [responses, setResponses] = useState({});
     const [showPoll, setShowPoll] = useState(false);
-
-    useEffect(() => {
-        const detectTheme = () => {
-            if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-                setTheme('dark');
-            } else {
-                setTheme('light');
-            }
-        };
-
-        detectTheme();
-        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', detectTheme);
-
-        return () => {
-            window.matchMedia('(prefers-color-scheme: dark)').removeEventListener('change', detectTheme);
-        };
-    }, []);
+    const theme = useTheme();
 
     useEffect(() => {
         let pollingInterval;
@@ -69,8 +53,7 @@ const Form = () => {
         }
     };
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
+    const handleSubmit = async (email, website) => {
         if (!email || !website || !email.includes('@') || !website.startsWith('http')) {
             alert("Please enter a valid email and website URL.");
             return;
@@ -91,7 +74,7 @@ const Form = () => {
         sessionStorage.setItem('requestId', uniqueId);
 
         setLoading(true);
-        setShowPoll(true); // Show the poll questions
+        setShowPoll(true);
 
         try {
             const screenshotResponse = await fetch(`/api/get-screenshot?url=${encodeURIComponent(website)}`);
@@ -126,49 +109,16 @@ const Form = () => {
     const currentScreen = screensConfig[currentScreenIndex];
 
     return (
-        <div className="container">
+        <div className={`container ${theme}`}>
             <h1>Magic Page</h1>
-            <form onSubmit={handleSubmit}>
-                <label htmlFor="email">Email:</label>
-                <input
-                    type="email"
-                    id="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    required
-                />
-                <label htmlFor="website">Website URL:</label>
-                <input
-                    type="url"
-                    id="website"
-                    value={website}
-                    onChange={(e) => setWebsite(e.target.value)}
-                    required
-                />
-                <button type="submit" disabled={!callbackReceived}>
-                    Build AI Agent
-                </button>
-            </form>
+            <FormComponent onSubmit={handleSubmit} />
             {showPoll && (
-                <div className="poll-container">
-                    <h2>{currentScreen.title}</h2>
-                    <div className="poll-content">
-                        <img src={currentScreen.imageUrl} alt={currentScreen.title} className="poll-image" />
-                        <div className="poll-options">
-                            {currentScreen.options.map((option, index) => (
-                                <label key={index}>
-                                    <input
-                                        type="radio"
-                                        value={option}
-                                        checked={responses[currentScreenIndex] === option}
-                                        onChange={() => handleOptionChange(option)}
-                                    />
-                                    {option}
-                                </label>
-                            ))}
-                        </div>
-                    </div>
-                </div>
+                <PollComponent
+                    currentScreen={currentScreen}
+                    currentScreenIndex={currentScreenIndex}
+                    responses={responses}
+                    handleOptionChange={handleOptionChange}
+                />
             )}
             <div className="content">
                 {screenshotUrl && (
@@ -279,4 +229,4 @@ const Form = () => {
     );
 };
 
-export default Form;
+export default MainContainer;
