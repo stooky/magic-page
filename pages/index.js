@@ -83,6 +83,7 @@ const MainContainer = () => {
             const screenshotData = await screenshotResponse.json();
             if (screenshotData.screenshotUrl) {
                 setScreenshotUrl(screenshotData.screenshotUrl);
+                console.log('Thumbnail successfully captured and generated.');
             } else {
                 console.error('Error fetching screenshot:', screenshotData.error);
             }
@@ -91,7 +92,8 @@ const MainContainer = () => {
             setZapierResponse(response);
 
             console.log('Calling Vendasta Webhook');
-            await callVendastaWebhook(email, website);
+            const vendastaResponse = await callVendastaWebhook(email, website);
+            console.log('Vendasta Webhook Response:', vendastaResponse);
         } catch (error) {
             console.error('Failed to call webhooks:', error);
             setZapierResponse({ status: 'error', message: `Failed to call webhooks: ${error.message}` });

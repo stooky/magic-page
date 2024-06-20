@@ -17,6 +17,7 @@ export const callVendastaWebhook = async (email, website) => {
                 'Content-Type': 'application/json'
             }
         });
+        console.log('Vendasta Webhook successfully called.');
         console.log('Vendasta Webhook Response:', response.data);
         return response.data;
     } catch (error) {
