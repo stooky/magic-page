@@ -33,7 +33,7 @@ export default async function handler(req, res) {
         const base64Image = buffer.toString('base64');
         const imageUrl = `data:image/png;base64,${base64Image}`;
 
-        console.log("Screenshot URL:", imageUrl);
+        console.log("Thumbnail successfully captured and generated.");
         return res.status(200).json({ screenshotUrl: imageUrl });
     } catch (error) {
         console.error("Failed to fetch screenshot:", error);
