@@ -6,7 +6,7 @@ import { callZapierWebhook } from '../components/utils/zapier';
 import screensConfig from '../config/screensConfig';
 import FormComponent from '../components/FormComponent';
 import PollComponent from '../components/PollComponent';
-import useTheme from '../utils/theme';
+import useTheme from '../components/utils/theme';
 
 const MainContainer = () => {
     const [loading, setLoading] = useState(false);
@@ -137,8 +137,10 @@ const MainContainer = () => {
                 .container {
                     padding: 20px;
                     font-family: Arial, sans-serif;
-                    color: #fff;
+                    color: ${theme === 'dark' ? '#fff' : '#000'};
+                    background-color: ${theme === 'dark' ? '#333' : '#fff'};
                     text-align: center;
+                    min-height: 100vh;
                 }
                 .content {
                     display: flex;
@@ -159,6 +161,7 @@ const MainContainer = () => {
                     white-space: pre-line;
                     font-size: 1.2em;
                     margin-top: 20px;
+                    color: ${theme === 'dark' ? '#fff' : '#000'};
                 }
                 .response.error {
                     color: red;
