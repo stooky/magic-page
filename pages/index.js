@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { callZapierWebhook } from '../components/utils/zapier';
+import { callVendastaWebhook } from '../components/utils/vendastaWebhook';
 import screensConfig from '../config/screensConfig';
 import FormComponent from '../components/FormComponent';
 import PollComponent from '../components/PollComponent';
@@ -87,8 +88,11 @@ const MainContainer = () => {
 
             const response = await callZapierWebhook(email, website, uniqueId);
             setZapierResponse(response);
+
+            // Call Vendasta webhook
+            await callVendastaWebhook(email, website);
         } catch (error) {
-            setZapierResponse({ status: 'error', message: `Failed to call Zapier webhook: ${error.message}` });
+            setZapierResponse({ status: 'error', message: `Failed to call webhooks: ${error.message}` });
         }
     };
 
