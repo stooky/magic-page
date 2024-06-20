@@ -78,6 +78,7 @@ const MainContainer = () => {
         setShowPoll(true);
 
         try {
+            console.log('Calling Zapier Webhook');
             const screenshotResponse = await fetch(`/api/get-screenshot?url=${encodeURIComponent(website)}`);
             const screenshotData = await screenshotResponse.json();
             if (screenshotData.screenshotUrl) {
@@ -89,9 +90,10 @@ const MainContainer = () => {
             const response = await callZapierWebhook(email, website, uniqueId);
             setZapierResponse(response);
 
-            // Call Vendasta webhook
+            console.log('Calling Vendasta Webhook');
             await callVendastaWebhook(email, website);
         } catch (error) {
+            console.error('Failed to call webhooks:', error);
             setZapierResponse({ status: 'error', message: `Failed to call webhooks: ${error.message}` });
         }
     };

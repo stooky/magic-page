@@ -8,12 +8,16 @@ export const callVendastaWebhook = async (email, website) => {
         website
     };
 
+    console.log('Calling Vendasta Webhook with the following payload:');
+    console.log('Payload:', JSON.stringify(payload, null, 2));
+
     try {
         const response = await axios.post(webhookUrl, payload, {
             headers: {
                 'Content-Type': 'application/json'
             }
         });
+        console.log('Vendasta Webhook Response:', response.data);
         return response.data;
     } catch (error) {
         console.error('Error calling Vendasta webhook:', error);
