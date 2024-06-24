@@ -53,9 +53,14 @@ const MainContainer = () => {
         }
     };
 
-    const extractCompanyName = (message) => {
+    const extractCompanyName = (message, website) => {
         const match = message.match(/--(.+?)--/);
-        return match ? match[1].trim() : "BLANK COMPANY";
+        if (match) {
+            return match[1].trim();
+        }
+        // Remove "http://" or "https://"
+        const cleanedWebsite = website.replace(/^https?:\/\//, '');
+        return `Magic Page Company = ${cleanedWebsite}`;
     };
 
     const handleSubmit = async (email, website) => {
@@ -93,10 +98,11 @@ const MainContainer = () => {
             }
 
             const response = await callZapierWebhook(email, website, uniqueId);
+            console.log('Zapier Response:', response);  // Log the full response
             setZapierResponse(response);
 
-            const companyName = response.message ? extractCompanyName(response.message) : "BLANK COMPANY";
-            console.log("COMPANY NAME: " + companyName);
+            const companyName = extractCompanyName(response.message, website);
+            console.log("Extracted Company Name: " + companyName);
 
             console.log('Calling Vendasta Webhook');
             const vendastaResponse = await fetch('/api/vendasta-proxy', {
