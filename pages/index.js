@@ -54,14 +54,17 @@ const MainContainer = () => {
     };
 
     const extractCompanyName = (message, website) => {
-        const match = message.match(/--(.+?)--/);
-        if (match) {
-            return match[1].trim();
+        if (message) {
+            const match = message.match(/--(.+?)--/);
+            if (match) {
+                return match[1].trim();
+            }
         }
         // Remove "http://" or "https://"
         const cleanedWebsite = website.replace(/^https?:\/\//, '');
         return `Magic Page Company = ${cleanedWebsite}`;
     };
+    
 
     const handleSubmit = async (email, website) => {
         if (!email || !website || !email.includes('@') || !website.startsWith('http')) {
