@@ -16,6 +16,7 @@ const MainContainer = () => {
     const [currentScreenIndex, setCurrentScreenIndex] = useState(0);
     const [responses, setResponses] = useState({});
     const [showPoll, setShowPoll] = useState(false);
+    const [iframeUrl, setIframeUrl] = useState('');
     const theme = useTheme();
 
     useEffect(() => {
@@ -63,6 +64,11 @@ const MainContainer = () => {
         // Remove "http://" or "https://"
         const cleanedWebsite = website.replace(/^https?:\/\//, '');
         return `Magic Page Company = ${cleanedWebsite}`;
+    };
+
+    const createIframeUrl = (companyName) => {
+        const formattedName = companyName.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+        return `https://sales.vendasta.com/${formattedName}/`;
     };
 
     const handleSubmit = async (email, website) => {
@@ -116,6 +122,10 @@ const MainContainer = () => {
             });
             const vendastaData = await vendastaResponse.json();
             console.log('Vendasta Webhook Response:', vendastaData);
+
+            // Set iframe URL
+            const iframeUrl = createIframeUrl(companyName);
+            setIframeUrl(iframeUrl);
         } catch (error) {
             console.error('Failed to call webhooks:', error);
             setZapierResponse({ status: 'error', message: `Failed to call webhooks: ${error.message}` });
@@ -161,6 +171,11 @@ const MainContainer = () => {
                     <div className="response error" dangerouslySetInnerHTML={{ __html: formatErrorResponse(zapierResponse) }}></div>
                 ) : zapierResponse && (
                     <div className="response" dangerouslySetInnerHTML={{ __html: formatResponse(zapierResponse) }}></div>
+                )}
+                {iframeUrl && (
+                    <div className="iframe-container">
+                        <iframe src={iframeUrl} width="100%" height="600px" title="Vendasta Iframe"></iframe>
+                    </div>
                 )}
             </div>
             <style jsx>{`
@@ -226,6 +241,9 @@ const MainContainer = () => {
                 }
                 .response.error {
                     color: red;
+                }
+                .iframe-container {
+                    margin-top: 20px;
                 }
             `}</style>
         </div>
