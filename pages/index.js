@@ -64,7 +64,6 @@ const MainContainer = () => {
         const cleanedWebsite = website.replace(/^https?:\/\//, '');
         return `Magic Page Company = ${cleanedWebsite}`;
     };
-    
 
     const handleSubmit = async (email, website) => {
         if (!email || !website || !email.includes('@') || !website.startsWith('http')) {
@@ -104,7 +103,7 @@ const MainContainer = () => {
             console.log('Zapier Response:', response);  // Log the full response
             setZapierResponse(response);
 
-            const companyName = extractCompanyName(response.message, website);
+            const companyName = response && response.message ? extractCompanyName(response.message, website) : `Magic Page Company = ${website.replace(/^https?:\/\//, '')}`;
             console.log("Extracted Company Name: " + companyName);
 
             console.log('Calling Vendasta Webhook');
