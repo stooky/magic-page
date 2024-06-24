@@ -1,9 +1,6 @@
-"use client";
-
 import React, { useState, useEffect } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { callZapierWebhook } from '../components/utils/zapier';
-import { callVendastaWebhook } from '../components/utils/vendastaWebhook';
 import screensConfig from '../config/screensConfig';
 import FormComponent from '../components/FormComponent';
 import PollComponent from '../components/PollComponent';
@@ -97,11 +94,18 @@ const MainContainer = () => {
             setZapierResponse(response);
 
             const companyName = response.message ? extractCompanyName(response.message) : "BLANK COMPANY";
-            console.log("COMPANY NAME: " . companyName );
+            console.log("COMPANY NAME: " + companyName);
 
             console.log('Calling Vendasta Webhook');
-            const vendastaResponse = await callVendastaWebhook(email, website, companyName);
-            console.log('Vendasta Webhook Response:', vendastaResponse);
+            const vendastaResponse = await fetch('/api/vendasta-proxy', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ email, website, company: companyName })
+            });
+            const vendastaData = await vendastaResponse.json();
+            console.log('Vendasta Webhook Response:', vendastaData);
         } catch (error) {
             console.error('Failed to call webhooks:', error);
             setZapierResponse({ status: 'error', message: `Failed to call webhooks: ${error.message}` });
@@ -162,7 +166,7 @@ const MainContainer = () => {
                     display: flex;
                     flex-direction: column;
                 }
-                label {  // <-- Add this block
+                label {
                     color: ${theme === 'dark' ? '#fff' : '#000'};
                     margin-bottom: 5px;
                 }
