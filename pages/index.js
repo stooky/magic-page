@@ -97,6 +97,7 @@ const MainContainer = () => {
             setZapierResponse(response);
 
             const companyName = response.message ? extractCompanyName(response.message) : "BLANK COMPANY";
+            console.log("COMPANY NAME: " . companyName );
 
             console.log('Calling Vendasta Webhook');
             const vendastaResponse = await callVendastaWebhook(email, website, companyName);
