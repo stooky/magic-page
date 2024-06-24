@@ -17,7 +17,20 @@ const MainContainer = () => {
     const [responses, setResponses] = useState({});
     const [showPoll, setShowPoll] = useState(false);
     const [iframeUrl, setIframeUrl] = useState('');
+    const [elapsedTime, setElapsedTime] = useState(0);
     const theme = useTheme();
+
+    useEffect(() => {
+        let interval;
+        if (loading) {
+            interval = setInterval(() => {
+                setElapsedTime((prevTime) => prevTime + 1);
+            }, 1000);
+        } else {
+            setElapsedTime(0);
+        }
+        return () => clearInterval(interval);
+    }, [loading]);
 
     useEffect(() => {
         let pollingInterval;
@@ -153,6 +166,7 @@ const MainContainer = () => {
     return (
         <div className={`container ${theme}`}>
             <h1>Magic Page</h1>
+            <div className="timer">Time Elapsed: {elapsedTime} seconds</div>
             <FormComponent onSubmit={handleSubmit} />
             {showPoll && (
                 <PollComponent
@@ -188,6 +202,11 @@ const MainContainer = () => {
                     background-color: ${theme === 'dark' ? '#333' : '#fff'};
                     text-align: center;
                     min-height: 100vh;
+                }
+                .timer {
+                    font-size: 1.5em;
+                    margin-bottom: 20px;
+                    color: ${theme === 'dark' ? '#fff' : '#000'};
                 }
                 form {
                     display: flex;
