@@ -1,11 +1,12 @@
 import axios from 'axios';
 
-export const callVendastaWebhook = async (email, website) => {
+export const callVendastaWebhook = async (email, website, companyName) => {
     const webhookUrl = 'http://automations.businessapp.io/start/VMF/7badf74f-283c-48e7-9e81-5fae5935671f';
 
     const payload = {
         email,
-        website
+        website,
+        company: companyName || "BLANK COMPANY"
     };
 
     console.log('Calling Vendasta Webhook with the following payload:');
@@ -21,7 +22,13 @@ export const callVendastaWebhook = async (email, website) => {
         console.log('Vendasta Webhook Response:', response.data);
         return response.data;
     } catch (error) {
-        console.error('Error calling Vendasta webhook:', error);
+        if (error.response) {
+            console.error('Vendasta Webhook response error:', error.response.data);
+        } else if (error.request) {
+            console.error('Vendasta Webhook no response received:', error.request);
+        } else {
+            console.error('Vendasta Webhook setup error:', error.message);
+        }
         throw error;
     }
 };
