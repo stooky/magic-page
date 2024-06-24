@@ -18,6 +18,8 @@ const MainContainer = () => {
     const [showPoll, setShowPoll] = useState(false);
     const [iframeUrl, setIframeUrl] = useState('');
     const [elapsedTime, setElapsedTime] = useState(0);
+    const [countdown, setCountdown] = useState(10);
+    const [showIframe, setShowIframe] = useState(false);
     const theme = useTheme();
 
     useEffect(() => {
@@ -54,6 +56,19 @@ const MainContainer = () => {
         }
         return () => clearInterval(pollingInterval);
     }, [loading]);
+
+    useEffect(() => {
+        let countdownInterval;
+        if (countdown > 0) {
+            countdownInterval = setInterval(() => {
+                setCountdown(prevCountdown => prevCountdown - 1);
+            }, 1000);
+        } else if (countdown === 0) {
+            setShowIframe(true);
+            clearInterval(countdownInterval);
+        }
+        return () => clearInterval(countdownInterval);
+    }, [countdown]);
 
     const handleOptionChange = (option) => {
         setResponses({
@@ -141,6 +156,10 @@ const MainContainer = () => {
             // Set iframe URL
             const iframeUrl = createIframeUrl(companyName);
             setIframeUrl(iframeUrl);
+
+            // Start countdown
+            setCountdown(10);
+            setShowIframe(false);
         } catch (error) {
             console.error('Failed to call webhooks:', error);
             setZapierResponse({ status: 'error', message: `Failed to call webhooks: ${error.message}` });
@@ -188,7 +207,10 @@ const MainContainer = () => {
                 ) : zapierResponse && (
                     <div className="response" dangerouslySetInnerHTML={{ __html: formatResponse(zapierResponse) }}></div>
                 )}
-                {iframeUrl && (
+                {countdown > 0 && (
+                    <div className="countdown">Loading iframe in {countdown} seconds...</div>
+                )}
+                {showIframe && (
                     <div className="iframe-container">
                         <iframe src={iframeUrl} width="100%" height="600px" title="Vendasta Iframe"></iframe>
                     </div>
@@ -262,6 +284,11 @@ const MainContainer = () => {
                 }
                 .response.error {
                     color: red;
+                }
+                .countdown {
+                    font-size: 1.5em;
+                    margin-top: 20px;
+                    color: ${theme === 'dark' ? '#fff' : '#000'};
                 }
                 .iframe-container {
                     margin-top: 20px;
