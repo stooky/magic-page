@@ -68,7 +68,9 @@ const MainContainer = () => {
 
     const createIframeUrl = (companyName) => {
         const formattedName = companyName.toLowerCase().replace(/[^a-z0-9]+/g, '-');
-        return `https://sales.vendasta.com/${formattedName}/`;
+        const url = `https://sales.vendasta.com/${formattedName}/`;
+        console.log("Constructed Iframe URL:", url);
+        return url;
     };
 
     const handleSubmit = async (email, website) => {
