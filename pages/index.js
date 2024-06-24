@@ -148,72 +148,71 @@ const MainContainer = () => {
                     <div className="response" dangerouslySetInnerHTML={{ __html: formatResponse(zapierResponse) }}></div>
                 )}
             </div>
-            // Add this to your style block
-<style jsx>{`
-    .container {
-        padding: 20px;
-        font-family: Arial, sans-serif;
-        color: ${theme === 'dark' ? '#fff' : '#000'};
-        background-color: ${theme === 'dark' ? '#333' : '#fff'};
-        text-align: center;
-        min-height: 100vh;
-    }
-    form {
-        display: flex;
-        flex-direction: column;
-    }
-    label {  // <-- Add this block
-        color: ${theme === 'dark' ? '#fff' : '#000'};
-    }
-    input {
-        display: block;
-        width: 100%;
-        padding: 10px;
-        margin-bottom: 10px;
-        border-radius: 4px;
-        border: 1px solid #ccc;
-        box-sizing: border-box;
-        color: #000;
-        background-color: #fff;
-    }
-    button {
-        padding: 10px 20px;
-        background-color: #007bff;
-        color: #fff;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
-    }
-    button:disabled {
-        background-color: #ccc;
-        cursor: not-allowed;
-    }
-    .content {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        margin-top: 20px;
-    }
-    .thumbnail {
-        margin-bottom: 20px;
-        text-align: center;
-    }
-    .thumbnail img {
-        width: 100%;
-        max-width: 400px; /* Adjust size here to make it twice as big */
-        border-radius: 10px;
-    }
-    .response {
-        white-space: pre-line;
-        font-size: 1.2em;
-        margin-top: 20px;
-        color: ${theme === 'dark' ? '#fff' : '#000'};
-    }
-    .response.error {
-        color: red;
-    }
-`}</style>
-
+            <style jsx>{`
+                .container {
+                    padding: 20px;
+                    font-family: Arial, sans-serif;
+                    color: ${theme === 'dark' ? '#fff' : '#000'};
+                    background-color: ${theme === 'dark' ? '#333' : '#fff'};
+                    text-align: center;
+                    min-height: 100vh;
+                }
+                form {
+                    display: flex;
+                    flex-direction: column;
+                }
+                label {  // <-- Add this block
+                    color: ${theme === 'dark' ? '#fff' : '#000'};
+                    margin-bottom: 5px;
+                }
+                input {
+                    display: block;
+                    width: 100%;
+                    padding: 10px;
+                    margin-bottom: 10px;
+                    border-radius: 4px;
+                    border: 1px solid #ccc;
+                    box-sizing: border-box;
+                    color: #000;
+                    background-color: #fff;
+                }
+                button {
+                    padding: 10px 20px;
+                    background-color: #007bff;
+                    color: #fff;
+                    border: none;
+                    border-radius: 4px;
+                    cursor: pointer;
+                }
+                button:disabled {
+                    background-color: #ccc;
+                    cursor: not-allowed;
+                }
+                .content {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    margin-top: 20px;
+                }
+                .thumbnail {
+                    margin-bottom: 20px;
+                    text-align: center;
+                }
+                .thumbnail img {
+                    width: 100%;
+                    max-width: 400px; /* Adjust size here to make it twice as big */
+                    border-radius: 10px;
+                }
+                .response {
+                    white-space: pre-line;
+                    font-size: 1.2em;
+                    margin-top: 20px;
+                    color: ${theme === 'dark' ? '#fff' : '#000'};
+                }
+                .response.error {
+                    color: red;
+                }
+            `}</style>
         </div>
     );
 };
