@@ -20,7 +20,24 @@ const MainContainer = () => {
     const [elapsedTime, setElapsedTime] = useState(0);
     const [countdown, setCountdown] = useState(10);
     const [showIframe, setShowIframe] = useState(false);
-    const theme = useTheme();
+    const [theme, setTheme] = useState('light');
+
+    useEffect(() => {
+        const detectTheme = () => {
+            if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                setTheme('dark');
+            } else {
+                setTheme('light');
+            }
+        };
+
+        detectTheme();
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', detectTheme);
+
+        return () => {
+            window.matchMedia('(prefers-color-scheme: dark)').removeEventListener('change', detectTheme);
+        };
+    }, []);
 
     useEffect(() => {
         let interval;
@@ -186,7 +203,7 @@ const MainContainer = () => {
         <div className={`container ${theme}`}>
             <h1>Magic Page</h1>
             <div className="timer">Time Elapsed: {elapsedTime} seconds</div>
-            <FormComponent onSubmit={handleSubmit} />
+            <FormComponent onSubmit={handleSubmit} theme={theme} />
             {showPoll && (
                 <PollComponent
                     currentScreen={currentScreen}
