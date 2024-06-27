@@ -19,6 +19,8 @@ const MainContainer = () => {
     const [elapsedTime, setElapsedTime] = useState(0);
     const [countdown, setCountdown] = useState(10);
     const [showIframe, setShowIframe] = useState(false);
+    const [formVisible, setFormVisible] = useState(true);
+    const [enteredWebsite, setEnteredWebsite] = useState('');
 
     useEffect(() => {
         let interval;
@@ -107,6 +109,8 @@ const MainContainer = () => {
 
         setZapierResponse(null);
         setScreenshotUrl(null);
+        setEnteredWebsite(website);
+        setFormVisible(false); // Hide the form and show the message
 
         if (!callbackReceived) {
             alert("Please wait until the current request is processed.");
@@ -184,7 +188,13 @@ const MainContainer = () => {
         <div className="container">
             <h1>Magic Page</h1>
             <div className="timer">Time Elapsed: {elapsedTime} seconds</div>
-            <FormComponent onSubmit={handleSubmit} />
+            {formVisible ? (
+                <FormComponent onSubmit={handleSubmit} />
+            ) : (
+                <div className="building-message">
+                    Building AI Employee for {enteredWebsite}
+                </div>
+            )}
             {showPoll && (
                 <PollComponent
                     currentScreen={currentScreen}
@@ -290,6 +300,11 @@ const MainContainer = () => {
                 }
                 .iframe-container {
                     margin-top: 20px;
+                }
+                .building-message {
+                    font-size: 1.5em;
+                    margin-top: 20px;
+                    color: #000;
                 }
             `}</style>
         </div>
