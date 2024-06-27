@@ -121,7 +121,7 @@ const MainContainer = () => {
 
         sessionStorage.setItem('requestId', uniqueId);
 
-        setLoading(true);
+        setLoading(true); // Ensure loading is set to true
         setShowPoll(true);
 
         try {
