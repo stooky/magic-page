@@ -6,7 +6,6 @@ import { callZapierWebhook } from '../components/utils/zapier';
 import screensConfig from '../config/screensConfig';
 import FormComponent from '../components/FormComponent';
 import PollComponent from '../components/PollComponent';
-import useTheme from '../components/utils/theme';
 
 const MainContainer = () => {
     const [loading, setLoading] = useState(false);
@@ -20,24 +19,6 @@ const MainContainer = () => {
     const [elapsedTime, setElapsedTime] = useState(0);
     const [countdown, setCountdown] = useState(10);
     const [showIframe, setShowIframe] = useState(false);
-    const [theme, setTheme] = useState('light');
-
-    useEffect(() => {
-        const detectTheme = () => {
-            if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-                setTheme('dark');
-            } else {
-                setTheme('light');
-            }
-        };
-
-        detectTheme();
-        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', detectTheme);
-
-        return () => {
-            window.matchMedia('(prefers-color-scheme: dark)').removeEventListener('change', detectTheme);
-        };
-    }, []);
 
     useEffect(() => {
         let interval;
@@ -200,10 +181,10 @@ const MainContainer = () => {
     const currentScreen = screensConfig[currentScreenIndex];
 
     return (
-        <div className={`container ${theme}`}>
+        <div className="container">
             <h1>Magic Page</h1>
             <div className="timer">Time Elapsed: {elapsedTime} seconds</div>
-            <FormComponent onSubmit={handleSubmit} theme={theme} />
+            <FormComponent onSubmit={handleSubmit} />
             {showPoll && (
                 <PollComponent
                     currentScreen={currentScreen}
@@ -237,22 +218,22 @@ const MainContainer = () => {
                 .container {
                     padding: 20px;
                     font-family: Arial, sans-serif;
-                    color: ${theme === 'dark' ? '#fff' : '#000'};
-                    background-color: ${theme === 'dark' ? '#333' : '#fff'};
+                    color: #000;
+                    background-color: #fff;
                     text-align: center;
                     min-height: 100vh;
                 }
                 .timer {
                     font-size: 1.5em;
                     margin-bottom: 20px;
-                    color: ${theme === 'dark' ? '#fff' : '#000'};
+                    color: #000;
                 }
                 form {
                     display: flex;
                     flex-direction: column;
                 }
                 label {
-                    color: ${theme === 'dark' ? '#fff' : '#000'};
+                    color: #000;
                     margin-bottom: 5px;
                 }
                 input {
@@ -297,7 +278,7 @@ const MainContainer = () => {
                     white-space: pre-line;
                     font-size: 1.2em;
                     margin-top: 20px;
-                    color: ${theme === 'dark' ? '#fff' : '#000'};
+                    color: #000;
                 }
                 .response.error {
                     color: red;
@@ -305,7 +286,7 @@ const MainContainer = () => {
                 .countdown {
                     font-size: 1.5em;
                     margin-top: 20px;
-                    color: ${theme === 'dark' ? '#fff' : '#000'};
+                    color: #000;
                 }
                 .iframe-container {
                     margin-top: 20px;
