@@ -24,6 +24,7 @@ export default async function handler(req, res) {
                 aud: process.env.VENDASTA_ASSERTION_AUD,
                 exp: Math.floor(Date.now() / 1000) + 600,
                 iat: Math.floor(Date.now() / 1000),
+                scope: 'business-app'
             },
             privateKey,
             {
@@ -52,7 +53,6 @@ export default async function handler(req, res) {
         console.log(chalk.blue('Calling Vendasta API.'));
         console.log(chalk.blue(`Vendasta API request payload:\nEmail: ${email}\nWebsite: ${website}\nCompany: ${company}`));
         
-        // Correctly format the payload for Vendasta API
         const vendastaResponse = await axios.post(`https://listing-products-api-${process.env.ENV}.vendasta-internal.com/listing_products.v1.PartnerSettingsService/GetConfiguration`, {
             partnerId: process.env.VENDASTA_PARTNER_ID,
             businessId: process.env.VENDASTA_BUSINESS_ID
