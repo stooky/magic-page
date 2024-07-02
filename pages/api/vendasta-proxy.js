@@ -17,25 +17,27 @@ export default async function handler(req, res) {
     try {
         console.log(chalk.blue('Generating JWT for client assertion.'));
         const privateKey = process.env.VENDASTA_PRIVATE_KEY.replace(/\\n/g, '\n');
-        const token = jwt.sign(
-            {
-                iss: process.env.VENDASTA_CLIENT_EMAIL,
-                sub: process.env.VENDASTA_CLIENT_EMAIL,
-                aud: process.env.VENDASTA_ASSERTION_AUD,
-                exp: Math.floor(Date.now() / 1000) + 600,
-                iat: Math.floor(Date.now() / 1000),
-                scope: 'business-app' // Ensure the scope is included here
+        
+        const jwtPayload = {
+            iss: process.env.VENDASTA_CLIENT_EMAIL,
+            sub: process.env.VENDASTA_CLIENT_EMAIL,
+            aud: process.env.VENDASTA_ASSERTION_AUD,
+            exp: Math.floor(Date.now() / 1000) + 600,
+            iat: Math.floor(Date.now() / 1000),
+            scope: 'business-app', // Ensure the scope is included here
+        };
+
+        const token = jwt.sign(jwtPayload, privateKey, {
+            algorithm: 'RS256',
+            header: {
+                kid: process.env.VENDASTA_PRIVATE_KEY_ID,
             },
-            privateKey,
-            {
-                algorithm: 'RS256',
-                header: {
-                    kid: process.env.VENDASTA_PRIVATE_KEY_ID,
-                },
-            }
-        );
+        });
 
         console.log(chalk.blue('JWT generated successfully.'));
+        console.log(chalk.blue('JWT Payload:'));
+        console.log(chalk.blue(JSON.stringify(jwtPayload, null, 2)));
+        
         console.log(chalk.blue('Exchanging JWT for access token.'));
         const response = await axios.post(process.env.VENDASTA_TOKEN_URI, new URLSearchParams({
             grant_type: 'urn:ietf:params:oauth:grant-type:jwt-bearer',
