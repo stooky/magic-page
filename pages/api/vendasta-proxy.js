@@ -1,10 +1,9 @@
 import axios from 'axios';
 import jwt from 'jsonwebtoken';
 import chalk from 'chalk';
-import qs from 'qs'; // Import qs for query string formatting
 
 export default async function handler(req, res) {
-    console.log(chalk.blue('vendasta-proxy.js handler invoked')); // Log at the top
+    console.log(chalk.blue('vendasta-proxy.js handler invoked'));
 
     console.log(chalk.blue(`Request received:\nMethod: ${req.method}\nHeaders: ${JSON.stringify(req.headers, null, 2)}\nBody: ${JSON.stringify(req.body, null, 2)}`));
 
@@ -37,20 +36,19 @@ export default async function handler(req, res) {
 
         console.log(chalk.blue('JWT generated successfully.'));
         console.log(chalk.blue('Exchanging JWT for access token.'));
-        
-        const response = await axios.post(
-            process.env.VENDASTA_TOKEN_URI,
-            qs.stringify({
-                grant_type: 'urn:ietf:params:oauth:grant-type:jwt-bearer',
-                assertion: token,
-            }), {
+        const response = await axios.post(process.env.VENDASTA_TOKEN_URI, null, {
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            params: {
+                grant_type: 'urn:ietf:params:oauth:grant-type:jwt-bearer',
+                assertion: token,
             },
         });
 
         const accessToken = response.data.access_token;
-        console.log(chalk.blue('Access token received:', accessToken));
+        console.log(chalk.blue('Access token received:'));
+        console.log(chalk.blue(accessToken));
 
         console.log(chalk.blue('Calling Vendasta API.'));
         const vendastaResponse = await axios.post('http://automations.businessapp.io/start/VMF/7badf74f-283c-48e7-9e81-5fae5935671f', {
@@ -65,11 +63,17 @@ export default async function handler(req, res) {
         });
 
         console.log(chalk.blue('Vendasta API call successful.'));
-        console.log(chalk.blue('Vendasta API response:', vendastaResponse.data));
+        console.log(chalk.blue('Vendasta API response:'));
+        console.log(chalk.blue(JSON.stringify(vendastaResponse.data, null, 2)));
+
         return res.status(200).json(vendastaResponse.data);
     } catch (error) {
-        console.error(chalk.blue('Error calling Vendasta API:', error.response ? JSON.stringify(error.response.data, null, 2) : error.message));
-        console.error(chalk.blue('Error details:', JSON.stringify(error, null, 2))); // Additional logging
-        return res.status(500).json({ message: 'Failed to call Vendasta API', error: error.response ? error.response.data : error.message });
+        console.error(chalk.blue('Error calling Vendasta API:'));
+        if (error.response) {
+            console.error(chalk.blue(JSON.stringify(error.response.data, null, 2)));
+        } else {
+            console.error(chalk.blue(error.message));
+        }
+        return res.status(500).json({ message: 'Failed to call Vendasta API' });
     }
 }
