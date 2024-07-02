@@ -14,10 +14,15 @@ export default async function handler(req, res) {
 
     const { email, website, company } = req.body;
 
+    if (!email || !website || !company) {
+        console.log(chalk.blue('Missing required fields: email, website, or company.'));
+        return res.status(400).json({ message: 'Missing required fields: email, website, or company' });
+    }
+
     try {
         console.log(chalk.blue('Generating JWT for client assertion.'));
         const privateKey = process.env.VENDASTA_PRIVATE_KEY.replace(/\\n/g, '\n');
-        console.log(chalk.blue('Private Key Length:', privateKey.length)); // Log the length of the private key
+        console.log(chalk.blue(`Private Key Loaded. Length: ${privateKey.length}`)); // Verify key length
 
         const token = jwt.sign(
             {
@@ -37,8 +42,6 @@ export default async function handler(req, res) {
         );
 
         console.log(chalk.blue('JWT generated successfully.'));
-        console.log(chalk.blue('JWT:', token)); // Log the JWT token
-
         console.log(chalk.blue('Exchanging JWT for access token.'));
         const response = await axios.post(process.env.VENDASTA_TOKEN_URI, null, {
             headers: {
