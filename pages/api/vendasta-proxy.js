@@ -12,7 +12,7 @@ export default async function handler(req, res) {
         return res.status(405).json({ message: 'Method not allowed' });
     }
 
-    const { email, website, company } = req.body;
+    const { partnerId, businessId } = req.body;
 
     try {
         console.log(chalk.blue('Generating JWT for client assertion.'));
