@@ -1,6 +1,8 @@
 import chalk from 'chalk';
 
 export default async function handler(req, res) {
+    console.log(chalk.blue('webhookListener.js handler invoked')); // Log at the top
+
     console.log(chalk.blue(`Webhook received:\nMethod: ${req.method}\nHeaders: ${JSON.stringify(req.headers, null, 2)}\nBody: ${JSON.stringify(req.body, null, 2)}`));
 
     if (req.method !== 'POST') {
@@ -11,13 +13,13 @@ export default async function handler(req, res) {
     const { accountId } = req.body;
 
     try {
-        // Simulate processing the webhook data
         console.log(chalk.blue(`Processing accountId: ${accountId}`));
 
         // Simulate retrieving URL from Vendasta API
         const url = `https://example.com/account/${accountId}`;
         console.log(chalk.blue(`Retrieved URL: ${url}`));
 
+        console.log(chalk.blue('Sending URL back to client.'));
         // Send the URL back to the client
         return res.status(200).json({ url });
     } catch (error) {

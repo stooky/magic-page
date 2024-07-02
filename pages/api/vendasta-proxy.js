@@ -3,6 +3,8 @@ import jwt from 'jsonwebtoken';
 import chalk from 'chalk';
 
 export default async function handler(req, res) {
+    console.log(chalk.blue('vendasta-proxy.js handler invoked')); // Log at the top
+
     console.log(chalk.blue(`Request received:\nMethod: ${req.method}\nHeaders: ${JSON.stringify(req.headers, null, 2)}\nBody: ${JSON.stringify(req.body, null, 2)}`));
 
     if (req.method !== 'POST') {
@@ -32,6 +34,7 @@ export default async function handler(req, res) {
             }
         );
 
+        console.log(chalk.blue('JWT generated successfully.'));
         console.log(chalk.blue('Exchanging JWT for access token.'));
         const response = await axios.post(process.env.VENDASTA_TOKEN_URI, null, {
             headers: {
@@ -58,6 +61,7 @@ export default async function handler(req, res) {
             },
         });
 
+        console.log(chalk.blue('Vendasta API call successful.'));
         console.log(chalk.blue('Vendasta API response:', vendastaResponse.data));
         return res.status(200).json(vendastaResponse.data);
     } catch (error) {
