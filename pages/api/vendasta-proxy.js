@@ -24,7 +24,7 @@ export default async function handler(req, res) {
                 aud: process.env.VENDASTA_ASSERTION_AUD,
                 exp: Math.floor(Date.now() / 1000) + 600,
                 iat: Math.floor(Date.now() / 1000),
-                scope: 'business-app'
+                scope: 'business-app' // Ensure the scope is included here
             },
             privateKey,
             {
@@ -51,11 +51,9 @@ export default async function handler(req, res) {
         console.log(chalk.blue(accessToken));
 
         console.log(chalk.blue('Calling Vendasta API.'));
-        console.log(chalk.blue(`Vendasta API request payload:\nEmail: ${email}\nWebsite: ${website}\nCompany: ${company}`));
-        
         const vendastaPayload = {
             partnerId: process.env.VENDASTA_PARTNER_ID,
-            businessId: process.env.VENDASTA_BUSINESS_ID
+            businessId: process.env.VENDASTA_BUSINESS_ID,
         };
 
         console.log(chalk.blue('Vendasta API request payload:'));
