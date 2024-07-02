@@ -1,6 +1,7 @@
 import axios from 'axios';
 import jwt from 'jsonwebtoken';
 import chalk from 'chalk';
+import qs from 'qs'; // Import qs for query string formatting
 
 export default async function handler(req, res) {
     console.log(chalk.blue('vendasta-proxy.js handler invoked')); // Log at the top
@@ -36,13 +37,15 @@ export default async function handler(req, res) {
 
         console.log(chalk.blue('JWT generated successfully.'));
         console.log(chalk.blue('Exchanging JWT for access token.'));
-        const response = await axios.post(process.env.VENDASTA_TOKEN_URI, null, {
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-            },
-            params: {
+        
+        const response = await axios.post(
+            process.env.VENDASTA_TOKEN_URI,
+            qs.stringify({
                 grant_type: 'urn:ietf:params:oauth:grant-type:jwt-bearer',
                 assertion: token,
+            }), {
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
             },
         });
 
