@@ -36,13 +36,12 @@ export default async function handler(req, res) {
 
         console.log(chalk.blue('JWT generated successfully.'));
         console.log(chalk.blue('Exchanging JWT for access token.'));
-        const response = await axios.post(process.env.VENDASTA_TOKEN_URI, null, {
+        const response = await axios.post(process.env.VENDASTA_TOKEN_URI, new URLSearchParams({
+            grant_type: 'urn:ietf:params:oauth:grant-type:jwt-bearer',
+            assertion: token,
+        }), {
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
-            },
-            params: {
-                grant_type: 'urn:ietf:params:oauth:grant-type:jwt-bearer',
-                assertion: token,
             },
         });
 
