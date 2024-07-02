@@ -14,16 +14,9 @@ export default async function handler(req, res) {
 
     const { email, website, company } = req.body;
 
-    if (!email || !website || !company) {
-        console.log(chalk.blue('Missing required fields: email, website, or company.'));
-        return res.status(400).json({ message: 'Missing required fields: email, website, or company' });
-    }
-
     try {
         console.log(chalk.blue('Generating JWT for client assertion.'));
         const privateKey = process.env.VENDASTA_PRIVATE_KEY.replace(/\\n/g, '\n');
-        console.log(chalk.blue(`Private Key Loaded. Length: ${privateKey.length}`)); // Verify key length
-
         const token = jwt.sign(
             {
                 iss: process.env.VENDASTA_CLIENT_EMAIL,
@@ -72,7 +65,8 @@ export default async function handler(req, res) {
         console.log(chalk.blue('Vendasta API response:', vendastaResponse.data));
         return res.status(200).json(vendastaResponse.data);
     } catch (error) {
-        console.error(chalk.blue('Error calling Vendasta API:', error.response ? error.response.data : error.message));
-        return res.status(500).json({ message: 'Failed to call Vendasta API' });
+        console.error(chalk.blue('Error calling Vendasta API:', error.response ? JSON.stringify(error.response.data, null, 2) : error.message));
+        console.error(chalk.blue('Error details:', JSON.stringify(error, null, 2))); // Additional logging
+        return res.status(500).json({ message: 'Failed to call Vendasta API', error: error.response ? error.response.data : error.message });
     }
 }
