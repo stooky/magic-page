@@ -53,10 +53,15 @@ export default async function handler(req, res) {
         console.log(chalk.blue('Calling Vendasta API.'));
         console.log(chalk.blue(`Vendasta API request payload:\nEmail: ${email}\nWebsite: ${website}\nCompany: ${company}`));
         
-        const vendastaResponse = await axios.post(`https://listing-products-api-${process.env.ENV}.vendasta-internal.com/listing_products.v1.PartnerSettingsService/GetConfiguration`, {
+        const vendastaPayload = {
             partnerId: process.env.VENDASTA_PARTNER_ID,
             businessId: process.env.VENDASTA_BUSINESS_ID
-        }, {
+        };
+
+        console.log(chalk.blue('Vendasta API request payload:'));
+        console.log(chalk.blue(JSON.stringify(vendastaPayload, null, 2)));
+
+        const vendastaResponse = await axios.post(`https://listing-products-api-${process.env.ENV}.vendasta-internal.com/listing_products.v1.PartnerSettingsService/GetConfiguration`, vendastaPayload, {
             headers: {
                 Authorization: `Bearer ${accessToken}`,
                 'Content-Type': 'application/json',
