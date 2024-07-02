@@ -59,7 +59,7 @@ const MainContainer = () => {
 
     useEffect(() => {
         let countdownInterval;
-        if (countdown > 0) {
+        if (countdown > 0 && !showIframe) {
             countdownInterval = setInterval(() => {
                 setCountdown(prevCountdown => prevCountdown - 1);
             }, 1000);
@@ -68,7 +68,7 @@ const MainContainer = () => {
             clearInterval(countdownInterval);
         }
         return () => clearInterval(countdownInterval);
-    }, [countdown]);
+    }, [countdown, showIframe]);
 
     const handleOptionChange = (option) => {
         setResponses({
@@ -91,7 +91,7 @@ const MainContainer = () => {
         }
         // Remove "http://" or "https://"
         const cleanedWebsite = website.replace(/^https?:\/\//, '');
-        return `Magic Page Company = ${cleanedWebsite}`;
+        return `magic-page-company-${cleanedWebsite.replace(/\./g, '-')}`;
     };
 
     const createIframeUrl = (companyName) => {
@@ -141,7 +141,7 @@ const MainContainer = () => {
             console.log('Zapier Response:', response);  // Log the full response
             setZapierResponse(response);
 
-            const companyName = response && response.message ? extractCompanyName(response.message, website) : `Magic Page Company = ${website.replace(/^https?:\/\//, '')}`;
+            const companyName = response && response.message ? extractCompanyName(response.message, website) : `magic-page-company-${website.replace(/^https?:\/\//, '').replace(/\./g, '-')}`;
             console.log("Extracted Company Name: " + companyName);
 
             console.log('Calling Vendasta Webhook');
@@ -215,7 +215,7 @@ const MainContainer = () => {
                 ) : zapierResponse && (
                     <div className="response" dangerouslySetInnerHTML={{ __html: formatResponse(zapierResponse) }}></div>
                 )}
-                {countdown > 0 && (
+                {countdown > 0 && !showIframe && (
                     <div className="countdown">Loading iframe in {countdown} seconds...</div>
                 )}
                 {showIframe && (
