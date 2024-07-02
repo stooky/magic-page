@@ -51,10 +51,13 @@ export default async function handler(req, res) {
 
         console.log(chalk.blue('Calling Vendasta API.'));
         console.log(chalk.blue(`Vendasta API request payload:\nEmail: ${email}\nWebsite: ${website}\nCompany: ${company}`));
-        const vendastaResponse = await axios.post('http://automations.businessapp.io/start/VMF/7badf74f-283c-48e7-9e81-5fae5935671f', {
-            email,
-            website,
-            company,
+        
+        // Example of making a POST request to the Vendasta API with authentication
+        const vendastaResponse = await axios.post(`https://listing-products-api-${process.env.ENV}.vendasta-internal.com/listing_products.v1.PartnerSettingsService/GetConfiguration`, {
+            configuration: {
+                partnerId: process.env.VENDASTA_PARTNER_ID,
+                businessId: process.env.VENDASTA_BUSINESS_ID
+            }
         }, {
             headers: {
                 Authorization: `Bearer ${accessToken}`,
