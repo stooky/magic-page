@@ -50,6 +50,7 @@ export default async function handler(req, res) {
         console.log(chalk.blue(accessToken));
 
         console.log(chalk.blue('Calling Vendasta API.'));
+        console.log(chalk.blue(`Vendasta API request payload:\nEmail: ${email}\nWebsite: ${website}\nCompany: ${company}`));
         const vendastaResponse = await axios.post('http://automations.businessapp.io/start/VMF/7badf74f-283c-48e7-9e81-5fae5935671f', {
             email,
             website,
