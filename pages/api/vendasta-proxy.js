@@ -71,8 +71,8 @@ export default async function handler(req, res) {
             data: vendastaPayload,
         };
 
-        console.log(chalk.orange('Vendasta API request config:'));
-        console.log(chalk.orange(JSON.stringify(vendastaRequestConfig, null, 2)));
+        console.log(chalk.hex('#FFA500')('Vendasta API request config:'));
+        console.log(chalk.hex('#FFA500')(JSON.stringify(vendastaRequestConfig, null, 2)));
 
         const vendastaResponse = await axios(vendastaRequestConfig);
 
