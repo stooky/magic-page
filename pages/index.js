@@ -6,10 +6,8 @@ import { callZapierWebhook } from '../components/utils/zapier';
 import screensConfig from '../config/screensConfig';
 import FormComponent from '../components/FormComponent';
 import PollComponent from '../components/PollComponent';
-import LoadingComponent from '../components/LoadingComponent';
-import PromptComponent from '../components/PromptComponent';
-import InfoDisplayComponent from '../components/InfoDisplayComponent';
 import StaticMarketingComponent from '../components/StaticMarketingComponent';
+import InfoDisplayComponent from '../components/InfoDisplayComponent';
 
 const MainContainer = () => {
     const [loading, setLoading] = useState(false);
@@ -25,7 +23,6 @@ const MainContainer = () => {
     const [showIframe, setShowIframe] = useState(false);
     const [formVisible, setFormVisible] = useState(true);
     const [enteredWebsite, setEnteredWebsite] = useState('');
-    const [stage, setStage] = useState(1);
 
     useEffect(() => {
         let interval;
@@ -106,7 +103,7 @@ const MainContainer = () => {
         return url;
     };
 
-    const handleFormSubmit = async (email, website) => {
+    const handleSubmit = async (email, website) => {
         if (!email || !website || !email.includes('@') || !website.startsWith('http')) {
             alert("Please enter a valid email and website URL.");
             return;
@@ -116,7 +113,6 @@ const MainContainer = () => {
         setScreenshotUrl(null);
         setEnteredWebsite(website);
         setFormVisible(false); // Hide the form and show the message
-        setStage(2);
 
         if (!callbackReceived) {
             alert("Please wait until the current request is processed.");
@@ -150,7 +146,7 @@ const MainContainer = () => {
             const companyName = response && response.message ? extractCompanyName(response.message, website) : `magic-page-company-${website.replace(/^https?:\/\//, '').replace(/\./g, '-')}`;
             console.log("Extracted Company Name: " + companyName);
 
-            console.log('Calling Vendasta Automation Webhook');
+            console.log('Calling Vendasta Webhook');
             const vendastaResponse = await fetch('/api/vendasta-automation-proxy', {
                 method: 'POST',
                 headers: {
@@ -159,33 +155,19 @@ const MainContainer = () => {
                 body: JSON.stringify({ email, website, company: companyName })
             });
             const vendastaData = await vendastaResponse.json();
-            console.log('Vendasta Automation Webhook Response:', vendastaData);
+            console.log('Vendasta Webhook Response:', vendastaData);
 
-            console.log('Calling Vendasta MyListing API');
-            const myListingResponse = await fetch('/api/vendasta-mylisting-proxy', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ partnerId: process.env.VENDASTA_PARTNER_ID, businessId: process.env.VENDASTA_BUSINESS_ID })
-            });
-            const myListingData = await myListingResponse.json();
-            console.log('Vendasta MyListing API Response:', myListingData);
-
-            const iframeUrl = myListingData.url || createIframeUrl(companyName);
+            // Set iframe URL
+            const iframeUrl = createIframeUrl(companyName);
             setIframeUrl(iframeUrl);
+
+            // Start countdown
             setCountdown(10);
             setShowIframe(false);
-            setStage(3);
         } catch (error) {
             console.error('Failed to call webhooks:', error);
             setZapierResponse({ status: 'error', message: `Failed to call webhooks: ${error.message}` });
         }
-    };
-
-    const handlePromptSubmit = async (prompt) => {
-        // Implement prompt submission logic here
-        console.log('Prompt submitted:', prompt);
     };
 
     const formatResponse = (response) => {
@@ -207,13 +189,18 @@ const MainContainer = () => {
     return (
         <div className="container">
             <div className="interaction-section">
-                {stage === 1 && formVisible && (
-                    <FormComponent onSubmit={handleFormSubmit} />
+                <h1>Generate leads while you sleep</h1>
+                <div className="description">
+                    Turn your website visitors into leads with a custom AI Agent built with ChatGPT
+                </div>
+                {formVisible ? (
+                    <FormComponent onSubmit={handleSubmit} />
+                ) : (
+                    <div className="building-message">
+                        Building AI Employee for {enteredWebsite}
+                    </div>
                 )}
-                {stage === 2 && (
-                    <PromptComponent onSubmit={handlePromptSubmit} />
-                )}
-                {stage === 3 && (
+                {showPoll && (
                     <PollComponent
                         currentScreen={currentScreen}
                         currentScreenIndex={currentScreenIndex}
@@ -224,7 +211,6 @@ const MainContainer = () => {
             </div>
             <div className="info-section">
                 <InfoDisplayComponent
-                    stage={stage}
                     screenshotUrl={screenshotUrl}
                     zapierResponse={zapierResponse}
                     countdown={countdown}
