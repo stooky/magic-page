@@ -18,9 +18,43 @@ const MainContainer = () => {
     const [responses, setResponses] = useState({});
     const [showPoll, setShowPoll] = useState(false);
     const [iframeUrl, setIframeUrl] = useState('');
-    const [showIframe, setShowIframe] = useState(false);
     const [formVisible, setFormVisible] = useState(true);
     const [enteredWebsite, setEnteredWebsite] = useState('');
+
+    useEffect(() => {
+        let interval;
+        if (loading) {
+            interval = setInterval(() => {
+                setElapsedTime((prevTime) => prevTime + 1);
+            }, 1000);
+        } else {
+            setElapsedTime(0);
+        }
+        return () => clearInterval(interval);
+    }, [loading]);
+
+    useEffect(() => {
+        let pollingInterval;
+        if (loading) {
+            setCallbackReceived(false);
+            pollingInterval = setInterval(async () => {
+                try {
+                    const response = await fetch('/api/get-latest-response');
+                    const data = await response.json();
+                    if (data.response && data.response.status) {
+                        setZapierResponse(data.response);
+                        setLoading(false);
+                        setCallbackReceived(true);
+                        clearInterval(pollingInterval);
+                        setShowPoll(false);
+                    }
+                } catch (error) {
+                    console.error('Error polling latest response:', error);
+                }
+            }, 2000);
+        }
+        return () => clearInterval(pollingInterval);
+    }, [loading]);
 
     const handleOptionChange = (option) => {
         setResponses({
@@ -58,26 +92,26 @@ const MainContainer = () => {
             alert("Please enter a valid email and website URL.");
             return;
         }
-    
+
         setZapierResponse(null);
         setScreenshotUrl(null);
         setEnteredWebsite(website);
         setFormVisible(false); // Hide the form and show the message
-    
+
         if (!callbackReceived) {
             alert("Please wait until the current request is processed.");
             return;
         }
-    
+
         await fetch('/api/clear-response', { method: 'POST' });
-    
+
         const uniqueId = uuidv4();
-    
+
         sessionStorage.setItem('requestId', uniqueId);
-    
+
         setLoading(true); // Ensure loading is set to true
         setShowPoll(true);
-    
+
         try {
             console.log('Calling Zapier Webhook');
             const screenshotResponse = await fetch(`/api/get-screenshot?url=${encodeURIComponent(website)}`);
@@ -88,14 +122,14 @@ const MainContainer = () => {
             } else {
                 console.error('Error fetching screenshot:', screenshotData.error);
             }
-    
+
             const response = await callZapierWebhook(email, website, uniqueId);
             console.log('Zapier Response:', response);  // Log the full response
             setZapierResponse(response);
-    
+
             const companyName = response && response.message ? extractCompanyName(response.message, website) : `magic-page-company-${website.replace(/^https?:\/\//, '').replace(/\./g, '-')}`;
             console.log("Extracted Company Name: " + companyName);
-    
+
             console.log('Calling Vendasta Webhook');
             const vendastaResponse = await fetch('/api/vendasta-automation-proxy', {
                 method: 'POST',
@@ -106,7 +140,7 @@ const MainContainer = () => {
             });
             const vendastaData = await vendastaResponse.json();
             console.log('Vendasta Webhook Response:', vendastaData);
-    
+
             console.log('Calling Vendasta MyListing API');
             const myListingResponse = await fetch('/api/vendasta-mylisting-proxy', {
                 method: 'POST',
@@ -117,11 +151,11 @@ const MainContainer = () => {
             });
             const myListingData = await myListingResponse.json();
             console.log('Vendasta MyListing API Response:', myListingData);
-    
+
             // Set iframe URL
             const iframeUrl = myListingData.publicMyListingUrl || createIframeUrl(companyName);
             setIframeUrl(iframeUrl);
-    
+
             // Directly show the iframe
             setShowIframe(true);
         } catch (error) {
@@ -131,7 +165,7 @@ const MainContainer = () => {
             setLoading(false);
         }
     };
-    
+
     const formatResponse = (response) => {
         if (response && response.message) {
             return response.message.replace(/\n/g, '<br />');
@@ -205,5 +239,6 @@ const MainContainer = () => {
             `}</style>
         </div>
     );
-    
+};
+
 export default MainContainer;
