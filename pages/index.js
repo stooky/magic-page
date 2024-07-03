@@ -6,6 +6,10 @@ import { callZapierWebhook } from '../components/utils/zapier';
 import screensConfig from '../config/screensConfig';
 import FormComponent from '../components/FormComponent';
 import PollComponent from '../components/PollComponent';
+import LoadingComponent from '../components/LoadingComponent';
+import PromptComponent from '../components/PromptComponent';
+import InfoDisplayComponent from '../components/InfoDisplayComponent';
+import StaticMarketingComponent from '../components/StaticMarketingComponent';
 
 const MainContainer = () => {
     const [loading, setLoading] = useState(false);
@@ -21,6 +25,7 @@ const MainContainer = () => {
     const [showIframe, setShowIframe] = useState(false);
     const [formVisible, setFormVisible] = useState(true);
     const [enteredWebsite, setEnteredWebsite] = useState('');
+    const [stage, setStage] = useState(1);
 
     useEffect(() => {
         let interval;
@@ -101,7 +106,7 @@ const MainContainer = () => {
         return url;
     };
 
-    const handleSubmit = async (email, website) => {
+    const handleFormSubmit = async (email, website) => {
         if (!email || !website || !email.includes('@') || !website.startsWith('http')) {
             alert("Please enter a valid email and website URL.");
             return;
@@ -111,6 +116,7 @@ const MainContainer = () => {
         setScreenshotUrl(null);
         setEnteredWebsite(website);
         setFormVisible(false); // Hide the form and show the message
+        setStage(2);
 
         if (!callbackReceived) {
             alert("Please wait until the current request is processed.");
@@ -144,8 +150,8 @@ const MainContainer = () => {
             const companyName = response && response.message ? extractCompanyName(response.message, website) : `magic-page-company-${website.replace(/^https?:\/\//, '').replace(/\./g, '-')}`;
             console.log("Extracted Company Name: " + companyName);
 
-            console.log('Calling Vendasta Webhook');
-            const vendastaResponse = await fetch('/api/vendasta-proxy', {
+            console.log('Calling Vendasta Automation Webhook');
+            const vendastaResponse = await fetch('/api/vendasta-automation-proxy', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -153,19 +159,33 @@ const MainContainer = () => {
                 body: JSON.stringify({ email, website, company: companyName })
             });
             const vendastaData = await vendastaResponse.json();
-            console.log('Vendasta Webhook Response:', vendastaData);
+            console.log('Vendasta Automation Webhook Response:', vendastaData);
 
-            // Set iframe URL
-            const iframeUrl = createIframeUrl(companyName);
+            console.log('Calling Vendasta MyListing API');
+            const myListingResponse = await fetch('/api/vendasta-mylisting-proxy', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ partnerId: process.env.VENDASTA_PARTNER_ID, businessId: process.env.VENDASTA_BUSINESS_ID })
+            });
+            const myListingData = await myListingResponse.json();
+            console.log('Vendasta MyListing API Response:', myListingData);
+
+            const iframeUrl = myListingData.url || createIframeUrl(companyName);
             setIframeUrl(iframeUrl);
-
-            // Start countdown
             setCountdown(10);
             setShowIframe(false);
+            setStage(3);
         } catch (error) {
             console.error('Failed to call webhooks:', error);
             setZapierResponse({ status: 'error', message: `Failed to call webhooks: ${error.message}` });
         }
+    };
+
+    const handlePromptSubmit = async (prompt) => {
+        // Implement prompt submission logic here
+        console.log('Prompt submitted:', prompt);
     };
 
     const formatResponse = (response) => {
@@ -186,125 +206,50 @@ const MainContainer = () => {
 
     return (
         <div className="container">
-            <h1>Magic Page</h1>
-            <div className="timer">Time Elapsed: {elapsedTime} seconds</div>
-            {formVisible ? (
-                <FormComponent onSubmit={handleSubmit} />
-            ) : (
-                <div className="building-message">
-                    Building AI Employee for {enteredWebsite}
-                </div>
-            )}
-            {showPoll && (
-                <PollComponent
-                    currentScreen={currentScreen}
-                    currentScreenIndex={currentScreenIndex}
-                    responses={responses}
-                    handleOptionChange={handleOptionChange}
+            <div className="interaction-section">
+                {stage === 1 && formVisible && (
+                    <FormComponent onSubmit={handleFormSubmit} />
+                )}
+                {stage === 2 && (
+                    <PromptComponent onSubmit={handlePromptSubmit} />
+                )}
+                {stage === 3 && (
+                    <PollComponent
+                        currentScreen={currentScreen}
+                        currentScreenIndex={currentScreenIndex}
+                        responses={responses}
+                        handleOptionChange={handleOptionChange}
+                    />
+                )}
+            </div>
+            <div className="info-section">
+                <InfoDisplayComponent
+                    stage={stage}
+                    screenshotUrl={screenshotUrl}
+                    zapierResponse={zapierResponse}
+                    countdown={countdown}
+                    showIframe={showIframe}
+                    iframeUrl={iframeUrl}
                 />
-            )}
-            <div className="content">
-                {screenshotUrl && (
-                    <div className="thumbnail">
-                        <h2>Website Thumbnail</h2>
-                        <img src={screenshotUrl} alt="Website Thumbnail" />
-                    </div>
-                )}
-                {zapierResponse && zapierResponse.status === 'error' ? (
-                    <div className="response error" dangerouslySetInnerHTML={{ __html: formatErrorResponse(zapierResponse) }}></div>
-                ) : zapierResponse && (
-                    <div className="response" dangerouslySetInnerHTML={{ __html: formatResponse(zapierResponse) }}></div>
-                )}
-                {countdown > 0 && !showIframe && (
-                    <div className="countdown">Loading iframe in {countdown} seconds...</div>
-                )}
-                {showIframe && (
-                    <div className="iframe-container">
-                        <iframe src={iframeUrl} width="100%" height="600px" title="Vendasta Iframe"></iframe>
-                    </div>
-                )}
             </div>
             <style jsx>{`
                 .container {
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: space-between;
                     padding: 20px;
                     font-family: Arial, sans-serif;
                     color: #000;
                     background-color: #fff;
-                    text-align: center;
                     min-height: 100vh;
                 }
-                .timer {
-                    font-size: 1.5em;
-                    margin-bottom: 20px;
-                    color: #000;
+                .interaction-section {
+                    flex: 1;
+                    padding-right: 10px;
                 }
-                form {
-                    display: flex;
-                    flex-direction: column;
-                }
-                label {
-                    color: #000;
-                    margin-bottom: 5px;
-                }
-                input {
-                    display: block;
-                    width: 100%;
-                    padding: 10px;
-                    margin-bottom: 10px;
-                    border-radius: 4px;
-                    border: 1px solid #ccc;
-                    box-sizing: border-box;
-                    color: #000;
-                    background-color: #fff;
-                }
-                button {
-                    padding: 10px 20px;
-                    background-color: #007bff;
-                    color: #fff;
-                    border: none;
-                    border-radius: 4px;
-                    cursor: pointer;
-                }
-                button:disabled {
-                    background-color: #ccc;
-                    cursor: not-allowed;
-                }
-                .content {
-                    display: flex;
-                    flex-direction: column;
-                    align-items: center;
-                    margin-top: 20px;
-                }
-                .thumbnail {
-                    margin-bottom: 20px;
-                    text-align: center;
-                }
-                .thumbnail img {
-                    width: 100%;
-                    max-width: 400px; /* Adjust size here to make it twice as big */
-                    border-radius: 10px;
-                }
-                .response {
-                    white-space: pre-line;
-                    font-size: 1.2em;
-                    margin-top: 20px;
-                    color: #000;
-                }
-                .response.error {
-                    color: red;
-                }
-                .countdown {
-                    font-size: 1.5em;
-                    margin-top: 20px;
-                    color: #000;
-                }
-                .iframe-container {
-                    margin-top: 20px;
-                }
-                .building-message {
-                    font-size: 1.5em;
-                    margin-top: 20px;
-                    color: #000;
+                .info-section {
+                    flex: 1;
+                    padding-left: 10px;
                 }
             `}</style>
         </div>
