@@ -20,6 +20,7 @@ const MainContainer = () => {
     const [iframeUrl, setIframeUrl] = useState('');
     const [formVisible, setFormVisible] = useState(true);
     const [enteredWebsite, setEnteredWebsite] = useState('');
+    const [showIframe, setShowIframe] = useState(false);  // Ensure showIframe is declared
 
     useEffect(() => {
         let interval;
