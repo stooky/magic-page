@@ -20,19 +20,7 @@ const MainContainer = () => {
     const [iframeUrl, setIframeUrl] = useState('');
     const [formVisible, setFormVisible] = useState(true);
     const [enteredWebsite, setEnteredWebsite] = useState('');
-    const [showIframe, setShowIframe] = useState(false);  // Ensure showIframe is declared
-
-    useEffect(() => {
-        let interval;
-        if (loading) {
-            interval = setInterval(() => {
-                setElapsedTime((prevTime) => prevTime + 1);
-            }, 1000);
-        } else {
-            setElapsedTime(0);
-        }
-        return () => clearInterval(interval);
-    }, [loading]);
+    const [showIframe, setShowIframe] = useState(false);
 
     useEffect(() => {
         let pollingInterval;
@@ -131,39 +119,43 @@ const MainContainer = () => {
             const companyName = response && response.message ? extractCompanyName(response.message, website) : `magic-page-company-${website.replace(/^https?:\/\//, '').replace(/\./g, '-')}`;
             console.log("Extracted Company Name: " + companyName);
 
-            console.log('Calling Vendasta Webhook');
-            const vendastaResponse = await fetch('/api/vendasta-automation-proxy', {
+            console.log('Calling Vendasta Automation Webhook');
+            const vendastaAutomationResponse = await fetch('/api/vendasta-automation-proxy', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({ email, website, company: companyName })
             });
-            const vendastaData = await vendastaResponse.json();
-            console.log('Vendasta Webhook Response:', vendastaData);
+            const vendastaAutomationData = await vendastaAutomationResponse.json();
+            console.log('Vendasta Automation Webhook Response:', vendastaAutomationData);
 
-            console.log('Calling Vendasta MyListing API');
-            const myListingResponse = await fetch('/api/vendasta-mylisting-proxy', {
+            console.log('Calling Vendasta MyListing Webhook');
+            const vendastaMyListingResponse = await fetch('/api/vendasta-mylisting-proxy', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({ partnerId: process.env.VENDASTA_PARTNER_ID, businessId: process.env.VENDASTA_BUSINESS_ID })
             });
-            const myListingData = await myListingResponse.json();
-            console.log('Vendasta MyListing API Response:', myListingData);
+            const vendastaMyListingData = await vendastaMyListingResponse.json();
+            console.log('Vendasta MyListing Webhook Response:', vendastaMyListingData);
 
-            // Set iframe URL
-            const iframeUrl = myListingData.publicMyListingUrl || createIframeUrl(companyName);
-            setIframeUrl(iframeUrl);
+            // Set iframe URL directly
+            if (vendastaMyListingData.configuration && vendastaMyListingData.configuration.publicMyListingUrl) {
+                setIframeUrl(vendastaMyListingData.configuration.publicMyListingUrl);
+            } else {
+                // Fallback to constructing the URL
+                const iframeUrl = createIframeUrl(companyName);
+                setIframeUrl(iframeUrl);
+            }
 
-            // Directly show the iframe
+            // Show the iframe
             setShowIframe(true);
+
         } catch (error) {
             console.error('Failed to call webhooks:', error);
             setZapierResponse({ status: 'error', message: `Failed to call webhooks: ${error.message}` });
-        } finally {
-            setLoading(false);
         }
     };
 
@@ -214,6 +206,7 @@ const MainContainer = () => {
                 <InfoDisplayComponent
                     screenshotUrl={screenshotUrl}
                     zapierResponse={zapierResponse}
+                    countdown={countdown}
                     showIframe={showIframe}
                     iframeUrl={iframeUrl}
                 />
