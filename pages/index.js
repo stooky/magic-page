@@ -179,7 +179,6 @@ const MainContainer = () => {
                 <InfoDisplayComponent
                     screenshotUrl={screenshotUrl}
                     zapierResponse={zapierResponse}
-                    countdown={countdown}
                     showIframe={showIframe}
                     iframeUrl={iframeUrl}
                 />
