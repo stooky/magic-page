@@ -21,7 +21,7 @@ const InfoDisplayComponent = ({ screenshotUrl, zapierResponse, countdown, showIf
             {screenshotUrl && (
                 <div className="thumbnail">
                     <h2>Website Thumbnail</h2>
-                    <img src={screenshotUrl} alt="Website Thumbnail" />
+                    <img src={screenshotUrl} alt="Website Thumbnail" className="small-thumbnail" />
                 </div>
             )}
             {zapierResponse && zapierResponse.status === 'error' ? (
@@ -40,6 +40,16 @@ const InfoDisplayComponent = ({ screenshotUrl, zapierResponse, countdown, showIf
             {!screenshotUrl && !zapierResponse && !showIframe && (
                 <StaticMarketingComponent />
             )}
+            <style jsx>{`
+                .thumbnail img {
+                    width: 100%;
+                    max-width: 400px; /* Original size */
+                    border-radius: 10px;
+                }
+                .thumbnail img.small-thumbnail {
+                    max-width: 200px; /* Smaller size */
+                }
+            `}</style>
         </div>
     );
 };
