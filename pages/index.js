@@ -18,9 +18,9 @@ const MainContainer = () => {
     const [responses, setResponses] = useState({});
     const [showPoll, setShowPoll] = useState(false);
     const [iframeUrl, setIframeUrl] = useState('');
+    const [showIframe, setShowIframe] = useState(false);
     const [formVisible, setFormVisible] = useState(true);
     const [enteredWebsite, setEnteredWebsite] = useState('');
-    const [showIframe, setShowIframe] = useState(false);
 
     useEffect(() => {
         let pollingInterval;
@@ -119,40 +119,21 @@ const MainContainer = () => {
             const companyName = response && response.message ? extractCompanyName(response.message, website) : `magic-page-company-${website.replace(/^https?:\/\//, '').replace(/\./g, '-')}`;
             console.log("Extracted Company Name: " + companyName);
 
-            console.log('Calling Vendasta Automation Webhook');
-            const vendastaAutomationResponse = await fetch('/api/vendasta-automation-proxy', {
+            console.log('Calling Vendasta Webhook');
+            const vendastaResponse = await fetch('/api/vendasta-automation-proxy', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({ email, website, company: companyName })
             });
-            const vendastaAutomationData = await vendastaAutomationResponse.json();
-            console.log('Vendasta Automation Webhook Response:', vendastaAutomationData);
+            const vendastaData = await vendastaResponse.json();
+            console.log('Vendasta Webhook Response:', vendastaData);
 
-            console.log('Calling Vendasta MyListing Webhook');
-            const vendastaMyListingResponse = await fetch('/api/vendasta-mylisting-proxy', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ partnerId: process.env.VENDASTA_PARTNER_ID, businessId: process.env.VENDASTA_BUSINESS_ID })
-            });
-            const vendastaMyListingData = await vendastaMyListingResponse.json();
-            console.log('Vendasta MyListing Webhook Response:', vendastaMyListingData);
-
-            // Set iframe URL directly
-            if (vendastaMyListingData.configuration && vendastaMyListingData.configuration.publicMyListingUrl) {
-                setIframeUrl(vendastaMyListingData.configuration.publicMyListingUrl);
-            } else {
-                // Fallback to constructing the URL
-                const iframeUrl = createIframeUrl(companyName);
-                setIframeUrl(iframeUrl);
-            }
-
-            // Show the iframe
+            // Set iframe URL
+            const iframeUrl = createIframeUrl(companyName);
+            setIframeUrl(iframeUrl);
             setShowIframe(true);
-
         } catch (error) {
             console.error('Failed to call webhooks:', error);
             setZapierResponse({ status: 'error', message: `Failed to call webhooks: ${error.message}` });
@@ -178,7 +159,7 @@ const MainContainer = () => {
     return (
         <div className="container">
             <div className="interaction-section">
-                {!showPoll && (
+                {formVisible && (
                     <>
                         <h1>Generate leads while you sleep</h1>
                         <div className="description">
@@ -191,6 +172,9 @@ const MainContainer = () => {
                 ) : (
                     <div className="building-message">
                         Building AI Employee for {enteredWebsite}
+                        {zapierResponse && (
+                            <div className="response" dangerouslySetInnerHTML={{ __html: formatResponse(zapierResponse) }}></div>
+                        )}
                     </div>
                 )}
                 {showPoll && (
