@@ -18,59 +18,9 @@ const MainContainer = () => {
     const [responses, setResponses] = useState({});
     const [showPoll, setShowPoll] = useState(false);
     const [iframeUrl, setIframeUrl] = useState('');
-    const [elapsedTime, setElapsedTime] = useState(0);
-    const [countdown, setCountdown] = useState(10);
     const [showIframe, setShowIframe] = useState(false);
     const [formVisible, setFormVisible] = useState(true);
     const [enteredWebsite, setEnteredWebsite] = useState('');
-
-    useEffect(() => {
-        let interval;
-        if (loading) {
-            interval = setInterval(() => {
-                setElapsedTime((prevTime) => prevTime + 1);
-            }, 1000);
-        } else {
-            setElapsedTime(0);
-        }
-        return () => clearInterval(interval);
-    }, [loading]);
-
-    useEffect(() => {
-        let pollingInterval;
-        if (loading) {
-            setCallbackReceived(false);
-            pollingInterval = setInterval(async () => {
-                try {
-                    const response = await fetch('/api/get-latest-response');
-                    const data = await response.json();
-                    if (data.response && data.response.status) {
-                        setZapierResponse(data.response);
-                        setLoading(false);
-                        setCallbackReceived(true);
-                        clearInterval(pollingInterval);
-                        setShowPoll(false);
-                    }
-                } catch (error) {
-                    console.error('Error polling latest response:', error);
-                }
-            }, 2000);
-        }
-        return () => clearInterval(pollingInterval);
-    }, [loading]);
-
-    useEffect(() => {
-        let countdownInterval;
-        if (countdown > 0 && !showIframe) {
-            countdownInterval = setInterval(() => {
-                setCountdown(prevCountdown => prevCountdown - 1);
-            }, 1000);
-        } else if (countdown === 0) {
-            setShowIframe(true);
-            clearInterval(countdownInterval);
-        }
-        return () => clearInterval(countdownInterval);
-    }, [countdown, showIframe]);
 
     const handleOptionChange = (option) => {
         setResponses({
@@ -157,16 +107,28 @@ const MainContainer = () => {
             const vendastaData = await vendastaResponse.json();
             console.log('Vendasta Webhook Response:', vendastaData);
 
+            console.log('Calling Vendasta MyListing API');
+            const myListingResponse = await fetch('/api/vendasta-mylisting-proxy', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ partnerId: process.env.VENDASTA_PARTNER_ID, businessId: process.env.VENDASTA_BUSINESS_ID })
+            });
+            const myListingData = await myListingResponse.json();
+            console.log('Vendasta MyListing API Response:', myListingData);
+
             // Set iframe URL
-            const iframeUrl = createIframeUrl(companyName);
+            const iframeUrl = myListingData.publicMyListingUrl || createIframeUrl(companyName);
             setIframeUrl(iframeUrl);
 
-            // Start countdown
-            setCountdown(10);
-            setShowIframe(false);
+            // Directly show the iframe
+            setShowIframe(true);
         } catch (error) {
             console.error('Failed to call webhooks:', error);
             setZapierResponse({ status: 'error', message: `Failed to call webhooks: ${error.message}` });
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -189,20 +151,19 @@ const MainContainer = () => {
     return (
         <div className="container">
             <div className="interaction-section">
-                <h1>Generate leads while you sleep</h1>
-                <div className="description">
-                    Turn your website visitors into leads with a custom AI Agent built with ChatGPT
-                </div>
+                {!showPoll && (
+                    <>
+                        <h1>Generate leads while you sleep</h1>
+                        <div className="description">
+                            Turn your website visitors into leads with a custom AI Agent built with ChatGPT
+                        </div>
+                    </>
+                )}
                 {formVisible ? (
                     <FormComponent onSubmit={handleSubmit} />
                 ) : (
-                    <div>
-                        <div className="building-message">
-                            Building AI Employee for {enteredWebsite}
-                        </div>
-                        {zapierResponse && zapierResponse.status !== 'error' && (
-                            <div className="response" dangerouslySetInnerHTML={{ __html: formatResponse(zapierResponse) }}></div>
-                        )}
+                    <div className="building-message">
+                        Building AI Employee for {enteredWebsite}
                     </div>
                 )}
                 {showPoll && (
@@ -217,6 +178,7 @@ const MainContainer = () => {
             <div className="info-section">
                 <InfoDisplayComponent
                     screenshotUrl={screenshotUrl}
+                    zapierResponse={zapierResponse}
                     countdown={countdown}
                     showIframe={showIframe}
                     iframeUrl={iframeUrl}
@@ -247,5 +209,3 @@ const MainContainer = () => {
 };
 
 export default MainContainer;
-
-
