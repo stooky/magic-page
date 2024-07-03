@@ -1,4 +1,6 @@
 import React from 'react';
+import StaticMarketingComponent from './StaticMarketingComponent'; // Adjust the path as necessary
+
 
 const InfoDisplayComponent = ({ stage, screenshotUrl, zapierResponse, countdown, showIframe, iframeUrl }) => (
     <div className="content">
