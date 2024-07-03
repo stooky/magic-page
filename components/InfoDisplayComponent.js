@@ -1,5 +1,6 @@
 import React from 'react';
 import StaticMarketingComponent from './StaticMarketingComponent'; 
+import Image from 'next/image';
 
 const InfoDisplayComponent = ({ screenshotUrl, zapierResponse, countdown, showIframe, iframeUrl }) => {
     const formatErrorResponse = (response) => {
@@ -21,7 +22,8 @@ const InfoDisplayComponent = ({ screenshotUrl, zapierResponse, countdown, showIf
             {screenshotUrl && (
                 <div className="thumbnail">
                     <h2>Website Thumbnail</h2>
-                    <img src={screenshotUrl} alt="Website Thumbnail" className="small-thumbnail" />
+                    // Replace the img tag with Image component
+                    <Image src={screenshotUrl} alt="Website Thumbnail" className="small-thumbnail" width={200} height={200} />
                 </div>
             )}
             {zapierResponse && zapierResponse.status === 'error' ? (
