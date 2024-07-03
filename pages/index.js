@@ -189,25 +189,21 @@ const MainContainer = () => {
     return (
         <div className="container">
             <div className="interaction-section">
+                <h1>Generate leads while you sleep</h1>
+                <div className="description">
+                    Turn your website visitors into leads with a custom AI Agent built with ChatGPT
+                </div>
                 {formVisible ? (
-                    <>
-                        <h1>Generate leads while you sleep</h1>
-                        <div className="description">
-                            Turn your website visitors into leads with a custom AI Agent built with ChatGPT
-                        </div>
-                        <FormComponent onSubmit={handleSubmit} />
-                    </>
+                    <FormComponent onSubmit={handleSubmit} />
                 ) : (
-                    <>
+                    <div>
                         <div className="building-message">
                             Building AI Employee for {enteredWebsite}
                         </div>
-                        {zapierResponse && zapierResponse.status === 'error' ? (
-                            <div className="response error" dangerouslySetInnerHTML={{ __html: formatErrorResponse(zapierResponse) }}></div>
-                        ) : zapierResponse && (
+                        {zapierResponse && zapierResponse.status !== 'error' && (
                             <div className="response" dangerouslySetInnerHTML={{ __html: formatResponse(zapierResponse) }}></div>
                         )}
-                    </>
+                    </div>
                 )}
                 {showPoll && (
                     <PollComponent
@@ -245,6 +241,11 @@ const MainContainer = () => {
                 .info-section {
                     flex: 1;
                     padding-left: 10px;
+                }
+                .building-message {
+                    font-size: 1.5em;
+                    margin-top: 20px;
+                    color: #000;
                 }
             `}</style>
         </div>
