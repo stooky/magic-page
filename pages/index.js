@@ -23,7 +23,6 @@ const MainContainer = () => {
     const [showIframe, setShowIframe] = useState(false);
     const [formVisible, setFormVisible] = useState(true);
     const [enteredWebsite, setEnteredWebsite] = useState('');
-    const [formSubmitted, setFormSubmitted] = useState(false); // New state for form submission
 
     useEffect(() => {
         let interval;
@@ -114,7 +113,6 @@ const MainContainer = () => {
         setScreenshotUrl(null);
         setEnteredWebsite(website);
         setFormVisible(false); // Hide the form and show the message
-        setFormSubmitted(true); // Set form submitted to true
 
         if (!callbackReceived) {
             alert("Please wait until the current request is processed.");
@@ -159,20 +157,8 @@ const MainContainer = () => {
             const vendastaData = await vendastaResponse.json();
             console.log('Vendasta Webhook Response:', vendastaData);
 
-            // Call the Vendasta MyListing API to get the URL
-            console.log('Calling Vendasta MyListing API');
-            const myListingResponse = await fetch('/api/vendasta-mylisting-proxy', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ partnerId: process.env.VENDASTA_PARTNER_ID, businessId: process.env.VENDASTA_BUSINESS_ID })
-            });
-            const myListingData = await myListingResponse.json();
-            console.log('Vendasta MyListing API Response:', myListingData);
-
             // Set iframe URL
-            const iframeUrl = myListingData.url || createIframeUrl(companyName);
+            const iframeUrl = createIframeUrl(companyName);
             setIframeUrl(iframeUrl);
 
             // Start countdown
@@ -203,18 +189,25 @@ const MainContainer = () => {
     return (
         <div className="container">
             <div className="interaction-section">
-                {!formSubmitted && ( // Conditionally render the header text and form
+                {formVisible ? (
                     <>
                         <h1>Generate leads while you sleep</h1>
-                        <p>Turn your website visitors into leads with a custom AI Agent built with ChatGPT</p>
+                        <div className="description">
+                            Turn your website visitors into leads with a custom AI Agent built with ChatGPT
+                        </div>
+                        <FormComponent onSubmit={handleSubmit} />
                     </>
-                )}
-                {formVisible ? (
-                    <FormComponent onSubmit={handleSubmit} />
                 ) : (
-                    <div className="building-message">
-                        Building AI Employee for {enteredWebsite}
-                    </div>
+                    <>
+                        <div className="building-message">
+                            Building AI Employee for {enteredWebsite}
+                        </div>
+                        {zapierResponse && zapierResponse.status === 'error' ? (
+                            <div className="response error" dangerouslySetInnerHTML={{ __html: formatErrorResponse(zapierResponse) }}></div>
+                        ) : zapierResponse && (
+                            <div className="response" dangerouslySetInnerHTML={{ __html: formatResponse(zapierResponse) }}></div>
+                        )}
+                    </>
                 )}
                 {showPoll && (
                     <PollComponent
