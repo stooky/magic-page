@@ -217,7 +217,6 @@ const MainContainer = () => {
             <div className="info-section">
                 <InfoDisplayComponent
                     screenshotUrl={screenshotUrl}
-                    zapierResponse={zapierResponse}
                     countdown={countdown}
                     showIframe={showIframe}
                     iframeUrl={iframeUrl}
@@ -242,14 +241,11 @@ const MainContainer = () => {
                     flex: 1;
                     padding-left: 10px;
                 }
-                .building-message {
-                    font-size: 1.5em;
-                    margin-top: 20px;
-                    color: #000;
-                }
             `}</style>
         </div>
     );
 };
 
 export default MainContainer;
+
+
