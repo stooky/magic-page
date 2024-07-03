@@ -1,4 +1,5 @@
 import React from 'react';
+import StaticMarketingComponent from './StaticMarketingComponent'; 
 
 const InfoDisplayComponent = ({ screenshotUrl, zapierResponse, countdown, showIframe, iframeUrl }) => {
     const formatErrorResponse = (response) => {
