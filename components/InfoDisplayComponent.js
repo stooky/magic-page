@@ -22,7 +22,7 @@ const InfoDisplayComponent = ({ screenshotUrl, zapierResponse, countdown, showIf
             {screenshotUrl && (
                 <div className="thumbnail">
                     <h2>Website Thumbnail</h2>
-                    <Image src={screenshotUrl} alt="Website Thumbnail" className="small-thumbnail" width={200} height={200} /> // Replace the img tag with Image component
+                    <Image src={screenshotUrl} alt="Website Thumbnail" className="small-thumbnail" width={200} height={200} />
                 </div>
             )}
             {zapierResponse && zapierResponse.status === 'error' ? (
