@@ -19,27 +19,11 @@ export default async function handler(req, res) {
     }
 
     try {
-        console.log(chalk.blue('Fetching account details from Vendasta API.'));
 
-        const response = await axios.get(`https://api.vendasta.com/account/${accountID}`, {
-            headers: {
-                Authorization: `Bearer ${process.env.VENDASTA_API_TOKEN}`, // Make sure to set this environment variable
-            },
-        });
-
-        const accountData = response.data;
-        console.log(chalk.blue('Account data received from Vendasta API:', accountData));
-
-        const myListingUrl = accountData.myListingUrl;
-        if (!myListingUrl) {
-            console.log(chalk.blue('No myListingUrl found in the account data.'));
-            return res.status(404).json({ message: 'No myListingUrl found for the given accountID' });
-        }
-
-        console.log(chalk.blue('Sending myListingUrl to the client.'));
-        return res.status(200).json({ myListingUrl });
+        console.log(chalk.blue('Returned accountID.'));
+        return res.status(200).json({ accountID });
     } catch (error) {
-        console.error(chalk.blue('Error fetching account details from Vendasta API:', error.response ? error.response.data : error.message));
-        return res.status(500).json({ message: 'Failed to fetch account details from Vendasta API' });
+        console.error(chalk.red('Error with the accountID:'));
+        return res.status(500).json({ message: 'Failed to understand the accountID' });
     }
 }
