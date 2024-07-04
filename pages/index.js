@@ -9,7 +9,7 @@ import FormComponent from '../components/FormComponent';
 import PollComponent from '../components/PollComponent';
 import StaticMarketingComponent from '../components/StaticMarketingComponent';
 import InfoDisplayComponent from '../components/InfoDisplayComponent';
-import { getGlobalValue, printGlobalValue } from './store';
+import { getGlobalValue, printGlobalValue } from '../components/utils/store';
 
 const MainContainer = () => {
     const [loading, setLoading] = useState(false);
@@ -25,21 +25,20 @@ const MainContainer = () => {
     const [enteredWebsite, setEnteredWebsite] = useState('');
 
     async function pollForAccountID() {
-        const intervalID = setInterval(() => {
-            const accountID = getGlobalValue('accountID');
-            if (accountID) {
-                console.log('Account ID:', accountID);
-                // Do something with the accountID
-                clearInterval(intervalID);
-                FUNCTION1(); // Call your function here
-            }
-        }, 2000);
+        return new Promise((resolve, reject) => {
+            const interval = setInterval(() => {
+                const accountID = getGlobalValue('AGID');
+                if (accountID && accountID !== 'VALUE') {
+                    clearInterval(interval);
+                    resolve(accountID);
+                }
+            }, 1000);
     
-        setTimeout(() => {
-            clearInterval(intervalID);
-            console.log('No AGID received in 30 seconds.');
-            // Continue with the app
-        }, 30000);
+            setTimeout(() => {
+                clearInterval(interval);
+                reject(new Error('No AGID received in 30 seconds.'));
+            }, 30000);
+        });
     }
 
     useEffect(() => {
@@ -135,6 +134,7 @@ const MainContainer = () => {
             console.log("Extracted Company Name: " + companyName);
 
             console.log('Calling Vendasta Automation API');
+            setGlobalValue('VALUE', accountID);
             const vendastaAutomationResponse = await fetch('/api/vendasta-automation-proxy', {
                 method: 'POST',
                 headers: {
@@ -147,7 +147,7 @@ const MainContainer = () => {
             const accountID = vendastaAutomationData.accountID;
             console.log(chalk.red('Account ID is:' + accountID));
 
-            pollForAccountID();
+            await pollForAccountID();
             printGlobalValue('AGID');
 
             console.log(chalk.red('Calling Vendasta MyListing API'));
