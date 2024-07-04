@@ -26,7 +26,7 @@ export default async function handler(req, res) {
     console.log(chalk.red('Calling Vendasta MyListing API'));
     console.log(chalk.green('AccountID :', accountID));
     console.log(chalk.green('PartnerID :', partnerID));
-    const vendastaResponse = await fetch('/api/vendasta-mylisting-proxy', {
+    const vendastaResponse = await fetch('https://crkid.com/api/vendasta-mylisting-proxy', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
