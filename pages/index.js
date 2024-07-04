@@ -201,7 +201,6 @@ const MainContainer = () => {
             <div className="info-section">
                 <InfoDisplayComponent
                     screenshotUrl={screenshotUrl}
-                    zapierResponse={zapierResponse}
                     showIframe={showIframe}
                     iframeUrl={iframeUrl}
                 />
