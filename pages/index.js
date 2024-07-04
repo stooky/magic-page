@@ -22,7 +22,9 @@ const MainContainer = () => {
     const [showIframe, setShowIframe] = useState(false);
     const [formVisible, setFormVisible] = useState(true);
     const [enteredWebsite, setEnteredWebsite] = useState('');
-      
+
+    // Define the delay function
+    const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
     useEffect(() => {
         let pollingInterval;
@@ -138,8 +140,8 @@ const MainContainer = () => {
             setIframeUrl(iframeUrl);
             setShowIframe(true);
         } catch (error) {
-            console.error('Failed to call webhooks:', error);
-            setZapierResponse({ status: 'error', message: `Failed to call webhooks: ${error.message}` });
+            console.error('Failed to call the API Stuff:', error);
+            setZapierResponse({ status: 'error', message: `Failed to call the API stuff: ${error.message}` });
         }
     };
 

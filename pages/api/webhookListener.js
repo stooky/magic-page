@@ -22,30 +22,22 @@ export default async function handler(req, res) {
         return res.status(400).json({ message: 'AccountID is required' });
     }
 
+
+    console.log(chalk.red('Calling Vendasta MyListing API'));
+    console.log(chalk.green('AccountID :', accountID));
+    console.log(chalk.green('PartnerID :', partnerID));
+    const vendastaResponse = await fetch('/api/vendasta-mylisting-proxy', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ partnerID, accountID })
+    });
+    const vendastaData = await vendastaResponse.json();
+    console.log('Vendasta MyListingAPI Response:', vendastaData);
+    
+    
     try {
-        // Set the cookie for accountID
-        res.setHeader('Set-Cookie', cookie.serialize('AGID', accountID, {
-            httpOnly: true,
-            secure: process.env.NODE_ENV !== 'development',
-            maxAge: 60 * 60,
-            sameSite: 'strict',
-            path: '/'
-        }));
-
-        console.log(chalk.red('Calling Vendasta MyListing API'));
-        console.log(chalk.green('AccountID :', accountID));
-        console.log(chalk.green('PartnerID :', partnerID));
-        const vendastaResponse = await fetch('/api/vendasta-mylisting-proxy', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ partnerID, accountID })
-        });
-        const vendastaData = await vendastaResponse.json();
-        console.log('Vendasta MyListingAPI Response:', vendastaData);
-
-
         console.log(chalk.red('WebhookListener from Vendasta accountID.', accountID));
         return res.status(200).json({ accountID });
     } catch (error) {
