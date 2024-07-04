@@ -9,7 +9,7 @@ import FormComponent from '../components/FormComponent';
 import PollComponent from '../components/PollComponent';
 import StaticMarketingComponent from '../components/StaticMarketingComponent';
 import InfoDisplayComponent from '../components/InfoDisplayComponent';
-import { setGlobalValue } from '../components/utils/store';
+import { getGlobalValue } from '../components/utils/store';
 
 const MainContainer = () => {
     const [loading, setLoading] = useState(false);
