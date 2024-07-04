@@ -12,36 +12,36 @@ export default async function handler(req, res) {
         return res.status(405).json({ message: 'Method not allowed' });
     }
 
-    const { accountID } = req.body;
-    const partnerID = "VMF";
+    const { businessId } = req.body;
+    const partnerId = "VMF";
     
-    console.log(chalk.blue('Returned accountID.', accountID));
+    console.log(chalk.blue('Returned businessId.', businessId));
 
-    if (!accountID) {
-        console.log(chalk.blue('No accountID provided in the request.'));
-        return res.status(400).json({ message: 'AccountID is required' });
+    if (!businessId) {
+        console.log(chalk.blue('No businessId provided in the request.'));
+        return res.status(400).json({ message: 'businessId is required' });
     }
 
 
     console.log(chalk.red('Calling Vendasta MyListing API'));
-    console.log(chalk.green('AccountID :', accountID));
-    console.log(chalk.green('PartnerID :', partnerID));
+    console.log(chalk.green('businessId :', businessId));
+    console.log(chalk.green('partnerId :', partnerId));
     const vendastaResponse = await fetch('https://crkid.com/api/vendasta-mylisting-proxy', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ partnerID, accountID })
+        body: JSON.stringify({ partnerId, businessId })
     });
     const vendastaData = await vendastaResponse.json();
     console.log('Vendasta MyListingAPI Response:', vendastaData);
     
     
     try {
-        console.log(chalk.red('WebhookListener from Vendasta accountID.', accountID));
-        return res.status(200).json({ accountID });
+        console.log(chalk.red('WebhookListener from Vendasta businessId.', businessId));
+        return res.status(200).json({ businessId });
     } catch (error) {
-        console.error(chalk.red('Error with the accountID:'));
-        return res.status(500).json({ message: 'Failed to understand the accountID' });
+        console.error(chalk.red('Error with the businessId:'));
+        return res.status(500).json({ message: 'Failed to understand the businessId' });
     }
 }

@@ -14,9 +14,9 @@ export default async function handler(req, res) {
         return res.status(405).json({ message: 'Method not allowed' });
     }
 
-    const { partnerID, BusinessID } = req.body;
-    console.log(chalk.green('PartnerID: ', partnerID));
-    console.log(chalk.green('BusinessID: ', businessID));
+    const { partnerId, businessId } = req.body;
+    console.log(chalk.green('partnerId: ', partnerId));
+    console.log(chalk.green('businessId: ', businessId));
 
     try {
         console.log(chalk.blue('Generating JWT for client assertion.'));
