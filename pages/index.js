@@ -31,7 +31,7 @@ const MainContainer = () => {
             const parts = value.split(`; AGID=`);
             if (parts.length === 2) return parts.pop().split(';').shift();
         };
-
+    
         const pollForAccountID = () => {
             return new Promise((resolve, reject) => {
                 const interval = setInterval(() => {
@@ -42,13 +42,15 @@ const MainContainer = () => {
                         resolve(accountID);
                     }
                 }, 1000);
-        
+    
                 const timeout = setTimeout(() => {
                     clearInterval(interval);
                     reject(new Error('No AGID received in 30 seconds.'));
                 }, 30000);
             });
         };
+    }, []); // This closing bracket was missing
+    
     
 
     useEffect(() => {
