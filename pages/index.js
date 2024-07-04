@@ -119,6 +119,18 @@ const MainContainer = () => {
             const companyName = response && response.message ? extractCompanyName(response.message, website) : `magic-page-company-${website.replace(/^https?:\/\//, '').replace(/\./g, '-')}`;
             console.log("Extracted Company Name: " + companyName);
 
+            console.log('Calling Vendasta Automation API');
+            const vendastaAutomationResponse = await fetch('/api/vendasta-automation-proxy', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ email, website, company: companyName })
+            });
+            const vendastaData = await vendastaAutomationResponse.json();
+            console.log('Vendasta Automation API Response:', vendastaData);
+
+
             console.log('Calling Vendasta MyListing API');
             const vendastaResponse = await fetch('/api/vendasta-mylisting-proxy', {
                 method: 'POST',
