@@ -56,8 +56,8 @@ export default async function handler(req, res) {
 
         console.log(chalk.blue('Calling Vendasta API.'));
         const vendastaPayload = {
-            partnerId: process.env.VENDASTA_PARTNER_ID,
-            businessId: process.env.VENDASTA_BUSINESS_ID,
+            partnerId: partnerId,
+            businessId: businessId,
         };
 
         console.log(chalk.blue('Vendasta API request payload:'));

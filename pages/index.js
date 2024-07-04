@@ -124,7 +124,8 @@ const MainContainer = () => {
             });
             const vendastaAutomationData = await vendastaAutomationResponse.json();
             console.log('Vendasta Automation API Response:', vendastaAutomationData);
-
+            const accountID = vendastaAutomationData.accountID;
+            console.log('Account ID is:', accountID);
 
             console.log('Calling Vendasta MyListing API');
             const vendastaResponse = await fetch('/api/vendasta-mylisting-proxy', {
@@ -132,7 +133,7 @@ const MainContainer = () => {
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ email, website, company: companyName })
+                body: JSON.stringify({ "VMF", accountID })
             });
             const vendastaData = await vendastaResponse.json();
             console.log('Vendasta Webhook Response:', vendastaData);
