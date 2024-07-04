@@ -15,6 +15,8 @@ export default async function handler(req, res) {
     }
 
     const { partnerId, businessId } = req.body;
+    console.log(chalk.green('PartnerId: ' . partnerId));
+    console.log(chalk.green('BusinessId: ' . businessId));
 
     try {
         console.log(chalk.blue('Generating JWT for client assertion.'));

@@ -128,7 +128,7 @@ const MainContainer = () => {
             const accountID = vendastaAutomationData.accountID;
             console.log('Account ID is:', accountID);
 
-            console.log('Calling Vendasta MyListing API');
+            console.log(chalk.red('Calling Vendasta MyListing API'));
             const partnerID = "VMF";
             console.log(chalk.green('AccountID :' . accountID));
             console.log(chalk.green('PartnerID :' . partnerID));
