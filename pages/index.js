@@ -2,7 +2,6 @@
 
 import chalk from 'chalk';
 import React, { useState, useEffect } from 'react';
-import { v4 as uuidv4 } from 'uuid';
 import { callZapierWebhook } from '../components/utils/zapier';
 import screensConfig from '../config/screensConfig';
 import FormComponent from '../components/FormComponent';
@@ -118,9 +117,7 @@ const MainContainer = () => {
 
         await fetch('/api/clear-response', { method: 'POST' });
 
-        const uniqueId = uuidv4();
 
-        sessionStorage.setItem('requestId', uniqueId);
 
         setLoading(true); // Ensure loading is set to true
         setShowPoll(true);
@@ -136,7 +133,7 @@ const MainContainer = () => {
                 console.error('Error fetching screenshot:', screenshotData.error);
             }
 
-            const response = await callZapierWebhook(email, website, uniqueId);
+            const response = await callZapierWebhook(email, website);
             console.log('Zapier Response:', response);  // Log the full response
             setZapierResponse(response);
 
