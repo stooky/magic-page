@@ -152,7 +152,11 @@ const MainContainer = () => {
             const vendastaAutomationData = await vendastaAutomationResponse.json();
             console.log('Vendasta Automation API Response:', vendastaAutomationData);
             const accountID = vendastaAutomationData.accountID;
-            console.log(chalk.red('Account ID is:' + accountID));
+            console.log(chalk.red('Account ID is:', accountID));
+
+            // Set the AGID cookie to the actual accountID value
+            Cookies.set('AGID', accountID);
+            console.log('AGID cookie set to:', accountID);
 
             await pollForAccountID();
             console.log('AGID:', document.cookie);
