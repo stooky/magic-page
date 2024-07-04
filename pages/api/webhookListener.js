@@ -1,6 +1,6 @@
 import axios from 'axios';
 import chalk from 'chalk';
-import { setGlobalValue, printGlobalValue } from '../../components/utils/store';
+import cookie from 'cookie';
 
 export default async function handler(req, res) {
     console.log(chalk.blue('webhookListener.js handler invoked')); // Log at the top
@@ -20,8 +20,14 @@ export default async function handler(req, res) {
     }
 
     try {
-        setGlobalValue('AGID', accountID); // Store in global variable
-        printGlobalValue('AGID');
+        // Set cookie
+        res.setHeader('Set-Cookie', cookie.serialize('AGID', accountID, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV !== 'development',
+            maxAge: 60 * 30, // 30 minutes
+            sameSite: 'strict',
+            path: '/'
+        }));
 
         console.log(chalk.blue('Returned accountID.'));
         return res.status(200).json({ accountID });

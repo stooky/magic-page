@@ -9,7 +9,7 @@ import FormComponent from '../components/FormComponent';
 import PollComponent from '../components/PollComponent';
 import StaticMarketingComponent from '../components/StaticMarketingComponent';
 import InfoDisplayComponent from '../components/InfoDisplayComponent';
-import { setGlobalValue, getGlobalValue, printGlobalValue } from '../components/utils/store';
+import Cookies from 'js-cookie';
 
 const MainContainer = () => {
     const [loading, setLoading] = useState(false);
@@ -27,8 +27,8 @@ const MainContainer = () => {
     async function pollForAccountID() {
         return new Promise((resolve, reject) => {
             const interval = setInterval(() => {
-                const accountID = getGlobalValue('AGID');
-                printGlobalValue('AGID');
+                const accountID = Cookies.get('AGID');
+                console.log('Polling AGID:', accountID);  // Add this line for debugging
                 if (accountID && accountID !== 'VALUE') {
                     clearInterval(interval);
                     clearTimeout(timeout);
@@ -42,6 +42,7 @@ const MainContainer = () => {
             }, 30000);
         });
     }
+    
 
     useEffect(() => {
         let pollingInterval;
@@ -136,7 +137,7 @@ const MainContainer = () => {
             console.log("Extracted Company Name: " + companyName);
 
             console.log('Calling Vendasta Automation API');
-            setGlobalValue('AGID', 'VALUE');
+            Cookies.set('AGID', 'VALUE');
             const vendastaAutomationResponse = await fetch('/api/vendasta-automation-proxy', {
                 method: 'POST',
                 headers: {
@@ -150,7 +151,7 @@ const MainContainer = () => {
             console.log(chalk.red('Account ID is:' + accountID));
 
             await pollForAccountID();
-            printGlobalValue('AGID');
+            console.log('AGID:', Cookies.get('AGID'));
             
 
             console.log(chalk.red('Calling Vendasta MyListing API'));
