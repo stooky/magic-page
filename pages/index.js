@@ -126,12 +126,12 @@ const MainContainer = () => {
             const vendastaAutomationData = await vendastaAutomationResponse.json();
             console.log('Vendasta Automation API Response:', vendastaAutomationData);
             const accountID = vendastaAutomationData.accountID;
-            console.log('Account ID is:', accountID);
+            console.log(chalk.red('Account ID is:' + accountID));
 
             console.log(chalk.red('Calling Vendasta MyListing API'));
             const partnerID = "VMF";
-            console.log(chalk.green('AccountID :' . accountID));
-            console.log(chalk.green('PartnerID :' . partnerID));
+            console.log(chalk.green('AccountID :' + accountID));
+            console.log(chalk.green('PartnerID :' + partnerID));
             const vendastaResponse = await fetch('/api/vendasta-mylisting-proxy', {
                 method: 'POST',
                 headers: {

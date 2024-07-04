@@ -3,7 +3,7 @@ import jwt from 'jsonwebtoken';
 import chalk from 'chalk';
 
 export default async function handler(req, res) {
-    console.log(chalk.blue('vendasta-automation-proxy.js handler invoked'));
+    console.log(chalk.blue('vendasta-mylisting-proxy.js handler invoked'));
 
     console.log(chalk.blue(`Request received:\nMethod: ${req.method}\nHeaders: ${JSON.stringify(req.headers, null, 2)}\nBody: ${JSON.stringify(req.body, null, 2)}`));
 
