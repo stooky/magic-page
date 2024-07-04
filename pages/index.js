@@ -127,8 +127,8 @@ const MainContainer = () => {
                 },
                 body: JSON.stringify({ email, website, company: companyName })
             });
-            const vendastaData = await vendastaAutomationResponse.json();
-            console.log('Vendasta Automation API Response:', vendastaData);
+            const vendastaAutomationData = await vendastaAutomationResponse.json();
+            console.log('Vendasta Automation API Response:', vendastaAutomationData);
 
 
             console.log('Calling Vendasta MyListing API');
