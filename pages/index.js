@@ -9,7 +9,7 @@ import FormComponent from '../components/FormComponent';
 import PollComponent from '../components/PollComponent';
 import StaticMarketingComponent from '../components/StaticMarketingComponent';
 import InfoDisplayComponent from '../components/InfoDisplayComponent';
-import { getGlobalValue } from '../components/utils/store';
+import { getGlobalValue, printGlobalValue } from './store';
 
 const MainContainer = () => {
     const [loading, setLoading] = useState(false);
@@ -148,6 +148,7 @@ const MainContainer = () => {
             console.log(chalk.red('Account ID is:' + accountID));
 
             pollForAccountID();
+            printGlobalValue('AGID');
 
             console.log(chalk.red('Calling Vendasta MyListing API'));
             const partnerID = "VMF";

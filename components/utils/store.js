@@ -8,3 +8,7 @@ export function setGlobalValue(key, value) {
 export function getGlobalValue(key) {
     return globalStore[key];
 }
+
+export function printGlobalValue(key) {
+    console.log(`${key}:`, globalStore[key]);
+}
