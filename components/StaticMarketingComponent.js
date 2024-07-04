@@ -3,7 +3,7 @@ import Image from 'next/image';
 
 const StaticMarketingComponent = () => (
     <div className="marketing-container">
-        <Image src="/images/marketing_image1.png" alt="Marketing Image" width={400} />
+        <Image src="/images/marketing_image1.png" alt="Marketing Image" width={400} height={700}/>
         <style jsx>{`
             .marketing-container {
                 display: flex;

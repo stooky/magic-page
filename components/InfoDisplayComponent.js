@@ -22,7 +22,7 @@ const InfoDisplayComponent = ({ screenshotUrl, zapierResponse, showIframe, ifram
             {!showIframe && screenshotUrl && (
                 <div className="thumbnail">
                     <h2>Website Thumbnail</h2>
-                    <Image src={screenshotUrl} alt="Website Thumbnail" className="small-thumbnail" width={600} />
+                    <Image src={screenshotUrl} alt="Website Thumbnail" className="small-thumbnail" width={600} height={400}/>
                 </div>
             )}
             {zapierResponse && zapierResponse.status === 'error' ? (
