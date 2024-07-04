@@ -30,7 +30,7 @@ export default async function handler(req, res) {
             path: '/'
         }));
 
-        console.log(chalk.red('Webhook accountID.', accountID));
+        console.log(chalk.red('WebhookListener from Vendasta accountID.', accountID));
         return res.status(200).json({ accountID });
     } catch (error) {
         console.error(chalk.red('Error with the accountID:'));

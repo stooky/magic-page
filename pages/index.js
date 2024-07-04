@@ -156,7 +156,7 @@ const MainContainer = () => {
 
             // Set the AGID cookie to the actual accountID value
             Cookies.set('AGID', accountID);
-            console.log('AGID cookie set to:', accountID);
+            console.log(chalk.bgRed('AGID cookie set to:', accountID));
 
             await pollForAccountID();
             console.log('AGID:', document.cookie);
@@ -164,8 +164,8 @@ const MainContainer = () => {
 
             console.log(chalk.red('Calling Vendasta MyListing API'));
             const partnerID = "VMF";
-            console.log(chalk.green('AccountID :' + accountID));
-            console.log(chalk.green('PartnerID :' + partnerID));
+            console.log(chalk.green('AccountID :', accountID));
+            console.log(chalk.green('PartnerID :', partnerID));
             const vendastaResponse = await fetch('/api/vendasta-mylisting-proxy', {
                 method: 'POST',
                 headers: {
@@ -174,7 +174,7 @@ const MainContainer = () => {
                 body: JSON.stringify({ partnerID, accountID })
             });
             const vendastaData = await vendastaResponse.json();
-            console.log('Vendasta Webhook Response:', vendastaData);
+            console.log('Vendasta MyListingAPI Response:', vendastaData);
 
             const createIframeUrl = vendastaData.configuration.publicMyListingUrl;
 
