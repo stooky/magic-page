@@ -13,6 +13,8 @@ export default async function handler(req, res) {
     }
 
     const { accountID } = req.body;
+    const partnerID = "VMF"'
+    
     console.log(chalk.blue('Returned accountID.', accountID));
 
     if (!accountID) {
@@ -29,6 +31,21 @@ export default async function handler(req, res) {
             sameSite: 'strict',
             path: '/'
         }));
+
+        console.log(chalk.red('Calling Vendasta MyListing API'));
+        const partnerID = "VMF";
+        console.log(chalk.green('AccountID :', accountID));
+        console.log(chalk.green('PartnerID :', partnerID));
+        const vendastaResponse = await fetch('/api/vendasta-mylisting-proxy', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ partnerID, accountID })
+        });
+        const vendastaData = await vendastaResponse.json();
+        console.log('Vendasta MyListingAPI Response:', vendastaData);
+
 
         console.log(chalk.red('WebhookListener from Vendasta accountID.', accountID));
         return res.status(200).json({ accountID });

@@ -160,23 +160,8 @@ const MainContainer = () => {
 
             await pollForAccountID();
             console.log('AGID:', document.cookie);
-            
 
-            console.log(chalk.red('Calling Vendasta MyListing API'));
-            const partnerID = "VMF";
-            console.log(chalk.green('AccountID :', accountID));
-            console.log(chalk.green('PartnerID :', partnerID));
-            const vendastaResponse = await fetch('/api/vendasta-mylisting-proxy', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ partnerID, accountID })
-            });
-            const vendastaData = await vendastaResponse.json();
-            console.log('Vendasta MyListingAPI Response:', vendastaData);
-
-            const createIframeUrl = vendastaData.configuration.publicMyListingUrl;
+            const createIframeUrl = "URL";
 
             // Set iframe URL
             const iframeUrl = createIframeUrl;
