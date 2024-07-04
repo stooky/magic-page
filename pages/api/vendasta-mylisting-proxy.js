@@ -7,6 +7,8 @@ export default async function handler(req, res) {
 
     console.log(chalk.blue(`Request received:\nMethod: ${req.method}\nHeaders: ${JSON.stringify(req.headers, null, 2)}\nBody: ${JSON.stringify(req.body, null, 2)}`));
 
+    await new Promise(resolve => setTimeout(resolve, 10000));
+    
     if (req.method !== 'POST') {
         console.log(chalk.blue('Method not allowed.'));
         return res.status(405).json({ message: 'Method not allowed' });
