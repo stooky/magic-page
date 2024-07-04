@@ -9,6 +9,7 @@ import FormComponent from '../components/FormComponent';
 import PollComponent from '../components/PollComponent';
 import StaticMarketingComponent from '../components/StaticMarketingComponent';
 import InfoDisplayComponent from '../components/InfoDisplayComponent';
+import { setGlobalValue } from '../components/utils/store';
 
 const MainContainer = () => {
     const [loading, setLoading] = useState(false);
@@ -22,6 +23,24 @@ const MainContainer = () => {
     const [showIframe, setShowIframe] = useState(false);
     const [formVisible, setFormVisible] = useState(true);
     const [enteredWebsite, setEnteredWebsite] = useState('');
+
+    async function pollForAccountID() {
+        const intervalID = setInterval(() => {
+            const accountID = getGlobalValue('accountID');
+            if (accountID) {
+                console.log('Account ID:', accountID);
+                // Do something with the accountID
+                clearInterval(intervalID);
+                FUNCTION1(); // Call your function here
+            }
+        }, 2000);
+    
+        setTimeout(() => {
+            clearInterval(intervalID);
+            console.log('No AGID received in 30 seconds.');
+            // Continue with the app
+        }, 30000);
+    }
 
     useEffect(() => {
         let pollingInterval;
@@ -127,6 +146,8 @@ const MainContainer = () => {
             console.log('Vendasta Automation API Response:', vendastaAutomationData);
             const accountID = vendastaAutomationData.accountID;
             console.log(chalk.red('Account ID is:' + accountID));
+
+            pollForAccountID();
 
             console.log(chalk.red('Calling Vendasta MyListing API'));
             const partnerID = "VMF";
