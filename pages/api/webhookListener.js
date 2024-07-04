@@ -1,6 +1,6 @@
 import axios from 'axios';
 import chalk from 'chalk';
-import { setGlobalValue } from '../../components/utils/store';
+import { setGlobalValue, printGlobalValue } from '../../components/utils/store';
 
 export default async function handler(req, res) {
     console.log(chalk.blue('webhookListener.js handler invoked')); // Log at the top
@@ -21,6 +21,7 @@ export default async function handler(req, res) {
 
     try {
         setGlobalValue('AGID', accountID); // Store in global variable
+        printGlobalValue('AGID');
 
         console.log(chalk.blue('Returned accountID.'));
         return res.status(200).json({ accountID });

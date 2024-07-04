@@ -9,7 +9,7 @@ import FormComponent from '../components/FormComponent';
 import PollComponent from '../components/PollComponent';
 import StaticMarketingComponent from '../components/StaticMarketingComponent';
 import InfoDisplayComponent from '../components/InfoDisplayComponent';
-import { getGlobalValue, printGlobalValue } from '../components/utils/store';
+import { setGlobalValue, getGlobalValue, printGlobalValue } from '../components/utils/store';
 
 const MainContainer = () => {
     const [loading, setLoading] = useState(false);
@@ -30,11 +30,12 @@ const MainContainer = () => {
                 const accountID = getGlobalValue('AGID');
                 if (accountID && accountID !== 'VALUE') {
                     clearInterval(interval);
+                    clearTimeout(timeout);
                     resolve(accountID);
                 }
             }, 1000);
     
-            setTimeout(() => {
+            const timeout = setTimeout(() => {
                 clearInterval(interval);
                 reject(new Error('No AGID received in 30 seconds.'));
             }, 30000);
@@ -134,7 +135,7 @@ const MainContainer = () => {
             console.log("Extracted Company Name: " + companyName);
 
             console.log('Calling Vendasta Automation API');
-            setGlobalValue('VALUE', accountID);
+            setGlobalValue('AGID', 'VALUE');
             const vendastaAutomationResponse = await fetch('/api/vendasta-automation-proxy', {
                 method: 'POST',
                 headers: {
@@ -149,6 +150,7 @@ const MainContainer = () => {
 
             await pollForAccountID();
             printGlobalValue('AGID');
+            
 
             console.log(chalk.red('Calling Vendasta MyListing API'));
             const partnerID = "VMF";
