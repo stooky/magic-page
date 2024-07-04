@@ -69,12 +69,7 @@ const MainContainer = () => {
         return `magic-page-company-${cleanedWebsite.replace(/\./g, '-')}`;
     };
 
-    const createIframeUrl = (companyName) => {
-        const formattedName = companyName.toLowerCase().replace(/[^a-z0-9]+/g, '-');
-        const url = `https://sales.vendasta.com/${formattedName}/`;
-        console.log("Constructed Iframe URL:", url);
-        return url;
-    };
+
 
     const handleSubmit = async (email, website) => {
         if (!email || !website || !email.includes('@') || !website.startsWith('http')) {
@@ -142,8 +137,10 @@ const MainContainer = () => {
             const vendastaData = await vendastaResponse.json();
             console.log('Vendasta Webhook Response:', vendastaData);
 
+            const createIframeUrl = vendastaData.configuration.publicMyListingUrl;
+
             // Set iframe URL
-            const iframeUrl = createIframeUrl(companyName);
+            const iframeUrl = createIframeUrl;
             setIframeUrl(iframeUrl);
             setShowIframe(true);
         } catch (error) {

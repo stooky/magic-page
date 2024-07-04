@@ -81,6 +81,9 @@ export default async function handler(req, res) {
         console.log(chalk.blue('Vendasta API call successful.'));
         console.log(chalk.blue('Vendasta API response:'));
         console.log(chalk.blue(JSON.stringify(vendastaResponse.data, null, 2)));
+        const publicMyListingUrl = vendastaResponse.data.configuration.publicMyListingUrl;
+        console.log(chalk.green('iframe URL:' . publicMyListingUrl));
+
 
         return res.status(200).json(vendastaResponse.data);
     } catch (error) {
