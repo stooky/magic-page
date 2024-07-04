@@ -1,5 +1,6 @@
 "use client";
 
+import chalk from 'chalk';
 import React, { useState, useEffect } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { callZapierWebhook } from '../components/utils/zapier';
@@ -129,6 +130,8 @@ const MainContainer = () => {
 
             console.log('Calling Vendasta MyListing API');
             const partnerID = "VMF";
+            console.log(chalk.green('AccountID :' . accountID));
+            console.log(chalk.green('PartnerID :' . partnerID));
             const vendastaResponse = await fetch('/api/vendasta-mylisting-proxy', {
                 method: 'POST',
                 headers: {
