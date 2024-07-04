@@ -24,24 +24,31 @@ const MainContainer = () => {
     const [formVisible, setFormVisible] = useState(true);
     const [enteredWebsite, setEnteredWebsite] = useState('');
 
-    async function pollForAccountID() {
-        return new Promise((resolve, reject) => {
-            const interval = setInterval(() => {
-                const accountID = Cookies.get('AGID');
-                console.log('Polling AGID:', accountID);  // Add this line for debugging
-                if (accountID && accountID !== 'VALUE') {
+    useEffect(() => {
+        // Function to check for the cookie value
+        const checkCookie = () => {
+            const value = `; ${document.cookie}`;
+            const parts = value.split(`; AGID=`);
+            if (parts.length === 2) return parts.pop().split(';').shift();
+        };
+
+        const pollForAccountID = () => {
+            return new Promise((resolve, reject) => {
+                const interval = setInterval(() => {
+                    const accountID = checkCookie();
+                    if (accountID && accountID !== 'VALUE') {
+                        clearInterval(interval);
+                        clearTimeout(timeout);
+                        resolve(accountID);
+                    }
+                }, 1000);
+        
+                const timeout = setTimeout(() => {
                     clearInterval(interval);
-                    clearTimeout(timeout);
-                    resolve(accountID);
-                }
-            }, 1000);
-    
-            const timeout = setTimeout(() => {
-                clearInterval(interval);
-                reject(new Error('No AGID received in 30 seconds.'));
-            }, 30000);
-        });
-    }
+                    reject(new Error('No AGID received in 30 seconds.'));
+                }, 30000);
+            });
+        };
     
 
     useEffect(() => {
@@ -151,7 +158,7 @@ const MainContainer = () => {
             console.log(chalk.red('Account ID is:' + accountID));
 
             await pollForAccountID();
-            console.log('AGID:', Cookies.get('AGID'));
+            console.log('AGID:', document.cookie);
             
 
             console.log(chalk.red('Calling Vendasta MyListing API'));

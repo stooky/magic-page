@@ -13,6 +13,7 @@ export default async function handler(req, res) {
     }
 
     const { accountID } = req.body;
+    console.log(chalk.blue('Returned accountID.', accountID));
 
     if (!accountID) {
         console.log(chalk.blue('No accountID provided in the request.'));
@@ -21,15 +22,9 @@ export default async function handler(req, res) {
 
     try {
         // Set cookie
-        res.setHeader('Set-Cookie', cookie.serialize('AGID', accountID, {
-            httpOnly: true,
-            secure: process.env.NODE_ENV !== 'development',
-            maxAge: 60 * 30, // 30 minutes
-            sameSite: 'strict',
-            path: '/'
-        }));
+        res.setHeader('Set-Cookie', serialize('AGID', accountID, { path: '/' }));
 
-        console.log(chalk.blue('Returned accountID.'));
+        console.log(chalk.red('Webhook accountID.', accountID));
         return res.status(200).json({ accountID });
     } catch (error) {
         console.error(chalk.red('Error with the accountID:'));
