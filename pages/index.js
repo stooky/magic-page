@@ -24,32 +24,30 @@ const MainContainer = () => {
     const [formVisible, setFormVisible] = useState(true);
     const [enteredWebsite, setEnteredWebsite] = useState('');
 
-    useEffect(() => {
-        // Function to check for the cookie value
-        const checkCookie = () => {
-            const value = `; ${document.cookie}`;
-            const parts = value.split(`; AGID=`);
-            if (parts.length === 2) return parts.pop().split(';').shift();
-        };
-    
-        const pollForAccountID = () => {
-            return new Promise((resolve, reject) => {
-                const interval = setInterval(() => {
-                    const accountID = checkCookie();
-                    if (accountID && accountID !== 'VALUE') {
-                        clearInterval(interval);
-                        clearTimeout(timeout);
-                        resolve(accountID);
-                    }
-                }, 1000);
-    
-                const timeout = setTimeout(() => {
+    // Function to check for the cookie value
+    const checkCookie = () => {
+        const value = `; ${document.cookie}`;
+        const parts = value.split(`; AGID=`);
+        if (parts.length === 2) return parts.pop().split(';').shift();
+    };
+
+    const pollForAccountID = () => {
+        return new Promise((resolve, reject) => {
+            const interval = setInterval(() => {
+                const accountID = checkCookie();
+                if (accountID && accountID !== 'VALUE') {
                     clearInterval(interval);
-                    reject(new Error('No AGID received in 30 seconds.'));
-                }, 30000);
-            });
-        };
-    }, []); // This closing bracket was missing
+                    clearTimeout(timeout);
+                    resolve(accountID);
+                }
+            }, 1000);
+
+            const timeout = setTimeout(() => {
+                clearInterval(interval);
+                reject(new Error('No AGID received in 30 seconds.'));
+            }, 30000);
+        });
+    };
     
     
 
