@@ -28,6 +28,7 @@ const MainContainer = () => {
         return new Promise((resolve, reject) => {
             const interval = setInterval(() => {
                 const accountID = getGlobalValue('AGID');
+                printGlobalValue('AGID');
                 if (accountID && accountID !== 'VALUE') {
                     clearInterval(interval);
                     clearTimeout(timeout);
