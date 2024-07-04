@@ -21,6 +21,7 @@ export default async function handler(req, res) {
     try {
 
         console.log(chalk.blue('Returned accountID.'));
+        sessionStorage.setItem('AGID', accountID);
         return res.status(200).json({ accountID });
     } catch (error) {
         console.error(chalk.red('Error with the accountID:'));
