@@ -21,8 +21,14 @@ export default async function handler(req, res) {
     }
 
     try {
-        // Set cookie
-        res.setHeader('Set-Cookie', serialize('AGID', accountID, { path: '/' }));
+        // Set the cookie for accountID
+        res.setHeader('Set-Cookie', cookie.serialize('AGID', accountID, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV !== 'development',
+            maxAge: 60 * 60,
+            sameSite: 'strict',
+            path: '/'
+        }));
 
         console.log(chalk.red('Webhook accountID.', accountID));
         return res.status(200).json({ accountID });
