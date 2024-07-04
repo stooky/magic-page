@@ -128,12 +128,13 @@ const MainContainer = () => {
             console.log('Account ID is:', accountID);
 
             console.log('Calling Vendasta MyListing API');
+            const partnerID = "VMF";
             const vendastaResponse = await fetch('/api/vendasta-mylisting-proxy', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ "VMF", accountID })
+                body: JSON.stringify({ partnerID, accountID })
             });
             const vendastaData = await vendastaResponse.json();
             console.log('Vendasta Webhook Response:', vendastaData);
