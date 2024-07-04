@@ -1,6 +1,12 @@
 import axios from 'axios';
+import chalk from 'chalk';
 
 export default async function handler(req, res) {
+
+    console.log(chalk.green('vendasta-automation-proxy.js handler invoked'));
+
+    console.log(chalk.green(`Request received:\nMethod: ${req.method}\nHeaders: ${JSON.stringify(req.headers, null, 2)}\nBody: ${JSON.stringify(req.body, null, 2)}`));
+
     if (req.method !== 'POST') {
         return res.status(405).json({ message: 'Method not allowed' });
     }
