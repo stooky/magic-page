@@ -22,33 +22,7 @@ const MainContainer = () => {
     const [showIframe, setShowIframe] = useState(false);
     const [formVisible, setFormVisible] = useState(true);
     const [enteredWebsite, setEnteredWebsite] = useState('');
-
-    // Function to check for the cookie value
-    const checkCookie = () => {
-        const value = `; ${document.cookie}`;
-        const parts = value.split(`; AGID=`);
-        if (parts.length === 2) return parts.pop().split(';').shift();
-    };
-
-    const pollForAccountID = () => {
-        return new Promise((resolve, reject) => {
-            const interval = setInterval(() => {
-                const accountID = checkCookie();
-                if (accountID && accountID !== 'VALUE') {
-                    clearInterval(interval);
-                    clearTimeout(timeout);
-                    resolve(accountID);
-                }
-            }, 1000);
-
-            const timeout = setTimeout(() => {
-                clearInterval(interval);
-                reject(new Error('No AGID received in 30 seconds.'));
-            }, 30000);
-        });
-    };
-    
-    
+      
 
     useEffect(() => {
         let pollingInterval;
@@ -154,12 +128,8 @@ const MainContainer = () => {
             const accountID = vendastaAutomationData.accountID;
             console.log(chalk.red('Account ID is:', accountID));
 
-            // Set the AGID cookie to the actual accountID value
-            Cookies.set('AGID', accountID);
-            console.log(chalk.bgRed('AGID cookie set to:', accountID));
-
-            await pollForAccountID();
-            console.log('AGID:', document.cookie);
+            // Pause for 10 seconds
+            await delay(10000);
 
             const createIframeUrl = "URL";
 

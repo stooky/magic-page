@@ -13,7 +13,7 @@ export default async function handler(req, res) {
     }
 
     const { accountID } = req.body;
-    const partnerID = "VMF"'
+    const partnerID = "VMF";
     
     console.log(chalk.blue('Returned accountID.', accountID));
 
@@ -33,7 +33,6 @@ export default async function handler(req, res) {
         }));
 
         console.log(chalk.red('Calling Vendasta MyListing API'));
-        const partnerID = "VMF";
         console.log(chalk.green('AccountID :', accountID));
         console.log(chalk.green('PartnerID :', partnerID));
         const vendastaResponse = await fetch('/api/vendasta-mylisting-proxy', {
