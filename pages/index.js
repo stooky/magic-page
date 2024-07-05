@@ -131,9 +131,11 @@ const MainContainer = () => {
             console.log(chalk.red('Account ID is:', accountID));
 
             // Pause for 10 seconds
-            await delay(10000);
+            await delay(60000);
 
-            const createIframeUrl = "URL";
+            // Set createIframeUrl to the value of MyListingURL cookie
+            const createIframeUrl = Cookies.get('MyListingURL');
+
 
             // Set iframe URL
             const iframeUrl = createIframeUrl;

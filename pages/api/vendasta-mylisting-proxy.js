@@ -1,6 +1,7 @@
 import axios from 'axios';
 import jwt from 'jsonwebtoken';
 import chalk from 'chalk';
+import cookie from 'cookie';
 
 export default async function handler(req, res) {
     console.log(chalk.blue('vendasta-mylisting-proxy.js handler invoked'));
@@ -15,6 +16,7 @@ export default async function handler(req, res) {
     }
 
     const { partnerId, businessId } = req.body;
+    // const FAKEbusinessId = "AG-LCJDC5MZC6";
     console.log(chalk.green('partnerId: ', partnerId));
     console.log(chalk.green('businessId: ', businessId));
 
@@ -86,6 +88,14 @@ export default async function handler(req, res) {
         const publicMyListingUrl = vendastaResponse.data.configuration.publicMyListingUrl;
         console.log(chalk.green('iframe URL:' . publicMyListingUrl));
 
+                // Set the MyListingURL cookie
+                res.setHeader('Set-Cookie', cookie.serialize('MyListingURL', publicMyListingUrl, {
+                    httpOnly: true,
+                    secure: process.env.NODE_ENV !== 'development',
+                    maxAge: 60 * 60 * 24, // 1 day
+                    sameSite: 'strict',
+                    path: '/',
+                }));
 
         return res.status(200).json(vendastaResponse.data);
     } catch (error) {
