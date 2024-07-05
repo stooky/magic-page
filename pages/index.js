@@ -46,8 +46,44 @@ const MainContainer = () => {
                 }
             }, 2000);
         }
+    
         return () => clearInterval(pollingInterval);
+
+        const checkMyListingURL = async () => {
+            try {
+                const myListingURL = await pollForMyListingURL();
+                console.log('MyListingURL:', myListingURL);
+                // Set iframe URL or perform other actions
+                setIframeUrl(myListingURL);
+                setShowIframe(true);
+            } catch (error) {
+                console.error(error.message);
+                // Handle the error, e.g., show a message to the user
+            }
+        };
+    
+        checkMyListingURL();
     }, [loading]);
+
+    // Function to check for the MyListingURL cookie value
+const pollForMyListingURL = async () => {
+    return new Promise((resolve, reject) => {
+        const interval = setInterval(() => {
+            const myListingURL = Cookies.get('MyListingURL');
+            console.log('My ListingURL :', Cookies.get('MyListingURL'));
+            if (myListingURL) {
+                clearInterval(interval);
+                clearTimeout(timeout);
+                resolve(myListingURL);
+            }
+        }, 1000);
+
+        const timeout = setTimeout(() => {
+            clearInterval(interval);
+            reject(new Error('No MyListingURL received in 300 seconds.'));
+        }, 300000);
+    });
+};
 
     const handleOptionChange = (option) => {
         setResponses({
@@ -130,12 +166,9 @@ const MainContainer = () => {
             const accountID = vendastaAutomationData.accountID;
             console.log(chalk.red('Account ID is:', accountID));
 
-            // Pause for 10 seconds
-            await delay(60000);
-
-            // Set createIframeUrl to the value of MyListingURL cookie
-            const createIframeUrl = Cookies.get('MyListingURL');
-
+        // Wait for the MyListingURL cookie to be set
+        const createIframeUrl = await pollForMyListingURL();
+        console.log('MyListingURL is:', createIframeUrl);
 
             // Set iframe URL
             const iframeUrl = createIframeUrl;
