@@ -1,7 +1,6 @@
 import axios from 'axios';
 import jwt from 'jsonwebtoken';
 import chalk from 'chalk';
-import cookie from 'cookie';
 
 export default async function handler(req, res) {
     console.log(chalk.blue('vendasta-mylisting-proxy.js handler invoked'));
@@ -89,9 +88,6 @@ export default async function handler(req, res) {
         console.log(chalk.green('iframe URL:', publicMyListingUrl));
 
         sessionStorage.setItem('myListingUrl', publicMyListingUrl)
-
-                // Log the response headers to verify cookie setting
-                console.log(chalk.bgRed('Response Headers:', JSON.stringify(res.getHeaders())));
 
         return res.status(200).json(vendastaResponse.data);
     } catch (error) {
