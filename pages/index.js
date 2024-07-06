@@ -8,7 +8,7 @@ import FormComponent from '../components/FormComponent';
 import PollComponent from '../components/PollComponent';
 import StaticMarketingComponent from '../components/StaticMarketingComponent';
 import InfoDisplayComponent from '../components/InfoDisplayComponent';
-import Cookies from 'js-cookie';
+
 
 const MainContainer = () => {
     const [loading, setLoading] = useState(false);
@@ -49,41 +49,8 @@ const MainContainer = () => {
     
         return () => clearInterval(pollingInterval);
 
-        const checkMyListingURL = async () => {
-            try {
-                const myListingURL = await pollForMyListingURL();
-                console.log('MyListingURL:', myListingURL);
-                // Set iframe URL or perform other actions
-                setIframeUrl(myListingURL);
-                setShowIframe(true);
-            } catch (error) {
-                console.error(error.message);
-                // Handle the error, e.g., show a message to the user
-            }
-        };
-    
-        checkMyListingURL();
     }, [loading]);
 
-    // Function to check for the MyListingURL cookie value
-const pollForMyListingURL = async () => {
-    return new Promise((resolve, reject) => {
-        const interval = setInterval(() => {
-            const myListingURL = Cookies.get('MyListingURL');
-            console.log('My ListingURL :', Cookies.get('MyListingURL'));
-            if (myListingURL) {
-                clearInterval(interval);
-                clearTimeout(timeout);
-                resolve(myListingURL);
-            }
-        }, 1000);
-
-        const timeout = setTimeout(() => {
-            clearInterval(interval);
-            reject(new Error('No MyListingURL received in 300 seconds.'));
-        }, 300000);
-    });
-};
 
     const handleOptionChange = (option) => {
         setResponses({
@@ -166,12 +133,12 @@ const pollForMyListingURL = async () => {
             const accountID = vendastaAutomationData.accountID;
             console.log(chalk.red('Account ID is:', accountID));
 
-        // Wait for the MyListingURL cookie to be set
-        const createIframeUrl = await pollForMyListingURL();
-        console.log('MyListingURL is:', createIframeUrl);
+        // Grab MyListingUrl from Session Storage
+        const iframeUrl = sessionStorage.getItem('myData');
+        console.log(iframeUrl);
+
 
             // Set iframe URL
-            const iframeUrl = createIframeUrl;
             setIframeUrl(iframeUrl);
             setShowIframe(true);
         } catch (error) {
