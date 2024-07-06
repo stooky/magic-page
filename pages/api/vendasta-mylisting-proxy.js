@@ -98,7 +98,7 @@ export default async function handler(req, res) {
                 }));
 
                 // Log the response headers to verify cookie setting
-                console.log(chalk.bgRed('Response Headers:', String(res.getHeaders())));
+                console.log(chalk.bgRed('Response Headers:', JSON.stringify(res.getHeaders())));
 
         return res.status(200).json(vendastaResponse.data);
     } catch (error) {
