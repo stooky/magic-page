@@ -1,6 +1,5 @@
 "use client";
 
-import chalk from 'chalk';
 import React, { useState, useEffect } from 'react';
 import { callZapierWebhook } from '../components/utils/zapier';
 import screensConfig from '../configuration/screensConfig';
@@ -29,27 +28,27 @@ const MainContainer = () => {
     useEffect(() => {
         let pollingInterval;
         if (loading) {
-            setCallbackReceived(false);
-            pollingInterval = setInterval(async () => {
-                try {
-                    const response = await fetch('/api/get-latest-response');
-                    const data = await response.json();
-                    if (data.response && data.response.status) {
-                        setZapierResponse(data.response);
-                        setLoading(false);
-                        setCallbackReceived(true);
-                        clearInterval(pollingInterval);
-                        setShowPoll(false);
-                    }
-                } catch (error) {
-                    console.error('Error polling latest response:', error);
-                }
-            }, 2000);
+          setCallbackReceived(false);
+          pollingInterval = setInterval(async () => {
+            try {
+              const response = await fetch('/api/get-latest-response');
+              const data = await response.json();
+              if (data.response && data.response.status) {
+                setZapierResponse(data.response);
+                setLoading(false);
+                setCallbackReceived(true);
+                clearInterval(pollingInterval);
+                setShowPoll(false);
+              }
+            } catch (error) {
+              console.error('Error polling latest response:', error);
+            }
+          }, 2000);
         }
-    
+      
         return () => clearInterval(pollingInterval);
-
-    }, [loading]);
+      }, [loading]);
+      
 
 
     const handleOptionChange = (option) => {
@@ -131,11 +130,16 @@ const MainContainer = () => {
             const vendastaAutomationData = await vendastaAutomationResponse.json();
             console.log('Vendasta Automation API Response:', vendastaAutomationData);
             const accountID = vendastaAutomationData.accountID;
-            console.log(chalk.red('Account ID is:', accountID));
+            console.log('Account ID is:', accountID);
 
         // Grab MyListingUrl from Session Storage
-        const iframeUrl = sessionStorage.getItem('MyListingUrl');
-        console.log(iframeUrl);
+        const iframeUrl = sessionStorage.getItem('MyListingUrl') || '';
+        if (!iframeUrl) {
+          console.error('MyListingUrl is not set in session storage.');
+        } else {
+          console.log(iframeUrl);
+        }
+        
 
 
             // Set iframe URL
