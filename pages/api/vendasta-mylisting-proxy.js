@@ -90,10 +90,10 @@ export default async function handler(req, res) {
 
         // Set the MyListingURL cookie
         res.setHeader('Set-Cookie', cookie.serialize('MyListingURL', publicMyListingUrl, {
-            httpOnly: true,  // Typically true for security, but can be false if you need client-side access
+            httpOnly: false,  // Typically true for security, but can be false if you need client-side access
             secure: process.env.NODE_ENV === 'production',  // Ensure secure is true in production
             maxAge: 60 * 60 * 24, // 1 day
-            sameSite: 'strict',
+            sameSite: 'lax',
             path: '/',
         }));
 
