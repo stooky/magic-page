@@ -8,7 +8,7 @@ export default async function handler(req, res) {
 
     console.log(chalk.blue(`Request received:\nMethod: ${req.method}\nHeaders: ${JSON.stringify(req.headers, null, 2)}\nBody: ${JSON.stringify(req.body, null, 2)}`));
 
-    await new Promise(resolve => setTimeout(resolve, 40000));
+    //await new Promise(resolve => setTimeout(resolve, 40000));
     
     if (req.method !== 'POST') {
         console.log(chalk.blue('Method not allowed.'));
@@ -85,7 +85,7 @@ export default async function handler(req, res) {
         console.log(chalk.blue('Vendasta API call successful.'));
         console.log(chalk.blue('Vendasta API response:'));
         console.log(chalk.blue(JSON.stringify(vendastaResponse.data, null, 2)));
-        const publicMyListingUrl = vendastaResponse.data.configuration.publicMyListingUrl;
+        const publicMyListingUrl = String(vendastaResponse.data.configuration.publicMyListingUrl);
         console.log(chalk.green('iframe URL:', publicMyListingUrl));
 
                 // Set the MyListingURL cookie
@@ -98,7 +98,7 @@ export default async function handler(req, res) {
                 }));
 
                 // Log the response headers to verify cookie setting
-                console.log(chalk.bgRed('Response Headers:', res.getHeaders()));
+                console.log(chalk.bgRed('Response Headers:', String(res.getHeaders())));
 
         return res.status(200).json(vendastaResponse.data);
     } catch (error) {
