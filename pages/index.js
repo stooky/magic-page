@@ -119,7 +119,6 @@ const MainContainer = () => {
             console.log("Extracted Company Name: " + companyName);
 
             console.log('Calling Vendasta Automation API');
-            Cookies.set('AGID', 'VALUE');
             const vendastaAutomationResponse = await fetch('/api/vendasta-automation-proxy', {
                 method: 'POST',
                 headers: {
