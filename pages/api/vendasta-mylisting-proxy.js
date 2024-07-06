@@ -88,14 +88,14 @@ export default async function handler(req, res) {
         const publicMyListingUrl = String(vendastaResponse.data.configuration.publicMyListingUrl);
         console.log(chalk.green('iframe URL:', publicMyListingUrl));
 
-                // Set the MyListingURL cookie
-                res.setHeader('Set-Cookie', cookie.serialize('MyListingURL', publicMyListingUrl, {
-                    httpOnly: false,
-                    secure: process.env.NODE_ENV !== 'development',
-                    maxAge: 60 * 60 * 24, // 1 day
-                    sameSite: 'strict',
-                    path: '/',
-                }));
+        // Set the MyListingURL cookie
+        res.setHeader('Set-Cookie', cookie.serialize('MyListingURL', publicMyListingUrl, {
+            httpOnly: true,  // Typically true for security, but can be false if you need client-side access
+            secure: process.env.NODE_ENV === 'production',  // Ensure secure is true in production
+            maxAge: 60 * 60 * 24, // 1 day
+            sameSite: 'strict',
+            path: '/',
+        }));
 
                 // Log the response headers to verify cookie setting
                 console.log(chalk.bgRed('Response Headers:', JSON.stringify(res.getHeaders())));
