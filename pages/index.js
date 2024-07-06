@@ -134,7 +134,7 @@ const MainContainer = () => {
             console.log(chalk.red('Account ID is:', accountID));
 
         // Grab MyListingUrl from Session Storage
-        const iframeUrl = sessionStorage.getItem('myData');
+        const iframeUrl = sessionStorage.getItem('MyListingUrl');
         console.log(iframeUrl);
 
 
