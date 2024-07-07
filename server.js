@@ -28,6 +28,9 @@ app.prepare().then(() => {
     server.use('/api/db-insert-visitor', require('./pages/api/db-insert-visitor'));
     server.use('/api/db-update-visitor', require('./pages/api/db-update-visitor'));
     server.use('/api/db-get-visitor', require('./pages/api/db-get-visitor'));
+        
+    // API routes
+    server.post('/api/db-insert-visitor', dbInsertVisitor);
 
     // Handle requests with Next.js
     server.get('*', (req, res) => {
