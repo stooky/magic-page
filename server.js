@@ -6,7 +6,7 @@ const fs = require('fs');
 const path = require('path');
 const express = require('express');
 const initializeDatabase = require('./components/utils/database'); // Import the database module
-const dbInsertVisitor = require('./pages/api/db-insert-visitor'); // Import the insert visitor API
+const dbInsertVisitor = require('./pages/api/dbInsertVisitor'); // Import the insert visitor API
 
 const dev = process.env.NODE_ENV !== 'production';
 const app = next({ dev });
@@ -26,7 +26,7 @@ app.prepare().then(() => {
     server.use(express.json()); // To parse JSON bodies
         
     // API routes
-    server.post('/api/db-insert-visitor', dbInsertVisitor);
+    server.post('/api/dbInsertVisitor', dbInsertVisitor);
 
     // Handle requests with Next.js
     server.get('*', (req, res) => {

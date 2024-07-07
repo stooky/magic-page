@@ -120,7 +120,7 @@ const getMyListingUrl = async (sessionID) => {
 
         // Insert the visitor data into the database
         try {
-            await axios.post('/api/db-insert-visitor', {
+            await axios.post('/api/dbInsertVisitor', {
                 sessionID: sessionID,
                 email: "EMPTY",
                 website: "EMPTY",
