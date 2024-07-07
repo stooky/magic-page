@@ -12,9 +12,8 @@ export default async function handler(req, res) {
         return res.status(405).json({ message: 'Method not allowed' });
     }
 
-    const { businessId, randomstring } = req.body;
+    const { businessId, sessionId } = req.body;
     const partnerId = "VMF";
-    const sessionId = randomstring;
 
     console.log(chalk.blue('Returned businessId.', businessId));
 
@@ -27,6 +26,7 @@ export default async function handler(req, res) {
     console.log(chalk.red('Calling Vendasta MyListing API'));
     console.log(chalk.green('businessId :', businessId));
     console.log(chalk.green('partnerId :', partnerId));
+    console.log(chalk.green('sessionId :', sessionId));
     const vendastaResponse = await fetch('https://crkid.com/api/vendasta-mylisting-proxy', {
         method: 'POST',
         headers: {

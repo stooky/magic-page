@@ -1,7 +1,7 @@
 import axios from 'axios';
 import jwt from 'jsonwebtoken';
 import chalk from 'chalk';
-
+import dataService from '../../components/utils/dataService'; // Ensure this path is correct
 
 export default async function handler(req, res) {
     console.log(chalk.blue('vendasta-mylisting-proxy.js handler invoked'));
@@ -89,8 +89,10 @@ export default async function handler(req, res) {
         const publicMyListingUrl = String(vendastaResponse.data.configuration.publicMyListingUrl);
         console.log(chalk.green('iframe URL:', publicMyListingUrl));
 
+        // **PERFORM THE DATABASE UPDATE HERE USING publicMyListingUrl***
+        await dataService.updateData(sessionId, publicMyListingUrl);
 
-
+        
         return res.status(200).json(vendastaResponse.data);
     } catch (error) {
         console.error(chalk.blue('Error calling Vendasta API:'));

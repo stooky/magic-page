@@ -25,6 +25,23 @@ const MainContainer = () => {
     // Define the delay function
     const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));    
 
+    // Function to get myListingUrl from the database using sessionID
+const getMyListingUrl = async (sessionID) => {
+    try {
+        const response = await fetch(`/api/db-get-visitor/${sessionID}`);
+        const data = await response.json();
+        if (data.myListingUrl) {
+            return data.myListingUrl;
+        } else {
+            console.error('myListingUrl not found for sessionID:', sessionID);
+            return null;
+        }
+    } catch (error) {
+        console.error('Error fetching myListingUrl:', error);
+        return null;
+    }
+};
+
     useEffect(() => {
         let pollingInterval;
         if (loading) {
@@ -97,6 +114,9 @@ const MainContainer = () => {
 
         await fetch('/api/clear-response', { method: 'POST' });
 
+        const sessionID = Math.random().toString(36).substring(2, 8); // Generate random 6 character alphanumeric string
+        console.log('Generated sessionID:', sessionID);
+
         setLoading(true); // Ensure loading is set to true
         setShowPoll(true);
 
@@ -119,21 +139,28 @@ const MainContainer = () => {
             console.log("Extracted Company Name: " + companyName);
 
             console.log('Calling Vendasta Automation API');
-            const randomString = Math.random().toString(36).slice(2, 12);
 
             const vendastaAutomationResponse = await fetch('/api/vendasta-automation-proxy', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ email, website, company: companyName, randomString })
+                body: JSON.stringify({ email, website, company: companyName, sessionID })
             });
             const vendastaAutomationData = await vendastaAutomationResponse.json();
             console.log('Vendasta Automation API Response:', vendastaAutomationData);
             const accountID = vendastaAutomationData.accountID;
             console.log('Account ID is:', accountID);
 
-            console.log('Retrieved MyListingURL:', publicMyListingUrl);
+            
+            const myListingUrl = await getMyListingUrl(sessionID);
+            if (myListingUrl) {
+                console.log('Fetched myListingUrl:', myListingUrl);
+            } else {
+                console.error('Failed to fetch myListingUrl.');
+            }
+
+
             // Set iframe URL
             setIframeUrl(publicMyListingUrl);
             setShowIframe(true);
