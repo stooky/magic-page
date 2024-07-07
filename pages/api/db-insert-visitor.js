@@ -1,6 +1,6 @@
 const db = require('../../components/utils/database');
 
-export default function handler(req, res) {
+module.exports = function handler(req, res) {
     if (req.method === 'POST') {
         const { sessionID, email, website, companyName, myListingUrl } = req.body;
 
