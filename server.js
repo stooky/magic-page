@@ -23,11 +23,6 @@ app.prepare().then(() => {
     initializeDatabase;
 
     server.use(express.json()); // To parse JSON bodies
-
-    // Use the API routes
-    server.use('/api/db-insert-visitor', require('./pages/api/db-insert-visitor'));
-    server.use('/api/db-update-visitor', require('./pages/api/db-update-visitor'));
-    server.use('/api/db-get-visitor', require('./pages/api/db-get-visitor'));
         
     // API routes
     server.post('/api/db-insert-visitor', dbInsertVisitor);
