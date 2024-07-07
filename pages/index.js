@@ -26,7 +26,7 @@ const MainContainer = () => {
     const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
     // In your index.js or wherever you need to retrieve the data
-    const dataService = require('../components/utils/dataService');
+    const dataService = require('../components/utils/dataservice');
 
     // Database Stuff
     const express = require('express');
