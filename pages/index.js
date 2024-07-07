@@ -49,7 +49,15 @@ const MainContainer = () => {
         return () => clearInterval(pollingInterval);
       }, [loading]);
       
-
+      useEffect(() => {
+        const storedIframeUrl = sessionStorage.getItem('MyListingUrl') || '';
+        if (!storedIframeUrl) {
+            console.error('MyListingUrl is not set in session storage.');
+        } else {
+            console.log(storedIframeUrl);
+            setIframeUrl(storedIframeUrl);
+        }
+    }, []);
 
     const handleOptionChange = (option) => {
         setResponses({
@@ -131,18 +139,19 @@ const MainContainer = () => {
             const accountID = vendastaAutomationData.accountID;
             console.log('Account ID is:', accountID);
 
-        // Grab MyListingUrl from Session Storage
-        const iframeUrl = sessionStorage.getItem('MyListingUrl') || '';
-        if (!iframeUrl) {
-          console.error('MyListingUrl is not set in session storage.');
-        } else {
-          console.log(iframeUrl);
-        }
-        
-
+            // Grab MyListingUrl from Session Storage in useEffect
+            useEffect(() => {
+                const storedIframeUrl = sessionStorage.getItem('MyListingUrl') || '';
+                if (!storedIframeUrl) {
+                    console.error('MyListingUrl is not set in session storage.');
+                } else {
+                    console.log(storedIframeUrl);
+                    setIframeUrl(storedIframeUrl);
+                }
+            }, []);
 
             // Set iframe URL
-            setIframeUrl(iframeUrl);
+            // setIframeUrl(iframeUrl);
             setShowIframe(true);
         } catch (error) {
             console.error('Failed to call the API Stuff:', error);
