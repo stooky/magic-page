@@ -1,7 +1,7 @@
 // api/db-insert-visitor.js
 
 const express = require('express');
-const db = require('../components/utils/database');
+const db = require('../../components/utils/database');
 
 const handler = async (req, res) => {
     if (req.method !== 'POST') {
