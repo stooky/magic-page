@@ -1,12 +1,12 @@
-// pages/api/db-insert-visitor.js
 const db = require('../../components/utils/database');
 
-module.exports = function handler(req, res) {
+export default function handler(req, res) {
     if (req.method === 'POST') {
         const { sessionID, email, website, companyName, myListingUrl } = req.body;
 
         db.run(`INSERT INTO WebsiteVisitors (sessionID, email, website, companyName, myListingUrl) VALUES (?, ?, ?, ?, ?)`, [sessionID, email, website, companyName, myListingUrl], function(err) {
             if (err) {
+                console.error('Error inserting data:', err.message); // Log the error
                 return res.status(500).json({ error: err.message });
             }
             res.json({ message: 'Data inserted', id: this.lastID });
