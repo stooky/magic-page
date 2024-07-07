@@ -1,10 +1,10 @@
 const db = require('./database');
 
-async function insertData(sessionID, email, website, companyName) {
+async function insertData(sessionID, email, website, companyName, Url) {
     return new Promise((resolve, reject) => {
         db.run(
-            `INSERT INTO WebsiteVisitors (sessionID, email, website, companyName) VALUES (?, ?, ?, ?)`,
-            [sessionID, email, website, companyName],
+            `INSERT INTO WebsiteVisitors (sessionID, email, website, companyName, Url) VALUES (?, ?, ?, ?)`,
+            [sessionID, email, website, companyName, Url],
             function (err) {
                 if (err) {
                     return reject(err);

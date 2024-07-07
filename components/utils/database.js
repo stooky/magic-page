@@ -1,6 +1,7 @@
+const chalk = require('chalk'); // Use require instead of import
 const sqlite3 = require('sqlite3').verbose();
 const path = require('path');
-import chalk from 'chalk';
+
 
 const dbPath = path.resolve(__dirname, 'database.sqlite');
 const db = new sqlite3.Database(dbPath, (err) => {

@@ -5,7 +5,7 @@ const dataService = require('../../components/utils/dataService');
 router.post('/', async (req, res) => {
     const { sessionID, email, website, companyName } = req.body;
     try {
-        const result = await dataService.insertData(sessionID, email, website, companyName);
+        const result = await dataService.insertData(sessionID, email, website, companyName, Url);
         res.json(result);
     } catch (error) {
         res.status(500).json({ error: error.message });

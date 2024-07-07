@@ -117,6 +117,21 @@ const getMyListingUrl = async (sessionID) => {
         const sessionID = Math.random().toString(36).substring(2, 8); // Generate random 6 character alphanumeric string
         console.log('Generated sessionID:', sessionID);
 
+                        // Insert the visitor data into the database
+                        try {
+                            await axios.post('/api/db-insert-visitor', {
+                                sessionID,
+                                "EMPTY",
+                                "EMPTY",
+                                "EMPTY",
+                                "EMPTY"
+                            });
+                            console.log('Visitor inserted successfully.');
+                        } catch (error) {
+                            console.error('Error inserting visitor:', error);
+                        }
+                        
+
         setLoading(true); // Ensure loading is set to true
         setShowPoll(true);
 
