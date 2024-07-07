@@ -12,9 +12,10 @@ export default async function handler(req, res) {
         return res.status(405).json({ message: 'Method not allowed' });
     }
 
-    const { businessId } = req.body;
+    const { businessId, randomstring } = req.body;
     const partnerId = "VMF";
-    
+    const sessionId = randomstring;
+
     console.log(chalk.blue('Returned businessId.', businessId));
 
     if (!businessId) {
@@ -31,7 +32,7 @@ export default async function handler(req, res) {
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ partnerId, businessId })
+        body: JSON.stringify({ partnerId, businessId, sessionId })
     });
     const vendastaData = await vendastaResponse.json();
     console.log('Vendasta MyListingAPI Response:', vendastaData);

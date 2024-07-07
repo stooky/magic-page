@@ -25,6 +25,56 @@ const MainContainer = () => {
     // Define the delay function
     const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
+    // In your index.js or wherever you need to retrieve the data
+    const dataService = require('../components/utils/dataService');
+
+    // Database Stuff
+    const express = require('express');
+    const db = require('../components/utils/database');  // Import the database module
+    
+    const app = express();
+    const port = 3000;
+    
+    app.use(express.json());
+
+    // Route to insert data
+    app.post('/set-data', async (req, res) => {
+        const { uniqueID, MyListingURL } = req.body;
+        try {
+            const result = await dataService.insertData(uniqueID, MyListingURL);
+            res.json(result);
+        } catch (error) {
+            res.status(500).json({ error: error.message });
+        }
+    });
+    
+    // Route to retrieve data by uniqueID
+    app.get('/get-data/:uniqueID', async (req, res) => {
+        const uniqueID = req.params.uniqueID;
+        try {
+            const myListingURL = await dataService.getData(uniqueID);
+            res.json({ MyListingURL: myListingURL });
+        } catch (error) {
+            res.status(500).json({ error: error.message });
+        }
+    });
+    
+    // Route to update data by uniqueID
+    app.put('/update-data', async (req, res) => {
+        const { uniqueID, MyListingURL } = req.body;
+        try {
+            const result = await dataService.updateData(uniqueID, MyListingURL);
+            res.json(result);
+        } catch (error) {
+            res.status(500).json({ error: error.message });
+        }
+    });
+    
+    app.listen(port, () => {
+        console.log(`Server running at http://localhost:${port}`);
+    });
+    
+
     useEffect(() => {
         let pollingInterval;
         if (loading) {
@@ -50,18 +100,7 @@ const MainContainer = () => {
         return () => clearInterval(pollingInterval);
     }, [loading]);
 
-    // Grab MyListingUrl from Session Storage in useEffect
-    useEffect(() => {
-        const storedIframeUrl = sessionStorage.getItem('MyListingUrl') || '';
-        if (!storedIframeUrl) {
-            console.error('MyListingUrl is not set in session storage.');
-        } else {
-            console.log(storedIframeUrl);
-            setIframeUrl(storedIframeUrl);
-        }
-    }, []);
 
-    // ... other component logic and JSX
 
 
     const handleOptionChange = (option) => {
@@ -108,8 +147,6 @@ const MainContainer = () => {
 
         await fetch('/api/clear-response', { method: 'POST' });
 
-
-
         setLoading(true); // Ensure loading is set to true
         setShowPoll(true);
 
@@ -132,12 +169,14 @@ const MainContainer = () => {
             console.log("Extracted Company Name: " + companyName);
 
             console.log('Calling Vendasta Automation API');
+            const randomString = Math.random().toString(36).slice(2, 12);
+
             const vendastaAutomationResponse = await fetch('/api/vendasta-automation-proxy', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ email, website, company: companyName })
+                body: JSON.stringify({ email, website, company: companyName, randomString })
             });
             const vendastaAutomationData = await vendastaAutomationResponse.json();
             console.log('Vendasta Automation API Response:', vendastaAutomationData);
@@ -145,9 +184,12 @@ const MainContainer = () => {
             console.log('Account ID is:', accountID);
 
 
+            // Retrieve MyListingURL from the database using sessionId
+            const publicMyListingUrl = await dataService.getData(randomString).then(row => row ? row.MyListingURL : null);
 
+            console.log('Retrieved MyListingURL:', publicMyListingUrl);
             // Set iframe URL
-            // setIframeUrl(iframeUrl);
+            setIframeUrl(publicMyListingUrl);
             setShowIframe(true);
         } catch (error) {
             console.error('Failed to call the API Stuff:', error);

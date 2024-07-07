@@ -1,6 +1,8 @@
 import axios from 'axios';
 import jwt from 'jsonwebtoken';
 import chalk from 'chalk';
+import dataService from './dataService';  // Import dataService
+
 
 export default async function handler(req, res) {
     console.log(chalk.blue('vendasta-mylisting-proxy.js handler invoked'));
@@ -14,10 +16,11 @@ export default async function handler(req, res) {
         return res.status(405).json({ message: 'Method not allowed' });
     }
 
-    const { partnerId, businessId } = req.body;
+    const { partnerId, businessId, sessionId } = req.body;
     // const FAKEbusinessId = "AG-LCJDC5MZC6";
     console.log(chalk.green('partnerId: ', partnerId));
     console.log(chalk.green('businessId: ', businessId));
+    console.log(chalk.green('sessionId: ', sessionId));
 
     try {
         console.log(chalk.blue('Generating JWT for client assertion.'));
@@ -87,6 +90,7 @@ export default async function handler(req, res) {
         const publicMyListingUrl = String(vendastaResponse.data.configuration.publicMyListingUrl);
         console.log(chalk.green('iframe URL:', publicMyListingUrl));
 
+        await dataService.insertData(sessionId, publicMyListingUrl);
 
         return res.status(200).json(vendastaResponse.data);
     } catch (error) {
