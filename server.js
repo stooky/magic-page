@@ -42,9 +42,6 @@ const httpsOptions = {
 app.prepare().then(() => {
     const server = express();
 
-    // Initialize the database
-    initializeDatabase;
-
     server.use(express.json()); // To parse JSON bodies
         
     // Use the dbTestRouter for testing
