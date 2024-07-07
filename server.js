@@ -6,6 +6,10 @@ const fs = require('fs');
 const path = require('path');
 const express = require('express');
 
+// Importing the API routes
+const insertVisitor = require('./pages/api/db-insert-visitor');
+const updateVisitor = require('./pages/api/db-update-visitor');
+const getVisitor = require('./pages/api/db-get-visitor');
 
 const dev = process.env.NODE_ENV !== 'production';
 const app = next({ dev });
@@ -18,6 +22,19 @@ const httpsOptions = {
 
 app.prepare().then(() => {
     const server = express();
+
+    server.use(express.json()); // To parse JSON bodies
+
+    // Use the API routes
+    server.use('/api/insert-visitor', insertVisitor);
+    server.use('/api/update-visitor', updateVisitor);
+    server.use('/api/get-visitor', getVisitor);
+
+    // Handle requests with Next.js
+    server.get('*', (req, res) => {
+        const parsedUrl = parse(req.url, true);
+        handle(req, res, parsedUrl);
+    });
 
     createServer(httpsOptions, (req, res) => {
         const parsedUrl = parse(req.url, true);
