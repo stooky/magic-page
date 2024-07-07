@@ -1,12 +1,13 @@
 const sqlite3 = require('sqlite3').verbose();
 const path = require('path');
+import chalk from 'chalk';
 
 const dbPath = path.resolve(__dirname, 'database.sqlite');
 const db = new sqlite3.Database(dbPath, (err) => {
     if (err) {
-        console.error('Could not connect to database', err);
+        console.log(chalk.yellow('Could not connect to database', err));
     } else {
-        console.log('Connected to database');
+        console.log(chalk.yellow('Connected to database'));
     }
 });
 
@@ -21,9 +22,9 @@ db.serialize(() => {
         )
     `, (err) => {
         if (err) {
-            console.error('Could not create table', err);
+            console.log(chalk.yellow('Could not create table', err));
         } else {
-            console.log('Table created or verified');
+            console.log(chalk.yellow('Table created or verified'));
         }
     });
 });

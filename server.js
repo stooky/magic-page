@@ -5,6 +5,7 @@ const next = require('next');
 const fs = require('fs');
 const path = require('path');
 const express = require('express');
+const initializeDatabase = require('./components/utils/database'); // Import the database module
 
 const dev = process.env.NODE_ENV !== 'production';
 const app = next({ dev });
@@ -17,6 +18,9 @@ const httpsOptions = {
 
 app.prepare().then(() => {
     const server = express();
+
+    // Initialize the database
+    initializeDatabase;
 
     server.use(express.json()); // To parse JSON bodies
 
