@@ -1,7 +1,6 @@
 import axios from 'axios';
 import jwt from 'jsonwebtoken';
 import chalk from 'chalk';
-import dataService from './dataService';  // Import dataService
 
 
 export default async function handler(req, res) {
@@ -90,7 +89,7 @@ export default async function handler(req, res) {
         const publicMyListingUrl = String(vendastaResponse.data.configuration.publicMyListingUrl);
         console.log(chalk.green('iframe URL:', publicMyListingUrl));
 
-        await dataService.insertData(sessionId, publicMyListingUrl);
+
 
         return res.status(200).json(vendastaResponse.data);
     } catch (error) {

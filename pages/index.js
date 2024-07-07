@@ -23,57 +23,7 @@ const MainContainer = () => {
     const [enteredWebsite, setEnteredWebsite] = useState('');
 
     // Define the delay function
-    const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
-
-    // In your index.js or wherever you need to retrieve the data
-    const dataService = require('../components/utils/dataservice');
-
-    // Database Stuff
-    const express = require('express');
-    const db = require('../components/utils/database');  // Import the database module
-    
-    const app = express();
-    const port = 3000;
-    
-    app.use(express.json());
-
-    // Route to insert data
-    app.post('/set-data', async (req, res) => {
-        const { uniqueID, MyListingURL } = req.body;
-        try {
-            const result = await dataService.insertData(uniqueID, MyListingURL);
-            res.json(result);
-        } catch (error) {
-            res.status(500).json({ error: error.message });
-        }
-    });
-    
-    // Route to retrieve data by uniqueID
-    app.get('/get-data/:uniqueID', async (req, res) => {
-        const uniqueID = req.params.uniqueID;
-        try {
-            const myListingURL = await dataService.getData(uniqueID);
-            res.json({ MyListingURL: myListingURL });
-        } catch (error) {
-            res.status(500).json({ error: error.message });
-        }
-    });
-    
-    // Route to update data by uniqueID
-    app.put('/update-data', async (req, res) => {
-        const { uniqueID, MyListingURL } = req.body;
-        try {
-            const result = await dataService.updateData(uniqueID, MyListingURL);
-            res.json(result);
-        } catch (error) {
-            res.status(500).json({ error: error.message });
-        }
-    });
-    
-    app.listen(port, () => {
-        console.log(`Server running at http://localhost:${port}`);
-    });
-    
+    const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));    
 
     useEffect(() => {
         let pollingInterval;
@@ -182,10 +132,6 @@ const MainContainer = () => {
             console.log('Vendasta Automation API Response:', vendastaAutomationData);
             const accountID = vendastaAutomationData.accountID;
             console.log('Account ID is:', accountID);
-
-
-            // Retrieve MyListingURL from the database using sessionId
-            const publicMyListingUrl = await dataService.getData(randomString).then(row => row ? row.MyListingURL : null);
 
             console.log('Retrieved MyListingURL:', publicMyListingUrl);
             // Set iframe URL
