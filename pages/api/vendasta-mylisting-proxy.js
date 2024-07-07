@@ -87,7 +87,6 @@ export default async function handler(req, res) {
         const publicMyListingUrl = String(vendastaResponse.data.configuration.publicMyListingUrl);
         console.log(chalk.green('iframe URL:', publicMyListingUrl));
 
-        sessionStorage.setItem('myListingUrl', publicMyListingUrl)
 
         return res.status(200).json(vendastaResponse.data);
     } catch (error) {

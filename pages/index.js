@@ -28,28 +28,30 @@ const MainContainer = () => {
     useEffect(() => {
         let pollingInterval;
         if (loading) {
-          setCallbackReceived(false);
-          pollingInterval = setInterval(async () => {
-            try {
-              const response = await fetch('/api/get-latest-response');
-              const data = await response.json();
-              if (data.response && data.response.status) {
-                setZapierResponse(data.response);
-                setLoading(false);
-                setCallbackReceived(true);
-                clearInterval(pollingInterval);
-                setShowPoll(false);
-              }
-            } catch (error) {
-              console.error('Error polling latest response:', error);
-            }
-          }, 2000);
+            setCallbackReceived(false);
+            pollingInterval = setInterval(async () => {
+                try {
+                    const response = await fetch('/api/get-latest-response');
+                    const data = await response.json();
+                    if (data.response && data.response.status) {
+                        setZapierResponse(data.response);
+                        setLoading(false);
+                        setCallbackReceived(true);
+                        clearInterval(pollingInterval);
+                        setShowPoll(false);
+                    }
+                } catch (error) {
+                    console.error('Error polling latest response:', error);
+                }
+            }, 2000);
         }
-      
+
+        // Cleanup function to clear interval on component unmount
         return () => clearInterval(pollingInterval);
-      }, [loading]);
-      
-      useEffect(() => {
+    }, [loading]);
+
+    // Grab MyListingUrl from Session Storage in useEffect
+    useEffect(() => {
         const storedIframeUrl = sessionStorage.getItem('MyListingUrl') || '';
         if (!storedIframeUrl) {
             console.error('MyListingUrl is not set in session storage.');
@@ -58,6 +60,9 @@ const MainContainer = () => {
             setIframeUrl(storedIframeUrl);
         }
     }, []);
+
+    // ... other component logic and JSX
+
 
     const handleOptionChange = (option) => {
         setResponses({
@@ -139,16 +144,7 @@ const MainContainer = () => {
             const accountID = vendastaAutomationData.accountID;
             console.log('Account ID is:', accountID);
 
-            // Grab MyListingUrl from Session Storage in useEffect
-            useEffect(() => {
-                const storedIframeUrl = sessionStorage.getItem('MyListingUrl') || '';
-                if (!storedIframeUrl) {
-                    console.error('MyListingUrl is not set in session storage.');
-                } else {
-                    console.log(storedIframeUrl);
-                    setIframeUrl(storedIframeUrl);
-                }
-            }, []);
+
 
             // Set iframe URL
             // setIframeUrl(iframeUrl);
