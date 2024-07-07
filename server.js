@@ -19,9 +19,6 @@ app.prepare().then(() => {
     const server = express();
 
     server.use(express.json()); // To parse JSON bodies
-        
-    // Use the dbTestRouter for testing
-    server.use('./components/utils/database', dbTestRouter);
 
     // Handle requests with Next.js
     server.get('*', (req, res) => {
