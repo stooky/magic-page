@@ -6,6 +6,7 @@ const fs = require('fs');
 const path = require('path');
 const express = require('express');
 const initializeDatabase = require('./components/utils/database'); // Import the database module
+const dbInsertVisitor = require('./pages/api/db-insert-visitor'); // Import the insert visitor API
 
 const dev = process.env.NODE_ENV !== 'production';
 const app = next({ dev });
