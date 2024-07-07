@@ -127,7 +127,7 @@ const getMyListingUrl = async (sessionID) => {
                 companyName: "EMPTY",
                 myListingUrl: "EMPTY"
             });
-            console.log('Visitor inserted successfully.');
+            console.log('Visitor inserted successfully.', sessionID, email, website, companyName, myListingUrl );
         } catch (error) {
             console.error('Error inserting visitor:', error);
         }

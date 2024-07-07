@@ -12,6 +12,7 @@ export default async function handler(req, res) {
                 return res.status(500).json({ error: err.message });
             }
             res.json({ message: 'Data inserted', id: this.lastID });
+            console.log(chalk.yellow('Data inserted', id: this.lastID));
         });
     } else {
         res.status(405).json({ message: 'Method not allowed' });
