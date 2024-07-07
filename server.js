@@ -5,12 +5,34 @@ const next = require('next');
 const fs = require('fs');
 const path = require('path');
 const express = require('express');
-const initializeDatabase = require('./components/utils/database'); // Import the database module
-// const dbInsertVisitor = require('./pages/api/dbInsertVisitor'); // Import the insert visitor API
+const { Pool } = require('pg'); // Import the Pool class from pg
 
 const dev = process.env.NODE_ENV !== 'production';
 const app = next({ dev });
 const handle = app.getRequestHandler();
+
+// PostgreSQL connection configuration using environment variables
+const pool = new Pool({
+    user: process.env.DB_USER,
+    host: 'localhost',
+    database: process.env.DB,
+    password: process.env.DB_PASSWORD,
+    port: 5432, // Default PostgreSQL port
+});
+
+// Example route to test the database connection
+const dbTestRouter = express.Router();
+dbTestRouter.get('/db-test', async (req, res) => {
+    try {
+        const client = await pool.connect();
+        const result = await client.query('SELECT NOW()');
+        res.json(result.rows);
+        client.release();
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Error connecting to the database');
+    }
+});
 
 const httpsOptions = {
     key: fs.readFileSync('/etc/letsencrypt/live/crkid.com-0001/privkey.pem'),
@@ -25,8 +47,8 @@ app.prepare().then(() => {
 
     server.use(express.json()); // To parse JSON bodies
         
-    // API routes
-    // server.post('/api/dbInsertVisitor', dbInsertVisitor);
+    // Use the dbTestRouter for testing
+    server.use('/api', dbTestRouter);
 
     // Handle requests with Next.js
     server.get('*', (req, res) => {
