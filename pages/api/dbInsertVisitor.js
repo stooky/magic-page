@@ -1,3 +1,4 @@
+import axios from 'axios';
 const db = require('../../components/utils/database');
 
 export default async function handler(req, res) {
