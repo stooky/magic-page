@@ -4,6 +4,9 @@ const path = require('path');
 
 
 const dbPath = path.resolve(__dirname, 'database.sqlite');
+console.log(chalk.yellow('Database file location:', dbPath)); // Log the database file location
+
+
 const db = new sqlite3.Database(dbPath, (err) => {
     if (err) {
         console.log(chalk.yellow('Could not connect to database', err));
