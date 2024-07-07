@@ -1,15 +1,17 @@
-const express = require('express');
-const router = express.Router();
+const db = require('../../components/utils/database');
 
+module.exports = function handler(req, res) {
+    if (req.method === 'POST') {
+        const { sessionID, email, website, companyName, myListingUrl } = req.body;
 
-router.get('/:sessionID', async (req, res) => {
-    const sessionID = req.params.sessionID;
-    try {
-        const myListingUrl = await dataService.getData(sessionID);
-        res.json({ myListingUrl });
-    } catch (error) {
-        res.status(500).json({ error: error.message });
+        db.run(`INSERT INTO WebsiteVisitors (sessionID, email, website, companyName, myListingUrl) VALUES (?, ?, ?, ?, ?)`, [sessionID, email, website, companyName, myListingUrl], function(err) {
+            if (err) {
+                console.error('Error inserting data:', err.message); // Log the error
+                return res.status(500).json({ error: err.message });
+            }
+            res.json({ message: 'Data inserted', id: this.lastID });
+        });
+    } else {
+        res.status(405).json({ message: 'Method not allowed' });
     }
-});
-
-module.exports = router;
+};
