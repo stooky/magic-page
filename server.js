@@ -6,11 +6,6 @@ const fs = require('fs');
 const path = require('path');
 const express = require('express');
 
-// Importing the API routes
-const insertVisitor = require('./pages/api/db-insert-visitor');
-const updateVisitor = require('./pages/api/db-update-visitor');
-const getVisitor = require('./pages/api/db-get-visitor');
-
 const dev = process.env.NODE_ENV !== 'production';
 const app = next({ dev });
 const handle = app.getRequestHandler();
@@ -26,9 +21,9 @@ app.prepare().then(() => {
     server.use(express.json()); // To parse JSON bodies
 
     // Use the API routes
-    server.use('/api/insert-visitor', insertVisitor);
-    server.use('/api/update-visitor', updateVisitor);
-    server.use('/api/get-visitor', getVisitor);
+    server.use('/api/db-insert-visitor', require('./pages/api/db-insert-visitor'));
+    server.use('/api/db-update-visitor', require('./pages/api/db-update-visitor'));
+    server.use('/api/db-get-visitor', require('./pages/api/db-get-visitor'));
 
     // Handle requests with Next.js
     server.get('*', (req, res) => {
