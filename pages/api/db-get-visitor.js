@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const dataService = require('../../components/utils/dataService');
+
 
 router.get('/:sessionID', async (req, res) => {
     const sessionID = req.params.sessionID;

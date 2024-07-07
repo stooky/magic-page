@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const dataService = require('../../components/utils/dataService');
+
 
 router.post('/', async (req, res) => {
     const { sessionID, myListingUrl } = req.body;
