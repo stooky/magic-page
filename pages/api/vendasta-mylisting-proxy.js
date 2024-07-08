@@ -88,6 +88,7 @@ export default async function handler(req, res) {
         console.log(chalk.blue(JSON.stringify(vendastaResponse.data, null, 2)));
         const publicMyListingUrl = String(vendastaResponse.data.configuration.publicMyListingUrl);
         console.log(chalk.green('iframe URL:', publicMyListingUrl));
+        console.log(chalk.green('sessionId:', sessionId));
 
             // Update the visitor data with MyListingUrl
             try {
