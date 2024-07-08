@@ -119,22 +119,6 @@ const getMyListingUrl = async (sessionID) => {
         console.log('Generated sessionID:', sessionID);
 
 
-        // Insert the visitor data into the database
-        try {
-            await axios.post('/api/dbInsertVisitor', {
-                sessionID: sessionID,
-                email: "EMPTY",
-                website: "EMPTY",
-                companyName: "EMPTY",
-                myListingUrl: "EMPTY"
-            });
-            console.log('Visitor inserted successfully.', sessionID );
-        } catch (error) {
-            console.error('Error inserting visitor:', error);
-        }
-
-                        
-
         setLoading(true); // Ensure loading is set to true
         setShowPoll(true);
 
@@ -155,6 +139,20 @@ const getMyListingUrl = async (sessionID) => {
 
             const companyName = response && response.message ? extractCompanyName(response.message, website) : `magic-page-company-${website.replace(/^https?:\/\//, '').replace(/\./g, '-')}`;
             console.log("Extracted Company Name: " + companyName);
+
+            // Insert the visitor data into the database
+            try {
+                await axios.post('/api/dbInsertVisitor', {
+                    sessionID: sessionID,
+                    email: email,
+                    website: website,
+                    companyName: companyName,
+                    myListingUrl: "EMPTY"
+                });
+                console.log('Visitor inserted successfully.', sessionID );
+            } catch (error) {
+                console.error('Error inserting visitor:', error);
+            }
 
             console.log('Calling Vendasta Automation API');
 
