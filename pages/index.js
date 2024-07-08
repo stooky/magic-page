@@ -280,6 +280,15 @@ const MainContainer = () => {
                         )}
                     </div>
                 )}
+                {showPoll && (
+                    <PollComponent
+                        currentScreen={currentScreen}
+                        currentScreenIndex={currentScreenIndex}
+                        responses={responses}
+                        handleOptionChange={handleOptionChange}
+                    />
+                )}
+
             </div>
             <div className="info-section">
                 <InfoDisplayComponent
