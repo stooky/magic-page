@@ -89,8 +89,16 @@ export default async function handler(req, res) {
         const publicMyListingUrl = String(vendastaResponse.data.configuration.publicMyListingUrl);
         console.log(chalk.green('iframe URL:', publicMyListingUrl));
 
-        // **PERFORM THE DATABASE UPDATE HERE USING publicMyListingUrl***
-        // await dataService.updateData(sessionId, publicMyListingUrl);
+            // Update the visitor data with MyListingUrl
+            try {
+                await axios.post('/api/dbUpdateVisitor', {
+                    sessionID: sessionId,
+                    myListingUrl: publicMyListingUrl
+                });
+                console.log('Visitor inserted successfully.', sessionID );
+            } catch (error) {
+                console.error('Error inserting visitor:', error);
+            }
 
         
         return res.status(200).json(vendastaResponse.data);
