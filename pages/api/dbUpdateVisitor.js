@@ -2,7 +2,7 @@
 const pool = require('../../components/utils/database');
 
 export default async function handler(req, res) {
-    if (req.method === 'PUT') {
+    if (req.method === 'POST') {
         const { sessionID, myListingUrl } = req.body;
 
         try {

@@ -92,11 +92,11 @@ export default async function handler(req, res) {
 
             // Update the visitor data with MyListingUrl
             try {
-                await axios.put('https://crkid.com/api/dbUpdateVisitor', {
+                await axios.post('https://crkid.com/api/dbUpdateVisitor', {
                     sessionID: sessionId,
                     myListingUrl: publicMyListingUrl
                 });
-                console.log('Visitor inserted successfully.', sessionID );
+                console.log('Visitor inserted successfully.', sessionId, publicMyListingUrl );
             } catch (error) {
                 console.error('Error inserting visitor:', error);
             }
