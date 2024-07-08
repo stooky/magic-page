@@ -1,5 +1,6 @@
 // db.js
 const { Pool } = require('pg');
+const express = require('express');
 
 const pool = new Pool({
     user: process.env.DB_USER,
