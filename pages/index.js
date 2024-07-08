@@ -174,19 +174,34 @@ const MainContainer = () => {
             console.log('Account ID is:', accountID);
 
             
-            fetchMyListingUrl(sessionID).then(myListingUrl => {
-                if (myListingUrl) {
-                    // Use myListingUrl in your program
-                    console.log('Fetched URL:', myListingUrl);
-                } else {
-                    console.log('No URL found or error occurred');
-                }
-            });
+            const startTime = Date.now();
+            const oneMinute = 60000;
 
+            const pollForMyListingUrl = async () => {
+                let myListingUrl = null;
+                const pollingInterval = setInterval(async () => {
+                    if (Date.now() - startTime > oneMinute) {
+                        clearInterval(pollingInterval);
+                        console.error('Polling timed out.');
+                        return;
+                    }
 
-            // Set iframe URL
-            setIframeUrl(myListingUrl);
-            setShowIframe(true);
+                    myListingUrl = await fetchMyListingUrl(sessionID);
+
+                    if (myListingUrl && myListingUrl !== 'EMPTY') {
+                        clearInterval(pollingInterval);
+                        setIframeUrl(myListingUrl);
+                        setShowIframe(true);
+                        console.log('Fetched URL:', myListingUrl);
+                    } else {
+                        console.log('Waiting for URL to be updated...');
+                    }
+                }, 2000);
+            };
+
+            await pollForMyListingUrl();
+
+        
         } catch (error) {
             console.error('Failed to call the API Stuff:', error);
             setZapierResponse({ status: 'error', message: `Failed to call the API stuff: ${error.message}` });
