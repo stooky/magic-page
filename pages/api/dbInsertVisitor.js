@@ -1,5 +1,5 @@
 // pages/api/dbInsertVisitor.js
-const pool = require('../../server');
+const pool = require('../../components/utils/database');
 
 export default async function handler(req, res) {
     if (req.method === 'POST') {
