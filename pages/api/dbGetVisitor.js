@@ -7,7 +7,7 @@ export default async function handler(req, res) {
 
         try {
             const query = `
-                SELECT * FROM WebsiteVisitors WHERE sessionID = $1;
+                SELECT mylistingurl FROM WebsiteVisitors WHERE sessionID = $1;
             `;
             const values = [sessionID];
             const result = await pool.query(query, values);

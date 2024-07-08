@@ -27,21 +27,26 @@ const MainContainer = () => {
     const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));    
 
     // Function to get myListingUrl from the database using sessionID
-const getMyListingUrl = async (sessionID) => {
-    try {
-        const response = await fetch(`/api/db-get-visitor/${sessionID}`);
-        const data = await response.json();
-        if (data.myListingUrl) {
-            return data.myListingUrl;
-        } else {
-            console.error('myListingUrl not found for sessionID:', sessionID);
+    async function fetchMyListingUrl(sessionID) {
+        try {
+            const response = await axios.get('https://crkid.com/api/dbGetVisitor', {
+                params: { sessionID: sessionID }
+            });
+    
+            if (response.status === 200) {
+                const myListingUrl = response.data.data.mylistingurl;
+                console.log('My Listing URL:', myListingUrl);
+                // Use the myListingUrl variable in your program
+                return myListingUrl;
+            } else {
+                console.error('No data found for the given sessionID');
+                return null;
+            }
+        } catch (error) {
+            console.error('Error fetching data:', error.message);
             return null;
         }
-    } catch (error) {
-        console.error('Error fetching myListingUrl:', error);
-        return null;
     }
-};
 
     useEffect(() => {
         let pollingInterval;
@@ -169,16 +174,18 @@ const getMyListingUrl = async (sessionID) => {
             console.log('Account ID is:', accountID);
 
             
-            const myListingUrl = await getMyListingUrl(sessionID);
-            if (myListingUrl) {
-                console.log('Fetched myListingUrl:', myListingUrl);
-            } else {
-                console.error('Failed to fetch myListingUrl.');
-            }
+            fetchMyListingUrl(sessionID).then(myListingUrl => {
+                if (myListingUrl) {
+                    // Use myListingUrl in your program
+                    console.log('Fetched URL:', myListingUrl);
+                } else {
+                    console.log('No URL found or error occurred');
+                }
+            });
 
 
             // Set iframe URL
-            setIframeUrl(publicMyListingUrl);
+            setIframeUrl(myListingUrl);
             setShowIframe(true);
         } catch (error) {
             console.error('Failed to call the API Stuff:', error);
