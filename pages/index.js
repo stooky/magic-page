@@ -22,10 +22,20 @@ const MainContainer = () => {
     const [showIframe, setShowIframe] = useState(false);
     const [formVisible, setFormVisible] = useState(true);
     const [enteredWebsite, setEnteredWebsite] = useState('');
+    const [messages, setMessages] = useState([]); // Hold parsed messages from Zapier
+    const [currentMessageIndex, setCurrentMessageIndex] = useState(0); // Keep track of where we are in the message index
 
     // Define the delay function
     const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));    
 
+    // Function to strip our stuff from the Zapier message
+    const processZapierResponse = (response) => {
+        const strippedText = response.replace(/<[^>]*>?/gm, ''); // Remove HTML tags
+        const messageItems = strippedText.match(/\d+\.\s*(.*?)(?=\d+\.\s*|\s*$)/g).map(item => item.replace(/^\d+\.\s*/, ''));
+        return messageItems;
+    };
+
+    
     // Function to get myListingUrl from the database using sessionID
     async function fetchMyListingUrl(sessionID) {
         try {
@@ -48,6 +58,18 @@ const MainContainer = () => {
         }
     }
 
+    // Loop through our messages.
+    useEffect(() => {
+        if (messages.length > 0) {
+            const interval = setInterval(() => {
+                setCurrentMessageIndex(prevIndex => (prevIndex + 1) % messages.length);
+            }, 5000); // Change message every 5 seconds
+    
+            return () => clearInterval(interval);
+        }
+    }, [messages]);
+
+    
     useEffect(() => {
         let pollingInterval;
         if (loading) {
@@ -58,6 +80,8 @@ const MainContainer = () => {
                     const data = await response.json();
                     if (data.response && data.response.status) {
                         setZapierResponse(data.response);
+                        const messageItems = processZapierResponse(data.response.message);
+                        setMessages(messageItems);
                         setLoading(false);
                         setCallbackReceived(true);
                         clearInterval(pollingInterval);
@@ -68,10 +92,11 @@ const MainContainer = () => {
                 }
             }, 2000);
         }
-
+    
         // Cleanup function to clear interval on component unmount
         return () => clearInterval(pollingInterval);
     }, [loading]);
+    
 
 
 
@@ -170,9 +195,6 @@ const MainContainer = () => {
             });
             const vendastaAutomationData = await vendastaAutomationResponse.json();
             console.log('Vendasta Automation API Response:', vendastaAutomationData);
-            const accountID = vendastaAutomationData.accountID;
-            console.log('Account ID is:', accountID);
-
             
             const startTime = Date.now();
             const oneMinute = 70000;
@@ -241,17 +263,22 @@ const MainContainer = () => {
                     <div className="building-message">
                         Building AI Employee for {enteredWebsite}
                         {zapierResponse && (
-                            <div className="response" dangerouslySetInnerHTML={{ __html: formatResponse(zapierResponse) }}></div>
+                            <div className="response">
+                                {messages.length > 0 && (
+                                    <div>
+                                        {messages.map((message, index) => (
+                                            <div
+                                                key={index}
+                                                style={{ display: index === currentMessageIndex ? 'block' : 'none', transition: 'opacity 1s' }}
+                                            >
+                                                {message}
+                                            </div>
+                                        ))}
+                                    </div>
+                                )}
+                            </div>
                         )}
                     </div>
-                )}
-                {showPoll && (
-                    <PollComponent
-                        currentScreen={currentScreen}
-                        currentScreenIndex={currentScreenIndex}
-                        responses={responses}
-                        handleOptionChange={handleOptionChange}
-                    />
                 )}
             </div>
             <div className="info-section">
