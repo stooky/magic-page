@@ -91,7 +91,7 @@ export default async function handler(req, res) {
 
             // Update the visitor data with MyListingUrl
             try {
-                await axios.post('https://crkid.com/api/dbUpdateVisitor', {
+                await axios.put('https://crkid.com/api/dbUpdateVisitor', {
                     sessionID: sessionId,
                     myListingUrl: publicMyListingUrl
                 });
