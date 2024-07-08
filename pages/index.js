@@ -175,7 +175,7 @@ const MainContainer = () => {
 
             
             const startTime = Date.now();
-            const oneMinute = 60000;
+            const oneMinute = 70000;
 
             const pollForMyListingUrl = async () => {
                 let myListingUrl = null;
@@ -196,7 +196,7 @@ const MainContainer = () => {
                     } else {
                         console.log('Waiting for URL to be updated...');
                     }
-                }, 2000);
+                }, 5000);
             };
 
             await pollForMyListingUrl();
