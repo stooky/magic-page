@@ -262,21 +262,28 @@ const MainContainer = () => {
                 ) : (
                     <div className="building-message">
                         Building AI Employee for {enteredWebsite}
-                        {zapierResponse && (
-                            <div className="response">
-                                {messages.length > 0 && (
-                                    <div>
-                                        {messages.map((message, index) => (
-                                            <div
-                                                key={index}
-                                                style={{ display: index === currentMessageIndex ? 'block' : 'none', transition: 'opacity 1s' }}
-                                            >
-                                                {message}
-                                            </div>
-                                        ))}
-                                    </div>
-                                )}
+                        {showIframe ? (
+                            <div className="ai-employee-message">
+                                Here is your AI Employee
+                                <div className="arrow">&rarr;</div>
                             </div>
+                        ) : (
+                            zapierResponse && (
+                                <div className="response">
+                                    {messages.length > 0 && (
+                                        <div>
+                                            {messages.map((message, index) => (
+                                                <div
+                                                    key={index}
+                                                    style={{ display: index === currentMessageIndex ? 'block' : 'none', transition: 'opacity 1s' }}
+                                                >
+                                                    {message}
+                                                </div>
+                                            ))}
+                                        </div>
+                                    )}
+                                </div>
+                            )
                         )}
                     </div>
                 )}
@@ -288,7 +295,6 @@ const MainContainer = () => {
                         handleOptionChange={handleOptionChange}
                     />
                 )}
-
             </div>
             <div className="info-section">
                 <InfoDisplayComponent
@@ -329,9 +335,21 @@ const MainContainer = () => {
                     color: #007BFF; /* Appealing blue color */
                     font-weight: bold; /* Bold font */
                 }
+                .ai-employee-message {
+                    margin-top: 20px;
+                    font-family: sans-serif;
+                    font-size: 48px;
+                    color: #FF0000; /* Appealing red color */
+                    font-weight: bold;
+                }
+                .arrow {
+                    font-size: 48px;
+                    color: #FF0000; /* Appealing red color */
+                    font-weight: bold;
+                }
             `}</style>
         </div>
     );
-};
+};    
 
 export default MainContainer;
