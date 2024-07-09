@@ -304,9 +304,6 @@ const MainContainer = () => {
                     showIframe={showIframe}
                     iframeUrl={iframeUrl}
                 />
-                <div className="overlay-gif">
-                    <img src={gifPath} alt="Overlay GIF" />
-                </div>
             </div>
         </div>
         <style jsx>{`
@@ -328,6 +325,7 @@ const MainContainer = () => {
                 flex: 1;
                 padding-left: 10px;
                 position: relative;
+                width: 50%
             }
             .building-message {
                 margin-top: 20px;
@@ -346,7 +344,7 @@ const MainContainer = () => {
                 margin-top: 20px;
                 font-family: sans-serif;
                 font-size: 48px;
-                color: #FF0000; /* Appealing red color */
+                color: #00FF00; /* Appealing red color */
                 font-weight: bold;
             }
             .arrow {
@@ -378,5 +376,10 @@ const MainContainer = () => {
     );
 };    
 
+/*
+                 <div className="overlay-gif">
+                    <img src={gifPath} alt="Overlay GIF" />
+                </div>
+*/
 
 export default MainContainer;
