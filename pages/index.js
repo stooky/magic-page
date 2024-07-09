@@ -24,6 +24,7 @@ const MainContainer = () => {
     const [enteredWebsite, setEnteredWebsite] = useState('');
     const [messages, setMessages] = useState([]); // Hold parsed messages from Zapier
     const [currentMessageIndex, setCurrentMessageIndex] = useState(0); // Keep track of where we are in the message index
+    const gifPath = process.env.NEXT_PUBLIC_GIF_PATH; // Highlight this line
 
     // Define the delay function
     const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));    
@@ -197,7 +198,7 @@ const MainContainer = () => {
             console.log('Vendasta Automation API Response:', vendastaAutomationData);
             
             const startTime = Date.now();
-            const oneMinute = 70000;
+            const oneMinute = 170000;
 
             const pollForMyListingUrl = async () => {
                 let myListingUrl = null;
@@ -247,108 +248,133 @@ const MainContainer = () => {
     const currentScreen = screensConfig[currentScreenIndex];
 
     return (
-        <div className="container">
-            <div className="interaction-section">
-                {formVisible && (
-                    <>
-                        <h1>Generate leads while you sleep</h1>
-                        <div className="description">
-                            Turn your website visitors into leads with a custom AI Agent built with ChatGPT
-                        </div>
-                    </>
-                )}
-                {formVisible ? (
-                    <FormComponent onSubmit={handleSubmit} />
-                ) : (
-                    <div className="building-message">
-                        Building AI Employee for {enteredWebsite}
-                        {showIframe ? (
-                            <div className="ai-employee-message">
-                                Here is your AI Employee
-                                <div className="arrow">&rarr;</div>
-                            </div>
-                        ) : (
-                            zapierResponse && (
-                                <div className="response">
-                                    {messages.length > 0 && (
-                                        <div>
-                                            {messages.map((message, index) => (
-                                                <div
-                                                    key={index}
-                                                    style={{ display: index === currentMessageIndex ? 'block' : 'none', transition: 'opacity 1s' }}
-                                                >
-                                                    {message}
-                                                </div>
-                                            ))}
-                                        </div>
-                                    )}
-                                </div>
-                            )
-                        )}
+    <div className="container">
+        <div className="interaction-section">
+            {formVisible && (
+                <>
+                    <h1>Generate leads while you sleep</h1>
+                    <div className="description">
+                        Turn your website visitors into leads with a custom AI Agent built with ChatGPT
                     </div>
-                )}
-                {showPoll && (
-                    <PollComponent
-                        currentScreen={currentScreen}
-                        currentScreenIndex={currentScreenIndex}
-                        responses={responses}
-                        handleOptionChange={handleOptionChange}
-                    />
-                )}
-            </div>
-            <div className="info-section">
+                </>
+            )}
+            {formVisible ? (
+                <FormComponent onSubmit={handleSubmit} />
+            ) : (
+                <div className="building-message">
+                    Building AI Employee for {enteredWebsite}
+                    {showIframe ? ( 
+                        <div className="ai-employee-message"> <!-- Highlight this block -->
+                            Here is your AI Employee
+                            <div className="arrow">--&gt;</div>
+                        </div> 
+                    ) : (
+                        zapierResponse && (
+                            <div className="response">
+                                {messages.length > 0 && (
+                                    <div>
+                                        {messages.map((message, index) => (
+                                            <div
+                                                key={index}
+                                                style={{ display: index === currentMessageIndex ? 'block' : 'none', transition: 'opacity 1s' }}
+                                            >
+                                                {message}
+                                            </div>
+                                        ))}
+                                    </div>
+                                )}
+                            </div>
+                        )
+                    )}
+                </div>
+            )}
+            {showPoll && (
+                <PollComponent
+                    currentScreen={currentScreen}
+                    currentScreenIndex={currentScreenIndex}
+                    responses={responses}
+                    handleOptionChange={handleOptionChange}
+                />
+            )}
+        </div>
+        <div className="info-section">
+            <div className="thumbnail-container"> <!-- Highlight this block -->
                 <InfoDisplayComponent
                     screenshotUrl={screenshotUrl}
                     showIframe={showIframe}
                     iframeUrl={iframeUrl}
                 />
-            </div>
-            <style jsx>{`
-                .container {
-                    display: flex;
-                    flex-direction: row;
-                    justify-content: space-between;
-                    padding: 20px;
-                    font-family: Arial, sans-serif;
-                    color: #000;
-                    background-color: #fff;
-                    min-height: 100vh;
-                }
-                .interaction-section {
-                    flex: 1;
-                    padding-right: 10px;
-                }
-                .info-section {
-                    flex: 1;
-                    padding-left: 10px;
-                }
-                .building-message {
-                    margin-top: 20px;
-                    font-size: 24px; /* Large font size */
-                    font-weight: bold; /* Bold font */
-                    line-height: 1.5; /* Spacing between lines */
-                }
-                .response {
-                    margin-top: 20px; /* Spacing from the top title */
-                    font-family: sans-serif; /* Sans-serif font */
-                    font-size: 48px; /* Twice the font size */
-                    color: #007BFF; /* Appealing blue color */
-                    font-weight: bold; /* Bold font */
-                }
-                .ai-employee-message {
-                    margin-top: 20px;
-                    font-family: sans-serif;
-                    font-size: 48px;
-                    color: #FF0000; /* Appealing red color */
-                    font-weight: bold;
-                }
-                .arrow {
-                    font-size: 48px;
-                    color: #FF0000; /* Appealing red color */
-                    font-weight: bold;
-                }
-            `}</style>
+                <div className="overlay-gif">
+                    <img src={gifPath} alt="Overlay GIF" />
+                </div>
+            </div> <!-- End of the highlighted block -->
         </div>
+        <style jsx>{`
+            .container {
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+                padding: 20px;
+                font-family: Arial, sans-serif;
+                color: #000;
+                background-color: #fff;
+                min-height: 100vh;
+            }
+            .interaction-section {
+                flex: 1;
+                padding-right: 10px;
+            }
+            .info-section {
+                flex: 1;
+                padding-left: 10px;
+                position: relative;
+            }
+            .building-message {
+                margin-top: 20px;
+                font-size: 24px; /* Large font size */
+                font-weight: bold; /* Bold font */
+                line-height: 1.5; /* Spacing between lines */
+            }
+            .response {
+                margin-top: 20px; /* Spacing from the top title */
+                font-family: sans-serif; /* Sans-serif font */
+                font-size: 48px; /* Twice the font size */
+                color: #007BFF; /* Appealing blue color */
+                font-weight: bold; /* Bold font */
+            }
+            .ai-employee-message { <!-- Highlight this block -->
+                margin-top: 20px;
+                font-family: sans-serif;
+                font-size: 48px;
+                color: #FF0000; /* Appealing red color */
+                font-weight: bold;
+            }
+            .arrow {
+                font-size: 48px;
+                color: #FF0000; /* Appealing red color */
+                font-weight: bold;
+            } <!-- End of the highlighted block -->
+            .thumbnail-container {
+                position: relative;
+                display: inline-block;
+            }
+            .overlay-gif { <!-- Highlight this block -->
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                pointer-events: none; /* Makes the GIF not interactable */
+            }
+            .overlay-gif img {
+                max-width: 100%;
+                max-height: 100%;
+            } <!-- End of the highlighted block -->
+        `}</style>
+    </div>
     );
 };    
 
