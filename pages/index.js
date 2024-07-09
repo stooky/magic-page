@@ -288,7 +288,7 @@ const MainContainer = () => {
                     )}
                 </div>
             )}
-            {showPoll && (
+            {!showIframe && showPoll && (
                 <PollComponent
                     currentScreen={currentScreen}
                     currentScreenIndex={currentScreenIndex}
