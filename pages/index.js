@@ -342,7 +342,7 @@ const MainContainer = () => {
                 color: #007BFF; /* Appealing blue color */
                 font-weight: bold; /* Bold font */
             }
-            .ai-employee-message { <!-- Highlight this block -->
+            .ai-employee-message
                 margin-top: 20px;
                 font-family: sans-serif;
                 font-size: 48px;
@@ -358,7 +358,7 @@ const MainContainer = () => {
                 position: relative;
                 display: inline-block;
             }
-            .overlay-gif { <!-- Highlight this block -->
+            .overlay-gif {
                 position: absolute;
                 top: 0;
                 left: 0;
