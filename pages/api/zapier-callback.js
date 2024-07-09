@@ -26,7 +26,7 @@ export default async function handler(req, res) {
             } catch (error) {
                 console.error('Error parsing body string:', error);
                 latestResponse = { status: 'error', message: `Error parsing body string: ${error.message}`, rawBody: req.body };
-                throw error;
+                <span style="color: hotpink;">body = req.body; // Return the body as it is if JSON.parse fails</span>
             }
         } else {
             body = req.body;
