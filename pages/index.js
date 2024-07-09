@@ -316,7 +316,7 @@ const MainContainer = () => {
                     flex: 1;
                     padding-left: 10px;
                 }
-                                    .building-message {
+                .building-message {
                     margin-top: 20px;
                     font-size: 24px; /* Large font size */
                     font-weight: bold; /* Bold font */
@@ -325,8 +325,9 @@ const MainContainer = () => {
                 .response {
                     margin-top: 20px; /* Spacing from the top title */
                     font-family: sans-serif; /* Sans-serif font */
-                    font-size: 20px; /* Adjust font size as needed */
-                    color: #333; /* Adjust color as needed */
+                    font-size: 48px; /* Twice the font size */
+                    color: #007BFF; /* Appealing blue color */
+                    font-weight: bold; /* Bold font */
                 }
             `}</style>
         </div>
