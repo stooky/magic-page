@@ -266,7 +266,7 @@ const MainContainer = () => {
                     {showIframe ? ( 
                         <div className="ai-employee-message">
                             Here is your AI Employee
-                            <div className="arrow"><img src="/iamges/aiemp.webp" /></div>
+                            <div className="arrow"><img src="/images/aiemp.webp" width="300"/></div>
                         </div> 
                     ) : (
                         zapierResponse && (
