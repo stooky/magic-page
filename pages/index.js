@@ -264,7 +264,7 @@ const MainContainer = () => {
                 <div className="building-message">
                     Building AI Employee for {enteredWebsite}
                     {showIframe ? ( 
-                        <div className="ai-employee-message"> <!-- Highlight this block -->
+                        <div className="ai-employee-message">
                             Here is your AI Employee
                             <div className="arrow">--&gt;</div>
                         </div> 
@@ -298,7 +298,7 @@ const MainContainer = () => {
             )}
         </div>
         <div className="info-section">
-            <div className="thumbnail-container"> <!-- Highlight this block -->
+            <div className="thumbnail-container">
                 <InfoDisplayComponent
                     screenshotUrl={screenshotUrl}
                     showIframe={showIframe}
@@ -307,7 +307,7 @@ const MainContainer = () => {
                 <div className="overlay-gif">
                     <img src={gifPath} alt="Overlay GIF" />
                 </div>
-            </div> <!-- End of the highlighted block -->
+            </div>
         </div>
         <style jsx>{`
             .container {
@@ -353,7 +353,7 @@ const MainContainer = () => {
                 font-size: 48px;
                 color: #FF0000; /* Appealing red color */
                 font-weight: bold;
-            } <!-- End of the highlighted block -->
+            } 
             .thumbnail-container {
                 position: relative;
                 display: inline-block;
@@ -372,7 +372,7 @@ const MainContainer = () => {
             .overlay-gif img {
                 max-width: 100%;
                 max-height: 100%;
-            } <!-- End of the highlighted block -->
+            }
         `}</style>
     </div>
     );
