@@ -248,132 +248,159 @@ const MainContainer = () => {
     const currentScreen = screensConfig[currentScreenIndex];
 
     return (
-    <div className="container">
-        <div className="interaction-section">
-            {formVisible && (
-                <>
-                    <h1>Generate leads while you sleep</h1>
-                    <div className="description">
-                        Turn your website visitors into leads with a custom AI Agent built with ChatGPT
+        <div className="container">
+            <div className="interaction-section">
+                {formVisible && (
+                    <>
+                        <h1>Generate leads while you sleep</h1>
+                        <div className="description">
+                            Turn your website visitors into leads with a custom AI Agent built with ChatGPT
+                        </div>
+                    </>
+                )}
+                {formVisible ? (
+                    <FormComponent onSubmit={handleSubmit} />
+                ) : (
+                    <div className="building-message">
+                        Building AI Employee for {enteredWebsite}
+                        {showIframe ? ( 
+                            <div className="ai-employee-message">
+                                Here is your AI Employee
+                                <div className="arrow"><img src="/images/aiemp.webp" width="300" alt="AI Employee" /></div>
+                            </div> 
+                        ) : (
+                            zapierResponse && (
+                                <div className="response">
+                                    {messages.length > 0 && (
+                                        <div>
+                                            {messages.map((message, index) => (
+                                                <div
+                                                    key={index}
+                                                    style={{ display: index === currentMessageIndex ? 'block' : 'none', transition: 'opacity 1s' }}
+                                                >
+                                                    {message}
+                                                </div>
+                                            ))}
+                                        </div>
+                                    )}
+                                </div>
+                            )
+                        )}
                     </div>
-                </>
-            )}
-            {formVisible ? (
-                <FormComponent onSubmit={handleSubmit} />
-            ) : (
-                <div className="building-message">
-                    Building AI Employee for {enteredWebsite}
-                    {showIframe ? ( 
-                        <div className="ai-employee-message">
-                            Here is your AI Employee
-                            <div className="arrow"><img src="/images/aiemp.webp" width="300"/></div>
-                        </div> 
-                    ) : (
-                        zapierResponse && (
-                            <div className="response">
-                                {messages.length > 0 && (
-                                    <div>
-                                        {messages.map((message, index) => (
-                                            <div
-                                                key={index}
-                                                style={{ display: index === currentMessageIndex ? 'block' : 'none', transition: 'opacity 1s' }}
-                                            >
-                                                {message}
-                                            </div>
-                                        ))}
-                                    </div>
-                                )}
-                            </div>
-                        )
-                    )}
-                </div>
-            )}
-            {!showIframe && showPoll && (
-                <PollComponent
-                    currentScreen={currentScreen}
-                    currentScreenIndex={currentScreenIndex}
-                    responses={responses}
-                    handleOptionChange={handleOptionChange}
-                />
-            )}
-        </div>
-        <div className="info-section">
-            <div className="thumbnail-container">
-                <InfoDisplayComponent
-                    screenshotUrl={screenshotUrl}
-                    showIframe={showIframe}
-                    iframeUrl={iframeUrl}
-                />
+                )}
+                {!showIframe && showPoll && (
+                    <PollComponent
+                        currentScreen={currentScreen}
+                        currentScreenIndex={currentScreenIndex}
+                        responses={responses}
+                        handleOptionChange={handleOptionChange}
+                    />
+                )}
             </div>
+            <div className="info-section">
+                <div className="thumbnail-container">
+                    <InfoDisplayComponent
+                        screenshotUrl={screenshotUrl}
+                        showIframe={showIframe}
+                        iframeUrl={iframeUrl}
+                    />
+                </div>
+            </div>
+            <style jsx>{`
+                .container {
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: space-between;
+                    padding: 20px;
+                    font-family: Arial, sans-serif;
+                    color: #000;
+                    background-color: #fff;
+                    min-height: 100vh;
+                }
+                .interaction-section {
+                    flex: 1;
+                    padding-right: 10px;
+                }
+                .info-section {
+                    flex: 1;
+                    padding-left: 10px;
+                    position: relative;
+                    width: 100%;
+                }
+                .building-message {
+                    margin-top: 20px;
+                    font-size: 24px; /* Large font size */
+                    font-weight: bold; /* Bold font */
+                    line-height: 1.5; /* Spacing between lines */
+                }
+                .response {
+                    margin-top: 20px; /* Spacing from the top title */
+                    font-family: sans-serif; /* Sans-serif font */
+                    font-size: 48px; /* Twice the font size */
+                    color: #007BFF; /* Appealing blue color */
+                    font-weight: bold; /* Bold font */
+                }
+                .ai-employee-message {
+                    margin-top: 20px;
+                    font-family: sans-serif;
+                    font-size: 48px;
+                    color: #00FF00; /* Appealing green color */
+                    font-weight: bold;
+                }
+                .arrow {
+                    font-size: 48px;
+                    color: #FF0000; /* Appealing red color */
+                    font-weight: bold;
+                }
+                .thumbnail-container {
+                    position: relative;
+                    display: inline-block;
+                    width: 100%;
+                }
+                .thumbnail-container iframe {
+                    width: 100%;
+                    height: 100%;
+                    border: none;
+                }
+                .overlay-gif {
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    pointer-events: none; /* Makes the GIF not interactable */
+                }
+                .overlay-gif img {
+                    max-width: 100%;
+                    max-height: 100%;
+                }
+    
+                /* Responsive Styles */
+                @media (max-width: 768px) {
+                    .container {
+                        flex-direction: column;
+                        padding: 10px;
+                    }
+                    .interaction-section, .info-section {
+                        padding: 0;
+                        width: 100%;
+                    }
+                    .building-message, .response, .ai-employee-message {
+                        font-size: 18px; /* Adjust font size for smaller screens */
+                    }
+                    .arrow img {
+                        width: 100px; /* Adjust image size for smaller screens */
+                    }
+                }
+            `}</style>
         </div>
-        <style jsx>{`
-            .container {
-                display: flex;
-                flex-direction: row;
-                justify-content: space-between;
-                padding: 20px;
-                font-family: Arial, sans-serif;
-                color: #000;
-                background-color: #fff;
-                min-height: 100vh;
-            }
-            .interaction-section {
-                flex: 1;
-                padding-right: 10px;
-            }
-            .info-section {
-                flex: 1;
-                padding-left: 10px;
-                position: relative;
-                width: 50%
-            }
-            .building-message {
-                margin-top: 20px;
-                font-size: 24px; /* Large font size */
-                font-weight: bold; /* Bold font */
-                line-height: 1.5; /* Spacing between lines */
-            }
-            .response {
-                margin-top: 20px; /* Spacing from the top title */
-                font-family: sans-serif; /* Sans-serif font */
-                font-size: 48px; /* Twice the font size */
-                color: #007BFF; /* Appealing blue color */
-                font-weight: bold; /* Bold font */
-            }
-            .ai-employee-message
-                margin-top: 20px;
-                font-family: sans-serif;
-                font-size: 48px;
-                color: #00FF00; /* Appealing red color */
-                font-weight: bold;
-            }
-            .arrow {
-                font-size: 48px;
-                color: #FF0000; /* Appealing red color */
-                font-weight: bold;
-            } 
-            .thumbnail-container {
-                position: relative;
-                display: inline-block;
-            }
-            .overlay-gif {
-                position: absolute;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                pointer-events: none; /* Makes the GIF not interactable */
-            }
-            .overlay-gif img {
-                max-width: 100%;
-                max-height: 100%;
-            }
-        `}</style>
-    </div>
     );
+    
+    
+    
 };    
 
 /*

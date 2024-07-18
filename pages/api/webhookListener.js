@@ -13,7 +13,7 @@ export default async function handler(req, res) {
     }
 
     const { businessId, sessionId } = req.body;
-    const partnerId = "VMF";
+    const partnerId = process.env.VENDASTA_PARTNER_ID;
 
     console.log(chalk.blue('Returned businessId.', businessId));
 
