@@ -181,7 +181,7 @@ const MainContainer = () => {
             console.log('Zapier Response:', response);  // Log the full response
             setZapierResponse(response);
 
-            const companyName = response && response.message ? extractCompanyName(response.message, website) : `magic-page-company-${website.replace(/^https?:\/\//, '').replace(/\./g, '-')}`;
+            companyName = response && response.message ? extractCompanyName(response.message, website) : `magic-page-company-${website.replace(/^https?:\/\//, '').replace(/\./g, '-')}`;
             console.log("Extracted Company Name: " + companyName);
 
             // Insert the visitor data into the database
