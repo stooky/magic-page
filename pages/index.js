@@ -154,7 +154,19 @@ const MainContainer = () => {
         setShowPoll(true);
 
         try {
-            console.log('Calling Zapier Webhook');
+            console.log('Calling Vendasta Automation API');
+
+            const vendastaAutomationResponse = await fetch('/api/vendasta-automation-proxy', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ email, website, company: companyName, sessionID })
+            });
+            const vendastaAutomationData = await vendastaAutomationResponse.json();
+            console.log('Vendasta Automation API Response:', vendastaAutomationData);
+            
+            console.log('Calling Screenshot');
             const screenshotResponse = await fetch(`/api/get-screenshot?url=${encodeURIComponent(website)}`);
             const screenshotData = await screenshotResponse.json();
             if (screenshotData.screenshotUrl) {
@@ -164,6 +176,7 @@ const MainContainer = () => {
                 console.error('Error fetching screenshot:', screenshotData.error);
             }
 
+            console.log('Calling Zapier Webhook');
             const response = await callZapierWebhook(email, website);
             console.log('Zapier Response:', response);  // Log the full response
             setZapierResponse(response);
@@ -185,17 +198,6 @@ const MainContainer = () => {
                 console.error('Error inserting visitor:', error);
             }
 
-            console.log('Calling Vendasta Automation API');
-
-            const vendastaAutomationResponse = await fetch('/api/vendasta-automation-proxy', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ email, website, company: companyName, sessionID })
-            });
-            const vendastaAutomationData = await vendastaAutomationResponse.json();
-            console.log('Vendasta Automation API Response:', vendastaAutomationData);
             
             const startTime = Date.now();
             const oneMinute = 170000;
