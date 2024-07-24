@@ -155,7 +155,7 @@ const MainContainer = () => {
 
         try {
             console.log('Calling Vendasta Automation API');
-            const companyName = website;
+            let companyName = website;
             const vendastaAutomationResponse = await fetch('/api/vendasta-automation-proxy', {
                 method: 'POST',
                 headers: {
