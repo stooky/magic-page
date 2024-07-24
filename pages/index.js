@@ -190,6 +190,14 @@ const MainContainer = () => {
                 console.error('Error inserting visitor:', error);
             }
 
+            console.log('Calling Zapier Webhook');
+            const response = await callZapierWebhook(email, website);
+            console.log('Zapier Response:', response);  // Log the full response
+            setZapierResponse(response);
+
+            companyName = response && response.message ? extractCompanyName(response.message, website) : `magic-page-company-${website.replace(/^https?:\/\//, '').replace(/\./g, '-')}`;
+            console.log("Extracted Company Name: " + companyName);
+            
             
             const startTime = Date.now();
             const oneMinute = 170000;
@@ -218,13 +226,6 @@ const MainContainer = () => {
 
             await pollForMyListingUrl();
 
-            console.log('Calling Zapier Webhook');
-            const response = await callZapierWebhook(email, website);
-            console.log('Zapier Response:', response);  // Log the full response
-            setZapierResponse(response);
-
-            companyName = response && response.message ? extractCompanyName(response.message, website) : `magic-page-company-${website.replace(/^https?:\/\//, '').replace(/\./g, '-')}`;
-            console.log("Extracted Company Name: " + companyName);
         
         } catch (error) {
             console.error('Failed to call the API Stuff:', error);
