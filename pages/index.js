@@ -163,8 +163,8 @@ const MainContainer = () => {
                 },
                 body: JSON.stringify({ email, website, company: companyName, sessionID })
             });
-            const vendastaAutomationData = await vendastaAutomationResponse.json();
-            console.log('Vendasta Automation API Response:', vendastaAutomationData);
+            //const vendastaAutomationData = await vendastaAutomationResponse.json();
+            //console.log('Vendasta Automation API Response:', vendastaAutomationData);
             
             console.log('Calling Screenshot');
             const screenshotResponse = await fetch(`/api/get-screenshot?url=${encodeURIComponent(website)}`);
@@ -175,14 +175,6 @@ const MainContainer = () => {
             } else {
                 console.error('Error fetching screenshot:', screenshotData.error);
             }
-
-            console.log('Calling Zapier Webhook');
-            const response = await callZapierWebhook(email, website);
-            console.log('Zapier Response:', response);  // Log the full response
-            setZapierResponse(response);
-
-            companyName = response && response.message ? extractCompanyName(response.message, website) : `magic-page-company-${website.replace(/^https?:\/\//, '').replace(/\./g, '-')}`;
-            console.log("Extracted Company Name: " + companyName);
 
             // Insert the visitor data into the database
             try {
@@ -226,6 +218,13 @@ const MainContainer = () => {
 
             await pollForMyListingUrl();
 
+            console.log('Calling Zapier Webhook');
+            const response = await callZapierWebhook(email, website);
+            console.log('Zapier Response:', response);  // Log the full response
+            setZapierResponse(response);
+
+            companyName = response && response.message ? extractCompanyName(response.message, website) : `magic-page-company-${website.replace(/^https?:\/\//, '').replace(/\./g, '-')}`;
+            console.log("Extracted Company Name: " + companyName);
         
         } catch (error) {
             console.error('Failed to call the API Stuff:', error);
