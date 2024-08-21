@@ -6,12 +6,13 @@ export default function ScanningComponent({ screenshotUrl }) {
     return (
         <div className="magic_mock_body">
             <div className="mock_box">
-                <h2 className="thumb_text"> Training your AI Employee <br/> </h2>
+                <h2 className="thumb_text"> Building Your AI <br/> </h2>
                 <br/><br/>
 
                 <div className="thumbnail_sec">
                     <div className="web_thumb_img">
                         <img src={screenshotUrl} alt="Website Thumbnail" />
+                        <div className="scan-bar"></div>
                     </div>
                 </div>    
             </div>

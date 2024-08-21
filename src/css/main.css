@@ -6,7 +6,7 @@
 03. Footer CSS
 04. Thumbnail CSS
 05. Ai agent preview page CSS
-
+06. Chris's weird stuff
 ------------------------------*/
 
 
@@ -280,4 +280,40 @@ body{
 {
     width:245px !important;
     box-shadow: none !important;
+}
+
+
+/* -----------------------------------
+   05. Chris' Weird Stuff
+-------------------------------------*/
+
+.image-container {
+    position: relative;
+    width: 100%; /* Adjust as necessary */
+    height: auto; /* Adjust as necessary */
+}
+
+.image-container img {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+.scan-bar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 2px; /* Adjust the height of the bar as needed */
+    background-color: rgba(211, 211, 211, 0.5); /* Light gray with some transparency */
+    animation: scan 3s linear infinite;
+}
+
+@keyframes scan {
+    0% {
+        top: 0;
+    }
+    100% {
+        top: 100%;
+    }
 }
