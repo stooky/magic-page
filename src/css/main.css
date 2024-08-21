@@ -302,8 +302,8 @@ body{
 .scan-bar {
     position: absolute;
     top: 0;
-    left: 0;
-    width: 100%;
+    left: -7px; /* Extends 7px beyond the left side of the image */
+    width: calc(100% + 14px); /* Extends 7px beyond both sides of the image */
     height: 2px; /* Adjust the height of the bar as needed */
     background-color: rgba(211, 211, 211, 0.5); /* Light gray with some transparency */
     animation: scan 3s linear infinite;
@@ -313,7 +313,10 @@ body{
     0% {
         top: 0;
     }
+    50% {
+        top: calc(100% - 2px); /* Moves to the bottom of the image */
+    }
     100% {
-        top: 100%;
+        top: 0; /* Moves back to the top */
     }
 }
