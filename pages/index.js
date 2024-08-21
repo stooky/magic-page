@@ -277,7 +277,7 @@ const MainContainer = () => {
                 .centered-content, .loading-screen {
                     text-align: center;
                     max-width: 100%;
-                    padding: 20px;
+                    padding: 0px;
                     display: flex;
                     flex-direction: column;
                     justify-content: center;
