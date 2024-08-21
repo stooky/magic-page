@@ -265,7 +265,7 @@ const MainContainer = () => {
             {isLoading ? (
                 <LoadingComponent />
             ) : isScanning ? (
-                <ScanningComponent screenshotUrl={screenshotUrl} />  {/* Pass screenshotUrl to ScanningComponent */}
+                <ScanningComponent screenshotUrl={screenshotUrl} />  
             ) : (
                 <div className="centered-content">
                     <FormComponent onSubmit={handleSubmit} />
