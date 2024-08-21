@@ -256,18 +256,19 @@ const MainContainer = () => {
             </div>
             <style jsx>{`
                 .full-screen-container {
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
+                    display: block; /* Changed from flex to block */
                     height: 100vh;
+                    width: 100vw; /* Ensure it covers the full width of the viewport */
                     background: linear-gradient(135deg, #003366 0%, #1a1a73 100%);
                     color: white;
-                    padding: 20px;
+                    padding: 0; /* Removed padding */
+                    margin: 0; /* Ensure no margin around the container */
                     box-sizing: border-box;
                 }
                 .centered-content {
                     text-align: center;
-                    max-width: 600px;
+                    max-width: 100%; /* Changed to 100% width */
+                    padding: 20px; /* You can adjust padding as needed for spacing */
                 }
                 .centered-content h2 {
                     font-size: 2.5em;
