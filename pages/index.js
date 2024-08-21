@@ -250,187 +250,52 @@ const MainContainer = () => {
     const currentScreen = screensConfig[currentScreenIndex];
 
     return (
-        <div className="container">
-            <div className="interaction-section">
-                {formVisible && (
-                    <div className="mock_box">
-                        <h2> Unlock the magic of <br/> <span> AI lead capture</span>. <i> Instantly</i>. </h2>
-                        <p> No coding needed. Just enter your website and watch the magic happen.</p>
-                        <FormComponent onSubmit={handleSubmit} />
-                    </div>
-                )}
-                {!formVisible && (
-                    <div className="building-message">
-                        Building AI Employee for {enteredWebsite}
-                        {showIframe ? (
-                            <div className="ai-employee-message">
-                                Here is your AI Employee
-                                <div className="arrow">
-                                    <img src="/images/aiemp.webp" width="300" alt="AI Employee" />
-                                </div>
-                            </div>
-                        ) : (
-                            zapierResponse && (
-                                <div className="response">
-                                    {messages.length > 0 && (
-                                        <div>
-                                            {messages.map((message, index) => (
-                                                <div
-                                                    key={index}
-                                                    style={{ display: index === currentMessageIndex ? 'block' : 'none', transition: 'opacity 1s' }}
-                                                >
-                                                    {message}
-                                                </div>
-                                            ))}
-                                        </div>
-                                    )}
-                                </div>
-                            )
-                        )}
-                    </div>
-                )}
-                {!showIframe && showPoll && (
-                    <PollComponent
-                        currentScreen={currentScreen}
-                        currentScreenIndex={currentScreenIndex}
-                        responses={responses}
-                        handleOptionChange={handleOptionChange}
-                    />
-                )}
-            </div>
-            <div className="info-section">
-                <div className="thumbnail-container">
-                    <InfoDisplayComponent
-                        screenshotUrl={screenshotUrl}
-                        showIframe={showIframe}
-                        iframeUrl={iframeUrl}
-                    />
+        <div className="full-screen-container">
+            <div className="centered-content">
+                <h2> Unlock the magic of <br/> <span> AI lead capture</span>. <i> Instantly</i>. </h2>
+                <p> No coding needed. Just enter your website and watch the magic happen.</p>
+                <FormComponent onSubmit={handleSubmit} />
+                <div className="footer">
+                    <p className="foot_logo"> 
+                        <i> Powered by </i>
+                        <svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 653.1 98.47">
+                            <!-- SVG paths here -->
+                        </svg>
+                    </p>
+                    <p> Copyright © 2024  &nbsp; | &nbsp;  Privacy Policy &nbsp;  |  &nbsp; Legal </p>
                 </div>
             </div>
             <style jsx>{`
-                .container {
+                .full-screen-container {
                     display: flex;
-                    flex-direction: row;
-                    justify-content: space-between;
-                    padding: 0; /* Remove padding to allow full screen coverage */
-                    font-family: Arial, sans-serif;
-                    color: #fff; /* Ensure text is white to stand out against the blue background */
-                    background-color: #003366; /* Match the blue background color */
-                    min-height: 100vh; /* Ensure the container fills the viewport height */
-                }
-                .interaction-section {
-                    display: flex;
-                    flex-direction: column;
                     justify-content: center;
                     align-items: center;
-                    flex: 1;
+                    height: 100vh;
+                    background-color: #003366; /* Dark blue background */
+                    color: white; /* Ensure text is readable */
                     padding: 20px;
-                    background-color: #003366; /* Match the blue background color */
-                    color: #fff; /* Text color to ensure readability */
-                    height: 100vh; /* Full viewport height */
+                    box-sizing: border-box;
                 }
-                .info-section {
-                    flex: 1;
-                    padding-left: 10px;
-                    position: relative;
-                    width: 100%;
-                }
-                .mock_box {
+                .centered-content {
                     text-align: center;
-                    color: white; /* Ensure the text is readable against the blue background */
-                    padding: 20px;
-                    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Optional: adds a shadow for better visual appeal */
-                    border-radius: 8px; /* Optional: rounded corners */
-                    max-width: 600px; /* Ensure the content doesn't stretch too wide */
-                    width: 100%;
+                    max-width: 600px;
                 }
-                .mock_box h2 {
+                .centered-content h2 {
                     font-size: 2.5em;
                     margin-bottom: 20px;
                 }
-                .mock_box p {
+                .centered-content p {
                     font-size: 1.2em;
                     margin-bottom: 20px;
                 }
-                .mock_box form {
-                    display: flex;
-                    flex-direction: column;
-                    align-items: center;
-                }
-                .mock_box input {
-                    width: 100%;
-                    max-width: 400px;
-                    padding: 10px;
-                    margin-bottom: 15px;
-                    border-radius: 4px;
-                    border: 1px solid #ccc;
-                    box-sizing: border-box;
-                    font-size: 1em;
-                }
-                .mock_box button {
-                    padding: 10px 20px;
-                    background-color: #ffcc00; /* Button background color */
-                    color: #000; /* Button text color */
-                    border: none;
-                    border-radius: 4px;
-                    cursor: pointer;
-                    font-size: 1em;
-                }
-                .mock_box button:hover {
-                    background-color: #e6b800; /* Button hover background color */
-                }
-                .building-message {
+                .footer {
                     margin-top: 20px;
-                    font-size: 24px; /* Large font size */
-                    font-weight: bold; /* Bold font */
-                    line-height: 1.5; /* Spacing between lines */
+                    font-size: 0.9em;
+                    color: #ccc;
                 }
-                .response {
-                    margin-top: 20px; /* Spacing from the top title */
-                    font-family: sans-serif; /* Sans-serif font */
-                    font-size: 48px; /* Twice the font size */
-                    color: #007BFF; /* Appealing blue color */
-                    font-weight: bold; /* Bold font */
-                }
-                .ai-employee-message {
-                    margin-top: 20px;
-                    font-family: sans-serif;
-                    font-size: 48px;
-                    color: #00FF00; /* Appealing green color */
-                    font-weight: bold;
-                }
-                .arrow {
-                    font-size: 48px;
-                    color: #FF0000; /* Appealing red color */
-                    font-weight: bold;
-                }
-                .thumbnail-container {
-                    position: relative;
-                    display: inline-block;
-                    width: 100%;
-                }
-                .thumbnail-container iframe {
-                    width: 100%;
-                    height: 100%;
-                    border: none;
-                }
-    
-                /* Responsive Styles */
-                @media (max-width: 768px) {
-                    .container {
-                        flex-direction: column;
-                        padding: 10px;
-                    }
-                    .interaction-section, .info-section {
-                        padding: 0;
-                        width: 100%;
-                    }
-                    .building-message, .response, .ai-employee-message {
-                        font-size: 18px; /* Adjust font size for smaller screens */
-                    }
-                    .arrow img {
-                        width: 100px; /* Adjust image size for smaller screens */
-                    }
+                .foot_logo svg {
+                    width: 100px;
+                    height: auto;
                 }
             `}</style>
         </div>
