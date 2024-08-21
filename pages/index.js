@@ -271,8 +271,8 @@ const MainContainer = () => {
                     justify-content: center;
                     align-items: center;
                     height: 100vh;
-                    background-color: #003366; /* Dark blue background */
-                    color: white; /* Ensure text is readable */
+                    background: linear-gradient(135deg, #003366 0%, #1a1a73 100%);
+                    color: white;
                     padding: 20px;
                     box-sizing: border-box;
                 }
@@ -283,13 +283,41 @@ const MainContainer = () => {
                 .centered-content h2 {
                     font-size: 2.5em;
                     margin-bottom: 20px;
+                    color: #ffffff;
                 }
                 .centered-content p {
                     font-size: 1.2em;
                     margin-bottom: 20px;
+                    color: #c2c2c2;
+                }
+                .form input {
+                    width: 100%;
+                    max-width: 400px;
+                    padding: 15px;
+                    margin-bottom: 15px;
+                    border-radius: 5px;
+                    border: none;
+                    font-size: 1em;
+                }
+                .form input:focus {
+                    outline: none;
+                    border: 1px solid #007bff;
+                }
+                .form button {
+                    padding: 15px 30px;
+                    background: linear-gradient(135deg, #a445b2, #fa4299);
+                    color: #fff;
+                    border: none;
+                    border-radius: 5px;
+                    cursor: pointer;
+                    font-size: 1.1em;
+                    transition: background 0.3s ease-in-out;
+                }
+                .form button:hover {
+                    background: linear-gradient(135deg, #fa4299, #a445b2);
                 }
                 .footer {
-                    margin-top: 20px;
+                    margin-top: 30px;
                     font-size: 0.9em;
                     color: #ccc;
                 }
@@ -299,8 +327,7 @@ const MainContainer = () => {
                 }
             `}</style>
         </div>
-    );
-    
+    );    
     
     
 };    
