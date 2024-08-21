@@ -252,8 +252,6 @@ const MainContainer = () => {
     return (
         <div className="full-screen-container">
             <div className="centered-content">
-                <h2> Unlock the magic of <br/> <span> AI lead capture</span>. <i> Instantly</i>. </h2>
-                <p> No coding needed. Just enter your website and watch the magic happen.</p>
                 <FormComponent onSubmit={handleSubmit} />
                 <div className="footer">
                     <p className="foot_logo"> 
