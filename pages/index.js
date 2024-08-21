@@ -254,10 +254,7 @@ const MainContainer = () => {
     return (
         <div className="full-screen-container">
             {isLoading ? (
-                <div className="loading-screen">
-                    <h2>Hang on while we load your website...</h2>
-                    <img src="/path-to-your-star-image.png" alt="Loading" />
-                </div>
+                <LoadingComponent />  {/* Render the LoadingComponent when isLoading is true */}
             ) : (
                 <div className="centered-content">
                     <FormComponent onSubmit={handleSubmit} />
