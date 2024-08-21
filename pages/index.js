@@ -13,6 +13,7 @@ import axios from 'axios';
 
 const MainContainer = () => {
     const [loading, setLoading] = useState(false);
+    const [screenshotUrl, setScreenshotUrl] = useState(null);
     const [callbackReceived, setCallbackReceived] = useState(true);
     const [zapierResponse, setZapierResponse] = useState(null);
     const [screenshotUrl, setScreenshotUrl] = useState(null);
@@ -101,7 +102,12 @@ const MainContainer = () => {
     }, [loading]);
     
 
-
+    // Looking for our screenshot URL
+    useEffect(() => {
+        if (screenshotUrl) {
+            setIsLoading(false); // Stop loading once screenshot is ready
+        }
+    }, [screenshotUrl]);
 
 
     const handleOptionChange = (option) => {
