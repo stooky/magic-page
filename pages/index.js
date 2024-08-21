@@ -27,6 +27,8 @@ const MainContainer = () => {
     const [currentMessageIndex, setCurrentMessageIndex] = useState(0); // Keep track of where we are in the message index
     const gifPath = process.env.NEXT_PUBLIC_GIF_PATH; // Highlight this line
     const [isLoading, setIsLoading] = useState(false);
+    const [isScanning, setIsScanning] = useState(false);  // New state for scanning
+
 
     // Define the delay function
     const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));    
@@ -104,7 +106,8 @@ const MainContainer = () => {
     // Looking for our screenshot URL
     useEffect(() => {
         if (screenshotUrl) {
-            setIsLoading(false); // Stop loading once screenshot is ready
+            setIsLoading(false);    // Stop loading screen
+            setIsScanning(true);    // Start scanning screen
         }
     }, [screenshotUrl]);
 
@@ -261,6 +264,8 @@ const MainContainer = () => {
         <div className="full-screen-container">
             {isLoading ? (
                 <LoadingComponent />
+            ) : isScanning ? (
+                <ScanningComponent screenshotUrl={screenshotUrl} />  {/* Pass screenshotUrl to ScanningComponent */}
             ) : (
                 <div className="centered-content">
                     <FormComponent onSubmit={handleSubmit} />
