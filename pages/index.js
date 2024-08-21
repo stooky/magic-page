@@ -25,6 +25,7 @@ const MainContainer = () => {
     const [messages, setMessages] = useState([]); // Hold parsed messages from Zapier
     const [currentMessageIndex, setCurrentMessageIndex] = useState(0); // Keep track of where we are in the message index
     const gifPath = process.env.NEXT_PUBLIC_GIF_PATH; // Highlight this line
+    const [isLoading, setIsLoading] = useState(false);
 
     // Define the delay function
     const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));    
@@ -138,6 +139,7 @@ const MainContainer = () => {
         setScreenshotUrl(null);
         setEnteredWebsite(website);
         setFormVisible(false); // Hide the form and show the message
+        setIsLoading(true); // Show loading screen
 
         if (!callbackReceived) {
             alert("Please wait until the current request is processed.");
@@ -251,69 +253,44 @@ const MainContainer = () => {
 
     return (
         <div className="full-screen-container">
-            <div className="centered-content">
-                <FormComponent onSubmit={handleSubmit} />
-            </div>
+            {isLoading ? (
+                <div className="loading-screen">
+                    <h2>Hang on while we load your website...</h2>
+                    <img src="/path-to-your-star-image.png" alt="Loading" />
+                </div>
+            ) : (
+                <div className="centered-content">
+                    <FormComponent onSubmit={handleSubmit} />
+                </div>
+            )}
             <style jsx>{`
                 .full-screen-container {
-                    display: block; /* Changed from flex to block */
+                    display: block;
                     height: 100vh;
-                    width: 100vw; /* Ensure it covers the full width of the viewport */
+                    width: 100vw;
                     background: linear-gradient(135deg, #003366 0%, #1a1a73 100%);
                     color: white;
-                    padding: 0; /* Removed padding */
-                    margin: 0; /* Ensure no margin around the container */
+                    padding: 0;
+                    margin: 0;
                     box-sizing: border-box;
                 }
-                .centered-content {
+                .centered-content, .loading-screen {
                     text-align: center;
-                    max-width: 100%; /* Changed to 100% width */
-                    padding: 0px; /* You can adjust padding as needed for spacing */
+                    max-width: 100%;
+                    padding: 20px;
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                    align-items: center;
+                    height: 100vh;
                 }
-                .centered-content h2 {
+                .loading-screen h2 {
                     font-size: 2.5em;
                     margin-bottom: 20px;
                     color: #ffffff;
                 }
-                .centered-content p {
-                    font-size: 1.2em;
-                    margin-bottom: 20px;
-                    color: #c2c2c2;
-                }
-                .form input {
-                    width: 100%;
-                    max-width: 400px;
-                    padding: 15px;
-                    margin-bottom: 15px;
-                    border-radius: 5px;
-                    border: none;
-                    font-size: 1em;
-                }
-                .form input:focus {
-                    outline: none;
-                    border: 1px solid #007bff;
-                }
-                .form button {
-                    padding: 15px 30px;
-                    background: linear-gradient(135deg, #a445b2, #fa4299);
-                    color: #fff;
-                    border: none;
-                    border-radius: 5px;
-                    cursor: pointer;
-                    font-size: 1.1em;
-                    transition: background 0.3s ease-in-out;
-                }
-                .form button:hover {
-                    background: linear-gradient(135deg, #fa4299, #a445b2);
-                }
-                .footer {
-                    margin-top: 30px;
-                    font-size: 0.9em;
-                    color: #ccc;
-                }
-                .foot_logo svg {
-                    width: 100px;
-                    height: auto;
+                .loading-screen img {
+                    margin-top: 20px;
                 }
             `}</style>
         </div>

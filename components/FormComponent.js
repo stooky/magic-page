@@ -12,16 +12,28 @@ const FormComponent = ({ onSubmit }) => {
     };
 
     return (
-        <div className="magic_mock_body">
-            <div className="mock_box">
-                <h2> Unlock the magic of <br/> <span> AI lead capture</span>. <i> Instantly</i>. </h2>
-                <p> No coding needed. Just enter your website and watch the magic happen.</p> <br/><br/>
-  
-                <form>
-                    <input type="email" placeholder="Email" required/> <br/>
-                    <input type="url" placeholder="Website URL" required/> <br/>
-                    <button className="submit"> <Image src={require('../src/images/spark-button-icon.png')} alt=""/> Build your AI Agent </button>
-                </form>
+        <form onSubmit={handleSubmit}>  {/* Added onSubmit to the form */}
+        <input 
+            type="email" 
+            placeholder="Email" 
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}  // Bind input to state
+            required 
+        /> 
+        <br/>
+        <input 
+            type="url" 
+            placeholder="Website URL" 
+            value={website}
+            onChange={(e) => setWebsite(e.target.value)}  // Bind input to state
+            required 
+        /> 
+        <br/>
+        <button type="submit" className="submit"> 
+            <Image src={require('../src/images/spark-button-icon.png')} alt=""/> 
+            Build your AI Agent 
+        </button>
+        </form>
   
             </div>
   
