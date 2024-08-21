@@ -254,7 +254,7 @@ const MainContainer = () => {
     return (
         <div className="full-screen-container">
             {isLoading ? (
-                <LoadingComponent />  // Render the LoadingComponent when isLoading is true
+                <LoadingComponent />  {/* Render the LoadingComponent when isLoading is true */}
             ) : (
                 <div className="centered-content">
                     <FormComponent onSubmit={handleSubmit} />
@@ -291,7 +291,8 @@ const MainContainer = () => {
                 }
             `}</style>
         </div>
-    );    
+    );
+       
     
     
 };    
