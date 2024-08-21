@@ -1,0 +1,275 @@
+/* ------------------------------------------------------ 
+    TABLE OF CONTENT
+---------------------------------------------------------
+01. General CSS
+02. Mockbox CSS
+03. Footer CSS
+04. Thumbnail CSS
+05. Ai agent preview page CSS
+
+------------------------------*/
+
+
+
+
+/* -----------------------------------
+   01. General CSS
+-------------------------------------*/
+
+@font-face {
+    font-family: 'Raleway-regular';
+    src: url('../fonts/Raleway-Regular.ttf');
+}
+@font-face {
+    font-family: 'Raleway-Semiblod';
+    src: url('../fonts/Raleway-SemiBold.ttf');
+}
+@font-face {
+    font-family: 'Opensans-regular';
+    src: url('../fonts/OpenSans-Regular.ttf');
+}
+@font-face {
+    font-family: 'Roboto-regular';
+    src: url('../fonts/Roboto-Regular.ttf');
+}
+
+:root {
+    --primary-font: 'Opensans-regular';
+    --primary-font-bold: 'Opensans-Blod';
+    --secondary-font: 'Raleway-regular';
+    --secondary-font-bold: 'Raleway-Blod';
+    --secondary-font-semibold: 'Raleway-Semiblod';
+    --Roboto-font:'Roboto-regular';
+    --white-color: #ffffff;
+    --color-gray:#A5A1A1;
+    --btn-gradient:linear-gradient(135deg, #EB00FF 0%, #00A3FF 84.87%);
+}
+
+body{
+    margin: 0px !important;
+    font-family: var( --secondary-font);
+}
+
+.magic_mock_body
+{
+    background: url(../images/Magic_page_bg.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.cls-logo-3 {
+    fill: #3c9a63
+}
+.cls-logo-2 {
+    fill: #fff
+}
+
+/* -----------------------------------
+   02. Mockbox CSS
+-------------------------------------*/
+
+.magic_mock_body .mock_box 
+{
+  text-align: center;
+  color: var(--white-color);
+}
+
+.magic_mock_body .mock_box h2
+{
+    color:var(--white-color);
+    font-size: 50px;
+    font-family: 'Raleway-regular';
+    margin: 0px;
+    font-weight: 500;
+    max-width: 590px;
+}
+.magic_mock_body .mock_box h2 span 
+{
+    font-family: var( --secondary-font-semibold);
+}
+.magic_mock_body .mock_box p 
+{
+    font-family: var(--primary-font);
+}
+
+  /* form css  */
+
+  .magic_mock_body .mock_box form input 
+  {
+    background-color: var(--white-color);
+    color: var(--color-gray);
+    border: 1px solid var(--color-gray);
+    border-radius: 5px;
+    margin-bottom: 23px;
+    width: 312px;
+    height: 43px;
+    padding: 0px 25px;
+    font-size: 16px;
+  }
+  .magic_mock_body .mock_box form button.submit, .agent_overlay_sec button.submit
+  {
+     background: var(--btn-gradient);
+     color: var(--white-color);
+     font-family: var(--Roboto-font);
+     width: 360px;
+     height: 64px;
+     border-radius: 5px;
+     font-size: 18px;
+     display: flex;
+     justify-content: center;
+     align-items: center;
+     margin: 0px auto;
+     cursor: pointer;
+     border:none !important;
+  }
+  .magic_mock_body .mock_box form button.submit:hover, .agent_overlay_sec button.submit:hover
+  {
+    background: #1976D2;
+  }
+
+  .magic_mock_body .mock_box form button.submit img, .agent_overlay_sec button.submit img 
+  {
+    width: 24px;
+    height: 24px;
+  }
+
+
+/* -----------------------------------
+   03. Footer CSS
+-------------------------------------*/
+
+.magic_mock_body .footer
+{
+    font-weight: 400 !important;
+    font-size: 12px;
+    position: absolute;
+    bottom: 0px;
+    color: var(--white-color);
+}
+.magic_mock_body .footer .foot_logo
+{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+}
+.magic_mock_body .footer .foot_logo svg 
+{
+    padding-left: 15px;
+}
+.foot_logo svg 
+{
+    width:130px; 
+    height:30px;
+}
+/* -----------------------------------
+   04. Thumbnail CSS
+-------------------------------------*/
+
+.thumbnail_sec
+{
+    min-height: 300px;
+}
+.thumbnail_sec .web_thumb_img img 
+{
+    border-radius: 5px;
+}
+
+
+/* -----------------------------------
+   05. Ai agent preview page CSS
+-------------------------------------*/
+
+.magic_mock_ai_body
+{
+    background: url(../images/Magic_page_bg.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+    width: 100%;
+    height: 100vh;
+    font-size: 12px;
+}
+.magic_mock_ai_body .ai_agent_header 
+{
+  color: var(--white-color);
+  display: flex;
+  justify-content: space-between;
+  padding: 20px 40px;
+}
+.magic_mock_ai_body .ai_agent_footer 
+{
+    color: var(--white-color);
+    position: absolute;
+    bottom: 0px;
+    padding: 20px 40px;
+}
+.magic_mock_ai_body .ai_agent_header  .foot_logo
+{
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    font-size: 12px;
+    margin: 0px;
+}
+.magic_mock_ai_body .ai_agent_header  .foot_logo svg 
+{
+    padding-left: 15px;
+}
+.magic_mock_ai_body .ai_agent_header button 
+{
+    border:2px solid #3F9B63;
+    width: 175px;
+    height: 50px;
+    color: var(--white-color);
+    font-size: 16px;
+    font-family: var(--primary-font);
+    cursor: pointer;
+    border-radius: 4px !important;
+}
+.magic_mock_ai_body .ai_agent_header button:hover
+{
+    background-color: #32755a;
+} 
+.magic_mock_ai_body .ai_agent_header .btn_dark 
+{
+   background-color: #3F9B63;
+   margin-right: 20px;
+}
+.magic_mock_ai_body .ai_agent_header .btn_light 
+{
+  background-color: transparent;
+}
+.magic_mock_ai_body .ai_agent_sec iframe
+{
+  width: 100%;
+  min-height: 80vh;
+} 
+
+.agent_overlay_sec
+{
+    background: rgba(7, 35, 55, 0.80);
+    backdrop-filter: blur(4px);
+    position: fixed;
+    top: 0px;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.agent_overlay_sec h2 
+{
+    color: var(--white-color);
+    font-size: 50px;
+    font-family: 'Raleway-regular';
+}
+.agent_overlay_sec button.submit
+{
+    width:245px !important;
+    box-shadow: none !important;
+}
