@@ -259,7 +259,7 @@ const MainContainer = () => {
                     <p className="foot_logo"> 
                         <i> Powered by </i>
                         <svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 653.1 98.47">
-                            <!-- SVG paths here -->
+                            {/* SVG paths here */}
                         </svg>
                     </p>
                     <p> Copyright © 2024  &nbsp; | &nbsp;  Privacy Policy &nbsp;  |  &nbsp; Legal </p>
