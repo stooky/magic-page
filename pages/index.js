@@ -13,7 +13,6 @@ import axios from 'axios';
 
 const MainContainer = () => {
     const [loading, setLoading] = useState(false);
-    const [screenshotUrl, setScreenshotUrl] = useState(null);
     const [callbackReceived, setCallbackReceived] = useState(true);
     const [zapierResponse, setZapierResponse] = useState(null);
     const [screenshotUrl, setScreenshotUrl] = useState(null);
