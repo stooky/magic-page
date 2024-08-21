@@ -268,7 +268,7 @@ const MainContainer = () => {
                 .centered-content {
                     text-align: center;
                     max-width: 100%; /* Changed to 100% width */
-                    padding: 20px; /* You can adjust padding as needed for spacing */
+                    padding: 0px; /* You can adjust padding as needed for spacing */
                 }
                 .centered-content h2 {
                     font-size: 2.5em;
