@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { callZapierWebhook } from '../components/utils/zapier';
 import screensConfig from '../configuration/screensConfig';
 import FormComponent from '../components/FormComponent';
+import LoadingComponent from '../components/LoadingComponent';
 import PollComponent from '../components/PollComponent';
 import StaticMarketingComponent from '../components/StaticMarketingComponent';
 import InfoDisplayComponent from '../components/InfoDisplayComponent';
