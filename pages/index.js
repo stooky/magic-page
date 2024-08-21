@@ -253,23 +253,22 @@ const MainContainer = () => {
         <div className="container">
             <div className="interaction-section">
                 {formVisible && (
-                    <>
-                        <h1>Generate leads while you sleep</h1>
-                        <div className="description">
-                            Turn your website visitors into leads with a custom AI Agent built with ChatGPT
-                        </div>
-                    </>
+                    <div className="mock_box">
+                        <h2> Unlock the magic of <br/> <span> AI lead capture</span>. <i> Instantly</i>. </h2>
+                        <p> No coding needed. Just enter your website and watch the magic happen.</p>
+                        <FormComponent onSubmit={handleSubmit} />
+                    </div>
                 )}
-                {formVisible ? (
-                    <FormComponent onSubmit={handleSubmit} />
-                ) : (
+                {!formVisible && (
                     <div className="building-message">
                         Building AI Employee for {enteredWebsite}
-                        {showIframe ? ( 
+                        {showIframe ? (
                             <div className="ai-employee-message">
                                 Here is your AI Employee
-                                <div className="arrow"><img src="/images/aiemp.webp" width="300" alt="AI Employee" /></div>
-                            </div> 
+                                <div className="arrow">
+                                    <img src="/images/aiemp.webp" width="300" alt="AI Employee" />
+                                </div>
+                            </div>
                         ) : (
                             zapierResponse && (
                                 <div className="response">
@@ -313,21 +312,72 @@ const MainContainer = () => {
                     display: flex;
                     flex-direction: row;
                     justify-content: space-between;
-                    padding: 20px;
+                    padding: 0; /* Remove padding to allow full screen coverage */
                     font-family: Arial, sans-serif;
-                    color: #000;
-                    background-color: #fff;
-                    min-height: 100vh;
+                    color: #fff; /* Ensure text is white to stand out against the blue background */
+                    background-color: #003366; /* Match the blue background color */
+                    min-height: 100vh; /* Ensure the container fills the viewport height */
                 }
                 .interaction-section {
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                    align-items: center;
                     flex: 1;
-                    padding-right: 10px;
+                    padding: 20px;
+                    background-color: #003366; /* Match the blue background color */
+                    color: #fff; /* Text color to ensure readability */
+                    height: 100vh; /* Full viewport height */
                 }
                 .info-section {
                     flex: 1;
                     padding-left: 10px;
                     position: relative;
                     width: 100%;
+                }
+                .mock_box {
+                    text-align: center;
+                    color: white; /* Ensure the text is readable against the blue background */
+                    padding: 20px;
+                    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Optional: adds a shadow for better visual appeal */
+                    border-radius: 8px; /* Optional: rounded corners */
+                    max-width: 600px; /* Ensure the content doesn't stretch too wide */
+                    width: 100%;
+                }
+                .mock_box h2 {
+                    font-size: 2.5em;
+                    margin-bottom: 20px;
+                }
+                .mock_box p {
+                    font-size: 1.2em;
+                    margin-bottom: 20px;
+                }
+                .mock_box form {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                }
+                .mock_box input {
+                    width: 100%;
+                    max-width: 400px;
+                    padding: 10px;
+                    margin-bottom: 15px;
+                    border-radius: 4px;
+                    border: 1px solid #ccc;
+                    box-sizing: border-box;
+                    font-size: 1em;
+                }
+                .mock_box button {
+                    padding: 10px 20px;
+                    background-color: #ffcc00; /* Button background color */
+                    color: #000; /* Button text color */
+                    border: none;
+                    border-radius: 4px;
+                    cursor: pointer;
+                    font-size: 1em;
+                }
+                .mock_box button:hover {
+                    background-color: #e6b800; /* Button hover background color */
                 }
                 .building-message {
                     margin-top: 20px;
@@ -363,21 +413,6 @@ const MainContainer = () => {
                     width: 100%;
                     height: 100%;
                     border: none;
-                }
-                .overlay-gif {
-                    position: absolute;
-                    top: 0;
-                    left: 0;
-                    width: 100%;
-                    height: 100%;
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                    pointer-events: none; /* Makes the GIF not interactable */
-                }
-                .overlay-gif img {
-                    max-width: 100%;
-                    max-height: 100%;
                 }
     
                 /* Responsive Styles */
