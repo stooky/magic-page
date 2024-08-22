@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import '../src/css/main.css';
 import '../src/css/style.css';
 
-export default function Valhallah({ myListingUrl }) {
+export default function Valhallah({ aiListingUrl }) {
     const [showChat, setShowChat] = useState(false);
 
     const handleShowChat = () => {
@@ -25,7 +25,7 @@ export default function Valhallah({ myListingUrl }) {
             ) : (
                 <div className="iframe-container">
                     <iframe 
-                        src={myListingUrl}  // Using the passed myListingUrl prop
+                        src={aiListingUrl}  // Using the passed myListingUrl prop
                         title="AI Chat Interface"
                         className="full-screen-iframe"
                         frameBorder="0"

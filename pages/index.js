@@ -31,6 +31,7 @@ const MainContainer = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [isScanning, setIsScanning] = useState(false);  // New state for scanning
     const [messageItems, setMessageItems] = useState(null);
+    const [aiListingUrl, setaiListingUrl] = useState('EMPTY');
 
 
 
@@ -233,6 +234,7 @@ const MainContainer = () => {
                         setIframeUrl(myListingUrl);
                         setShowIframe(true);
                         setIsScanning(false); 
+                        setaiListingUrl(myListingUrl);
                         console.log('Fetched URL:', myListingUrl);
                     } else {
                         console.log('Waiting for URL to be updated...');
