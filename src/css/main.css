@@ -402,3 +402,12 @@ body{
         border-color: #00FF00;
     }
 }
+
+
+/* Smaller Text for Titles on Scanner page */
+.smaller-text {
+    font-size: 12px; /* Adjust the size as needed */
+    font-family: Arial, sans-serif; /* You can use any font-family you prefer */
+    font-weight: normal; /* Optional: adjust the font weight */
+}
+

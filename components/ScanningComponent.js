@@ -2,8 +2,10 @@ import React, { useEffect, useState } from 'react';
 import '../src/css/main.css';
 import '../src/css/style.css';
 
-export default function ScanningComponent({ screenshotUrl }) {
+export default function ScanningComponent({ screenshotUrl, messageItems }) {
     const [activeStep, setActiveStep] = useState(0);
+    const [currentMessageIndex, setCurrentMessageIndex] = useState(0);
+    const [messages, setMessages] = useState(['Building Your AI']); // Default title
 
     useEffect(() => {
         const steps = [
@@ -23,10 +25,25 @@ export default function ScanningComponent({ screenshotUrl }) {
         });
     }, []);
 
+    // Effect to start cycling through messages from messageItems
+    useEffect(() => {
+        if (messageItems && messageItems.length > 0) {
+            setMessages(messageItems);
+
+            // Start cycling through messages every 3 seconds
+            const interval = setInterval(() => {
+                setCurrentMessageIndex(prevIndex => (prevIndex + 1) % messageItems.length);
+            }, 3000); // Change message every 3 seconds
+
+            return () => clearInterval(interval); // Cleanup on component unmount
+        }
+    }, [messageItems]);
+
     return (
         <div className="magic_mock_body">
             <div className="mock_box">
-                <h2 className="thumb_text"> Building Your AI <br /> </h2>
+                {/* Display the current message */}
+                <h2 className="smaller-text">{messages[currentMessageIndex]}</h2>
                 <br /><br />
 
                 <div className="thumbnail_sec">

@@ -29,6 +29,8 @@ const MainContainer = () => {
     const gifPath = process.env.NEXT_PUBLIC_GIF_PATH; // Highlight this line
     const [isLoading, setIsLoading] = useState(false);
     const [isScanning, setIsScanning] = useState(false);  // New state for scanning
+    const [messageItems, setMessageItems] = useState(null);
+
 
 
     // Define the delay function
@@ -37,8 +39,8 @@ const MainContainer = () => {
     // Function to strip our stuff from the Zapier message
     const processZapierResponse = (response) => {
         const strippedText = response.replace(/<[^>]*>?/gm, ''); // Remove HTML tags
-        const messageItems = strippedText.match(/\d+\.\s*(.*?)(?=\d+\.\s*|\s*$)/g).map(item => item.replace(/^\d+\.\s*/, ''));
-        return messageItems;
+        const items = strippedText.match(/\d+\.\s*(.*?)(?=\d+\.\s*|\s*$)/g).map(item => item.replace(/^\d+\.\s*/, ''));
+        return items;
     };
 
     
@@ -86,8 +88,8 @@ const MainContainer = () => {
                     const data = await response.json();
                     if (data.response && data.response.status) {
                         setZapierResponse(data.response);
-                        const messageItems = processZapierResponse(data.response.message);
-                        setMessages(messageItems);
+                        const processedItems = processZapierResponse(data.response.message); // Process the response
+                        setMessageItems(processedItems); // Update state called 'messageItems'
                         setLoading(false);
                         setCallbackReceived(true);
                         clearInterval(pollingInterval);
@@ -99,9 +101,9 @@ const MainContainer = () => {
             }, 2000);
         }
     
-        // Cleanup function to clear interval on component unmount
         return () => clearInterval(pollingInterval);
     }, [loading]);
+    
     
 
     // Looking for our screenshot URL
@@ -266,7 +268,7 @@ const MainContainer = () => {
             {isLoading ? (
                 <LoadingComponent />
             ) : isScanning ? (
-                <ScanningComponent screenshotUrl={screenshotUrl} />  
+                <ScanningComponent screenshotUrl={screenshotUrl} messageItems={messageItems}/>  
             ) : (
                 <div className="centered-content">
                     <FormComponent onSubmit={handleSubmit} />
