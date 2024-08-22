@@ -273,8 +273,8 @@ const MainContainer = () => {
                 <LoadingComponent />
             ) : isScanning ? (
                 <ScanningComponent screenshotUrl={screenshotUrl} messageItems={messageItems}/>
-            ) : myListingUrl !== 'EMPTY' ? (
-                <Valhallah myListingUrl={myListingUrl} />
+            ) : aiListingUrl !== 'EMPTY' ? (
+                <Valhallah aiListingUrl={aiListingUrl} />
             ) : (
                 <div className="centered-content">
                     <FormComponent onSubmit={handleSubmit} />
