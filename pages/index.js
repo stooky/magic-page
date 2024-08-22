@@ -220,7 +220,9 @@ const MainContainer = () => {
 
             const pollForMyListingUrl = async () => {
                 let myListingUrl = null;
+                const startTime = Date.now(); /* hard code */
                 const pollingInterval = setInterval(async () => {
+                    const elapsedTime = Date.now() - startTime; /* hard code */
                     if (Date.now() - startTime > oneMinute) {
                         clearInterval(pollingInterval);
                         console.error('Polling timed out.');
