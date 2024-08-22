@@ -1,24 +1,61 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import '../src/css/main.css';
 import '../src/css/style.css';
 
 export default function ScanningComponent({ screenshotUrl }) {
+    const [activeStep, setActiveStep] = useState(0);
+
+    useEffect(() => {
+        const steps = [
+            { name: 'Loading website', duration: 2000 },
+            { name: 'Scanning website', duration: 3000 },
+            { name: 'Generating AI Agent', duration: 4000 },
+            { name: 'Build preview', duration: 5000 }
+        ];
+
+        let totalTime = 0;
+
+        steps.forEach((step, index) => {
+            totalTime += step.duration;
+            setTimeout(() => {
+                setActiveStep(index);
+            }, totalTime);
+        });
+    }, []);
+
     return (
         <div className="magic_mock_body">
             <div className="mock_box">
-                <h2 className="thumb_text"> Building Your AI <br/> </h2>
-                <br/><br/>
+                <h2 className="thumb_text"> Building Your AI <br /> </h2>
+                <br /><br />
 
                 <div className="thumbnail_sec">
                     <div className="web_thumb_img">
                         <img src={screenshotUrl} alt="Website Thumbnail" />
                         <div className="scan-bar"></div>
                     </div>
-                </div>    
+                </div>
+            </div>
+
+            <div className="status_container">
+                <div className="status-list">
+                    <div className={`status-item ${activeStep >= 0 ? 'active' : ''}`}>
+                        <span className="bullet"></span> Loading website
+                    </div>
+                    <div className={`status-item ${activeStep >= 1 ? 'active' : ''}`}>
+                        <span className="bullet"></span> Scanning website
+                    </div>
+                    <div className={`status-item ${activeStep >= 2 ? 'active' : ''}`}>
+                        <span className="bullet"></span> Generating AI Agent
+                    </div>
+                    <div className={`status-item ${activeStep >= 3 ? 'active' : ''}`}>
+                        <span className="bullet"></span> Build preview
+                    </div>
+                </div>
             </div>
 
             <div className="footer">
-                <p className="foot_logo"> 
+                <p className="foot_logo">
                     <i> Powered by </i>
                     <svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 653.1 98.47">
                         <path className="cls-logo-3" d="M151.51 49.94h-2.94v3.9c-.08 25.33-1.12 59.89 12.61 86.33.62 1.21 1.26 2.41 2 3.58a16.83 16.83 0 0 0 5.25-12.21V66.81a16.88 16.88 0 0 0-16.92-16.87ZM144.29 144.53c-19.07-10.25-40.47-20.92-70.5-23.1-1.29-.1-2.56-.22-3.89-.27v10.38a16.88 16.88 0 0 0 16.87 16.88h64.74ZM86.77 49.94A16.88 16.88 0 0 0 69.9 66.81v42.81c1.25-.43 2.55-.93 3.89-1.48 15.73-6.42 38.12-21.08 64.63-54.3q1.52-1.91 3.06-3.9Z" transform="translate(-69.9 -49.94)"></path>

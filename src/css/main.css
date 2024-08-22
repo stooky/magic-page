@@ -58,9 +58,11 @@ body{
     width: 100%;
     height: 100vh;
     display: flex;
+    flex-direction: column; /* Stacks the mock_box, status_container, and footer vertically */
     align-items: center;
     justify-content: center;
 }
+
 
 .cls-logo-3 {
     fill: #3c9a63
@@ -171,16 +173,18 @@ body{
    04. Thumbnail CSS
 -------------------------------------*/
 
-.thumbnail_sec
-{
+.thumbnail_sec {
+    display: inline-block;
+    flex-direction: column; /* Stack the image and the status list vertically */
+    align-items: center; /* Center the content horizontally */
+    justify-content: center; /* Center the content vertically */
     min-height: 300px;
-    display: flex;
-    justify-content: center; /* Center the thumbnail horizontally */
-    align-items: center; /* Center the thumbnail vertically */
+    position: relative;
 }
 
 .thumbnail_sec .web_thumb_img img 
 {
+    display: block;
     width: 390px; /* Set the width to 390px */
     height: 263px; /* Set the height to 263px */
     border-radius: 15px; /* Rounded corners */
@@ -287,16 +291,6 @@ body{
    05. Chris' Weird Stuff
 -------------------------------------*/
 
-.thumbnail_sec {
-    position: relative;
-    display: inline-block; /* Ensure it wraps only around the image */
-}
-
-.web_thumb_img img {
-    display: block;
-    width: 100%;
-    height: auto;
-}
 
 .scan-bar {
     position: absolute;
@@ -313,9 +307,98 @@ body{
         top: 0;
     }
     50% {
-        top: calc(100% - 2px); /* Stops at the bottom of the thumbnail */
+        top: calc(100% - 35px); /* Stops at the bottom of the thumbnail */
     }
     100% {
         top: 0; /* Moves back to the top */
+    }
+}
+
+/* BULLETS */
+/* Status List */
+/* Status Container - Centers the list under the image */
+.status_container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+/* Status List - Ensures the content is right-aligned */
+.status-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    text-align: right; /* Right-aligns the text and bullets inside the list */
+}
+
+/* Status Item - Right-aligns individual items within the list */
+.status-item {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end; /* Right-aligns the content inside each status item */
+    margin-bottom: 10px;
+    font-size: 14px;
+    color: #B0B0B0;
+}
+
+/* Bullet Style */
+.bullet {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    margin-left: 10px; /* Adds space to the left of the bullet for text alignment */
+    border-radius: 50%;
+    border: 2px solid #B0B0B0;
+    background-color: transparent;
+}
+
+.status_container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.status-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    text-align: left; /* Left-aligns the bullets within the list */
+}
+
+.status-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    font-size: 14px;
+    color: #B0B0B0;
+}
+
+.bullet {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    margin-right: 10px;
+    border-radius: 50%;
+    border: 2px solid #B0B0B0;
+    background-color: transparent;
+    animation: lightUp 2s forwards;
+    opacity: 0;
+}
+
+.status-item.active .bullet {
+    opacity: 1;
+    animation: lightUp 1s forwards;
+}
+
+@keyframes lightUp {
+    0% {
+        background-color: transparent;
+        border-color: #B0B0B0;
+    }
+    100% {
+        background-color: #00FF00;
+        border-color: #00FF00;
     }
 }
