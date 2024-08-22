@@ -234,6 +234,15 @@ const MainContainer = () => {
 
                     //if (myListingUrl && myListingUrl !== 'EMPTY') {
                         if (elapsedTime > 20000 && myListingUrl === null) {
+                            try {
+                                await axios.post('https://crkid.com/api/dbUpdateVisitor', {
+                                    sessionID: sessionId,
+                                    myListingUrl: "https://sales.vendasta.com/magic-page-company-jobheating-com-r3mcx89x/"
+                                });
+                                console.log('Visitor inserted successfully.', sessionId, publicMyListingUrl);
+                            } catch (error) {
+                                console.error('Error inserting visitor:', error);
+                            }
                         clearInterval(pollingInterval);
                         setIframeUrl(myListingUrl);
                         setShowIframe(true);
