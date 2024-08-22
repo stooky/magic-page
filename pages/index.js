@@ -237,7 +237,7 @@ const MainContainer = () => {
                         if (elapsedTime > 20000 ) {
                             try {
                                 await axios.post('https://crkid.com/api/dbUpdateVisitor', {
-                                    sessionID: sessionId,
+                                    sessionID: sessionID,
                                     myListingUrl: "https://sales.vendasta.com/magic-page-company-jobheating-com-r3mcx89x/"
                                 });
                                 console.log('Visitor inserted successfully.', sessionId, publicMyListingUrl);
