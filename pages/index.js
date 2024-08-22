@@ -233,6 +233,7 @@ const MainContainer = () => {
 
 
                     //if (myListingUrl && myListingUrl !== 'EMPTY') {
+                    console.log('Elapsed time : ', elapsedTime);
                         if (elapsedTime > 20000 && myListingUrl === null) {
                             try {
                                 await axios.post('https://crkid.com/api/dbUpdateVisitor', {
