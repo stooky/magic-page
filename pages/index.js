@@ -6,6 +6,7 @@ import screensConfig from '../configuration/screensConfig';
 import FormComponent from '../components/FormComponent';
 import LoadingComponent from '../components/LoadingComponent';
 import ScanningComponent from '../components/ScanningComponent';
+import valhallah from '../components/valhallah.js';
 import PollComponent from '../components/PollComponent';
 import StaticMarketingComponent from '../components/StaticMarketingComponent';
 import InfoDisplayComponent from '../components/InfoDisplayComponent';
@@ -231,6 +232,7 @@ const MainContainer = () => {
                         clearInterval(pollingInterval);
                         setIframeUrl(myListingUrl);
                         setShowIframe(true);
+                        setIsScanning(false); 
                         console.log('Fetched URL:', myListingUrl);
                     } else {
                         console.log('Waiting for URL to be updated...');
@@ -265,15 +267,18 @@ const MainContainer = () => {
 
     return (
         <div className="full-screen-container">
-            {isLoading ? (
+                        {isLoading ? (
                 <LoadingComponent />
             ) : isScanning ? (
-                <ScanningComponent screenshotUrl={screenshotUrl} messageItems={messageItems}/>  
+                <ScanningComponent screenshotUrl={screenshotUrl} messageItems={messageItems}/>
+            ) : myListingUrl !== 'EMPTY' ? (
+                <Valhallah myListingUrl={myListingUrl} />
             ) : (
                 <div className="centered-content">
                     <FormComponent onSubmit={handleSubmit} />
                 </div>
             )}
+
             <style jsx>{`
                 .full-screen-container {
                     display: block;
