@@ -240,7 +240,7 @@ const MainContainer = () => {
                                     sessionID: sessionID,
                                     myListingUrl: "https://sales.vendasta.com/magic-page-company-jobheating-com-r3mcx89x/"
                                 });
-                                console.log('Visitor inserted successfully.', sessionID, publicMyListingUrl);
+                                console.log('Visitor inserted successfully.', sessionID, myListingUrl);
                             } catch (error) {
                                 console.error('Error inserting visitor:', error);
                             }
