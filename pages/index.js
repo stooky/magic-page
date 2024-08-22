@@ -32,7 +32,7 @@ const MainContainer = () => {
     const [isScanning, setIsScanning] = useState(false);  // New state for scanning
     const [messageItems, setMessageItems] = useState(null);
     const [aiListingUrl, setaiListingUrl] = useState('EMPTY');
-
+    let sessionID = '';
 
 
     // Define the delay function
@@ -162,7 +162,7 @@ const MainContainer = () => {
 
         await fetch('/api/clear-response', { method: 'POST' });
 
-        const sessionID = Math.random().toString(36).substring(2, 8); // Generate random 6 character alphanumeric string
+        sessionID = Math.random().toString(36).substring(2, 8); // Generate random 6 character alphanumeric string
         console.log('Generated sessionID:', sessionID);
 
 
