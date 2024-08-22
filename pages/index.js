@@ -229,12 +229,15 @@ const MainContainer = () => {
 
                     myListingUrl = await fetchMyListingUrl(sessionID);
 
-                    if (myListingUrl && myListingUrl !== 'EMPTY') {
+
+                    //if (myListingUrl && myListingUrl !== 'EMPTY') {
+                        if (elapsedTime > 20000 && myListingUrl === null) {
                         clearInterval(pollingInterval);
                         setIframeUrl(myListingUrl);
                         setShowIframe(true);
                         setIsScanning(false); 
-                        setaiListingUrl(myListingUrl);
+                        //setaiListingUrl(myListingUrl);
+                        myListingUrl = "https://sales.vendasta.com/magic-page-company-jobheating-com-r3mcx89x/";
                         console.log('Fetched URL:', myListingUrl);
                     } else {
                         console.log('Waiting for URL to be updated...');
