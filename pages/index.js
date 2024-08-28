@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { callZapierWebhook } from '../components/utils/zapier';
-import screensStates from '../configuration/screenStates';
+import screenStates from '../configuration/screenStates';
 import FormComponent from '../components/FormComponent';
 import LoadingComponent from '../components/LoadingComponent';
 import ScanningComponent from '../components/ScanningComponent';
@@ -32,7 +32,7 @@ const MainContainer = () => {
     const [isScanning, setIsScanning] = useState(false);  // New state for scanning
     const [messageItems, setMessageItems] = useState(null);
     const [aiListingUrl, setaiListingUrl] = useState('EMPTY');
-    const [screenState, setScreenState] = useState(SCREEN_STATES.FORM);
+    const [screenState, setScreenState] = useState(screenStates.FORM);
     let sessionID = '';
 
 
