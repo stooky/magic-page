@@ -240,7 +240,7 @@ const MainContainer = () => {
                             try {
                                 await axios.post('https://crkid.com/api/dbUpdateVisitor', {
                                     sessionID: sessionID,
-                                    myListingUrl: "https://sales.vendasta.com/magic-page-company-jobheating-com-r3mcx89x/"
+                                    myListingUrl: myListingUrl //"https://sales.vendasta.com/magic-page-company-jobheating-com-r3mcx89x/"
                                 });
                                 console.log('Visitor inserted successfully.', sessionID, myListingUrl);
                             } catch (error) {
@@ -250,8 +250,8 @@ const MainContainer = () => {
                         setIframeUrl(myListingUrl);
                         setShowIframe(true);
                         setIsScanning(false); 
-                        //setaiListingUrl(myListingUrl);
-                        myListingUrl = "https://sales.vendasta.com/magic-page-company-jobheating-com-r3mcx89x/";
+                        setaiListingUrl(myListingUrl);
+                        //myListingUrl = "https://sales.vendasta.com/magic-page-company-jobheating-com-r3mcx89x/";
                         console.log('Fetched URL:', myListingUrl);
                     } else {
                         console.log('Waiting for URL to be updated...');
