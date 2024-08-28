@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { callZapierWebhook } from '../components/utils/zapier';
-import screenStates from '../configuration/screenStates';
+import { SCREEN_STATES } from '../configuration/screenStates';
 import FormComponent from '../components/FormComponent';
 import LoadingComponent from '../components/LoadingComponent';
 import ScanningComponent from '../components/ScanningComponent';
