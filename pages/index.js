@@ -130,17 +130,6 @@ const MainContainer = () => {
     }, [screenshotUrl]);
 
 
-    const handleOptionChange = (option) => {
-        setResponses({
-            ...responses,
-            [currentScreenIndex]: option
-        });
-        if (currentScreenIndex < screensConfig.length - 1) {
-            setCurrentScreenIndex(currentScreenIndex + 1);
-        } else {
-            setShowPoll(false); // End of poll questions, hide the poll
-        }
-    };
 
     const extractCompanyName = (message, website) => {
         if (message) {
@@ -293,7 +282,6 @@ const MainContainer = () => {
         return `<strong>Error:</strong> ${response.message}`;
     };
 
-    const currentScreen = screensConfig[currentScreenIndex];
 
     return (
         <div className="full-screen-container">
