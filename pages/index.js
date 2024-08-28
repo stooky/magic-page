@@ -32,6 +32,7 @@ const MainContainer = () => {
     const [isScanning, setIsScanning] = useState(false);  // New state for scanning
     const [messageItems, setMessageItems] = useState(null);
     const [aiListingUrl, setaiListingUrl] = useState('EMPTY');
+    const [screenState, setScreenState] = useState(SCREEN_STATES.FORM);
     let sessionID = '';
 
 
@@ -68,6 +69,18 @@ const MainContainer = () => {
         }
     }
 
+    useEffect(() => {
+        if (isLoading) {
+            setScreenState(SCREEN_STATES.LOADING);
+        } else if (isScanning) {
+            setScreenState(SCREEN_STATES.SCANNING);
+        } else if (aiListingUrl !== 'EMPTY') {
+            setScreenState(SCREEN_STATES.CHAT_TEASE);
+        } else {
+            setScreenState(SCREEN_STATES.FORM);
+        }
+    }, [isLoading, isScanning, aiListingUrl]);
+    
     // Loop through our messages.
     useEffect(() => {
         if (messages.length > 0) {
@@ -284,11 +297,11 @@ const MainContainer = () => {
 
     return (
         <div className="full-screen-container">
-                        {isLoading ? (
+            {screenState === SCREEN_STATES.LOADING ? (
                 <LoadingComponent />
-            ) : isScanning ? (
-                <ScanningComponent screenshotUrl={screenshotUrl} messageItems={messageItems}/>
-            ) : aiListingUrl !== 'EMPTY' ? (
+            ) : screenState === SCREEN_STATES.SCANNING ? (
+                <ScanningComponent screenshotUrl={screenshotUrl} messageItems={messageItems} />
+            ) : screenState === SCREEN_STATES.CHAT_TEASE ? (
                 <Valhallah aiListingUrl={aiListingUrl} />
             ) : (
                 <div className="centered-content">
