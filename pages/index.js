@@ -32,7 +32,7 @@ const MainContainer = () => {
     const [isScanning, setIsScanning] = useState(false);  // New state for scanning
     const [messageItems, setMessageItems] = useState(null);
     const [aiListingUrl, setaiListingUrl] = useState('EMPTY');
-    const [screenState, setScreenState] = useState(screenStates.FORM);
+    const [screenState, setScreenState] = useState(SCREEN_STATES.FORM);
     let sessionID = '';
 
 
