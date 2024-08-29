@@ -469,3 +469,27 @@ li::marker {
     position: relative;
     width: 100%;
 }
+
+
+/* Scan Bar */
+.scan-bar {
+    position: absolute;
+    top: 0;
+    left: -7px; /* Extend 7px to the left */
+    width: calc(100% + 14px); /* Extend 7px on both sides of the image */
+    height: 2px; /* Adjust the height of the bar as needed */
+    background-color: rgba(211, 211, 211, 0.5); /* Light gray with some transparency */
+    animation: scan 6s linear infinite; /* Adjust the speed of the animation */
+}
+
+@keyframes scan {
+    0% {
+        top: 0;
+    }
+    50% {
+        top: calc(100% - 35px); /* Stops at the bottom of the thumbnail */
+    }
+    100% {
+        top: 0; /* Moves back to the top */
+    }
+}

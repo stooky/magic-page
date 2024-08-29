@@ -42,10 +42,14 @@ export default function ScanningComponent({ screenshotUrl, messageItems }) {
     return (
         <div className="magic_mock_body">
             <div className="mock_box">
-                {/* Display the current message */}
-                <div className="smaller-text">{messages[currentMessageIndex]}</div>
+                {/* Conditionally render <h2> or <p> based on the message */}
+                {messages[currentMessageIndex] === 'Building Your AI' ? (
+                    <h2 className="smaller-text">{messages[currentMessageIndex]}</h2>
+                ) : (
+                    <p className="smaller-text">{messages[currentMessageIndex]}</p>
+                )}
                 <br /><br />
-
+    
                 <div className="thumbnail_sec">
                     <div className="web_thumb_img">
                         <img src={screenshotUrl} alt="Website Thumbnail" />
@@ -53,7 +57,7 @@ export default function ScanningComponent({ screenshotUrl, messageItems }) {
                     </div>
                 </div>
             </div>
-
+    
             <div className="status_container">
                 <div className="status-list">
                     <div className={`status-item ${activeStep >= 0 ? 'active' : ''}`}>
