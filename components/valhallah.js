@@ -14,9 +14,16 @@ export default function Valhallah({ aiListingUrl }) {
     };
 
     return (
-        <div className="full-screen-container">
+        <div className="magic_mock_ai_body">
             {!showChat ? (
                 <div className="preview-screen">
+                    {/* The iframe is now added to the preview screen */}
+                    <iframe 
+                        src={aiListingUrl} 
+                        title="AI Chat Interface"
+                        className="full-screen-iframe"
+                        frameBorder="0"
+                    />
                     <h1>Your AI Agent is ready!</h1>
                     <button className="try-button" onClick={handleShowChat}>
                         Give it a try!
@@ -29,7 +36,7 @@ export default function Valhallah({ aiListingUrl }) {
             ) : (
                 <div className="iframe-container">
                     <iframe 
-                        src={aiListingUrl}  // Using the passed myListingUrl prop
+                        src={aiListingUrl}  
                         title="AI Chat Interface"
                         className="full-screen-iframe"
                         frameBorder="0"
