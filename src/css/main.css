@@ -180,6 +180,23 @@ body {
     box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1); /* Optional: Add a subtle shadow */
 }
 
+.checklist_points {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.checklist_points ul {
+    text-align: left;
+    list-style-type: disc;
+}
+.checklist_points ul li {
+    line-height: 34px;
+    font-size: 15px;
+}
+li::marker {
+    color: #3F9B63;
+    font-size: 1.5em;
+}
 
 /* -----------------------------------
    05. Ai agent preview page CSS
@@ -350,6 +367,7 @@ body {
     font-size: 16px;
     font-family: var(--Roboto-font);
     padding: 10px 20px;
+    height: 64px;
     border-radius: 5px;
     cursor: pointer;
     border: none;
@@ -361,6 +379,61 @@ body {
     background: #1976D2;
 }
 
+/* BULLETS */
+/* Status List */
+/* Status Container - Centers the list under the image */
+.status_container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.status-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    text-align: left; /* Left-aligns the bullets within the list */
+}
+
+.status-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    font-size: 14px;
+    color: #B0B0B0;
+    padding-left: 5px; /* Adds space between bullet and list item */
+}
+
+/* Bullet Style */
+.bullet {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    margin-right: 5px; /* Adds space to the right of the bullet for text alignment */
+    border-radius: 50%;
+    border: 2px solid #B0B0B0;
+    background-color: transparent;
+    animation: lightUp 2s forwards;
+    opacity: 0;
+}
+
+.status-item.active .bullet {
+    opacity: 1;
+    animation: lightUp 1s forwards;
+}
+
+/* Keyframe for the bullet animation */
+@keyframes lightUp {
+    0% {
+        background-color: transparent;
+        border-color: #B0B0B0;
+    }
+    100% {
+        background-color: #00FF00;
+        border-color: #00FF00;
+    }
+}
 /* Specific styling for the map and chat area */
 .map-chat-container {
     display: flex;

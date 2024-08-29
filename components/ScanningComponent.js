@@ -43,7 +43,7 @@ export default function ScanningComponent({ screenshotUrl, messageItems }) {
         <div className="magic_mock_body">
             <div className="mock_box">
                 {/* Display the current message */}
-                <h2 className="smaller-text">{messages[currentMessageIndex]}</h2>
+                <div className="smaller-text">{messages[currentMessageIndex]}</div>
                 <br /><br />
 
                 <div className="thumbnail_sec">
