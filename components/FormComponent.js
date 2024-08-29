@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import Image from 'next/image';
-import './css/main.css';
-import './css/mockbox.css';
-import './css/thumbnail.css';
-import './css/ai_agent.css';
-import './css/weird_stuff.css';
+import '../src/css/main.css';
+import '../src/css/mockbox.css';
+import '../src/css/thumbnail.css';
+import '../src/css/ai_agent.css';
+import '../src/css/weird_stuff.css';
+import '../src/css/style.css';
 
 
 const FormComponent = ({ onSubmit }) => {
