@@ -222,44 +222,44 @@ const MainContainer = () => {
 
             const pollForMyListingUrl = async () => {
                 let myListingUrl = null;
-                const startTime = Date.now(); /* hard code */
-                const pollingInterval = setInterval(async () => {
-                    const elapsedTime = Date.now() - startTime; /* hard code */
-                    if (Date.now() - startTime > oneMinute) {
+                const startTime = Date.now(); // Hard-coded start time
+            
+                const poll = async () => {
+                    const elapsedTime = Date.now() - startTime;
+                    if (elapsedTime > oneMinute) { // Ensure oneMinute is defined
                         clearInterval(pollingInterval);
                         console.error('Polling timed out.');
                         return;
                     }
-
+            
                     myListingUrl = await fetchMyListingUrl(sessionID);
-
-
-                    //if (myListingUrl && myListingUrl !== 'EMPTY') {
-                    console.log('Elapsed time : ', elapsedTime);
-                        if (elapsedTime > 20000 ) {
-                            try {
-                                await axios.post('https://crkid.com/api/dbUpdateVisitor', {
-                                    sessionID: sessionID,
-                                    myListingUrl: myListingUrl //"https://sales.vendasta.com/magic-page-company-jobheating-com-r3mcx89x/"
-                                });
-                                console.log('Visitor inserted successfully.', sessionID, myListingUrl);
-                            } catch (error) {
-                                console.error('Error inserting visitor:', error);
-                            }
+            
+                    if (myListingUrl && myListingUrl !== 'EMPTY') {
+                        try {
+                            await axios.post('https://crkid.com/api/dbUpdateVisitor', {
+                                sessionID: sessionID,
+                                myListingUrl: myListingUrl
+                            });
+                            console.log('Visitor inserted successfully.', sessionID, myListingUrl);
+                        } catch (error) {
+                            console.error('Error inserting visitor:', error);
+                        }
                         clearInterval(pollingInterval);
                         setIframeUrl(myListingUrl);
                         setShowIframe(true);
-                        setIsScanning(false); 
+                        setIsScanning(false);
                         setaiListingUrl(myListingUrl);
-                        //myListingUrl = "https://sales.vendasta.com/magic-page-company-jobheating-com-r3mcx89x/";
                         console.log('Fetched URL:', myListingUrl);
                     } else {
                         console.log('Waiting for URL to be updated...');
                     }
-                }, 5000);
+                };
+            
+                const pollingInterval = setInterval(poll, 5000); // Poll every 5 seconds
             };
-
+            
             await pollForMyListingUrl();
+            
 
         
         } catch (error) {
