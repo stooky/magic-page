@@ -25,14 +25,14 @@ export default function Valhallah({ aiListingUrl }) {
             ) : (
                 <div className="iframe-container">
                     <iframe 
-                        src={aiListingUrl}  // Using the passed aiListingUrl prop
+                        src={aiListingUrl}  // Using the passed myListingUrl prop
                         title="AI Chat Interface"
                         className="full-screen-iframe"
                         frameBorder="0"
                     />
                     <div className="actions">
-                        <button className="action-button">Get Free Access</button>
-                        <button className="action-button">Talk to Sales</button>
+                        <button className="action-button">Get a Demo</button>
+                        <button className="action-button">Get a Snapshot</button>
                     </div>
                 </div>
             )}

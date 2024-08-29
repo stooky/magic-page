@@ -44,9 +44,9 @@ export default function ScanningComponent({ screenshotUrl, messageItems }) {
             <div className="mock_box">
                 {/* Conditionally render <h2> or <p> based on the message */}
                 {messages[currentMessageIndex] === 'Building Your AI' ? (
-                    <h2 className="smaller-text">{messages[currentMessageIndex]}</h2>
+                    <h2>{messages[currentMessageIndex]}</h2>
                 ) : (
-                    <p className="smaller-text">{messages[currentMessageIndex]}</p>
+                    <h3>{messages[currentMessageIndex]}</h3>
                 )}
                 <br /><br />
     
