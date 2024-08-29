@@ -1,6 +1,11 @@
 import React, { useState } from 'react';
 import Image from 'next/image';
-import '../src/css/main.css';
+import './css/main.css';
+import './css/mockbox.css';
+import './css/thumbnail.css';
+import './css/ai_agent.css';
+import './css/weird_stuff.css';
+
 
 const FormComponent = ({ onSubmit }) => {
     const [email, setEmail] = useState('');

@@ -1,0 +1,85 @@
+/* ------------------------------------------------------ 
+    TABLE OF CONTENT
+---------------------------------------------------------
+02. Mockbox CSS
+------------------------------*/
+
+/* -----------------------------------
+   02. Mockbox CSS
+-------------------------------------*/
+
+.magic_mock_body {
+    background: url(../images/Magic_page_bg.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column; /* Stacks the mock_box, status_container, and footer vertically */
+    align-items: center;
+    justify-content: center;
+}
+
+.magic_mock_body .mock_box {
+    text-align: center;
+    color: var(--white-color);
+}
+
+.magic_mock_body .mock_box h2 {
+    color: var(--white-color);
+    font-size: 50px;
+    font-family: 'Raleway-regular';
+    margin: 0px;
+    font-weight: 500;
+    max-width: 590px;
+}
+
+.magic_mock_body .mock_box h2 span {
+    font-family: var(--secondary-font-semibold);
+}
+
+.magic_mock_body .mock_box p {
+    font-family: var(--primary-font);
+}
+
+/* form css */
+
+.magic_mock_body .mock_box form input {
+    background-color: var(--white-color);
+    color: var(--color-gray);
+    border: 1px solid var(--color-gray);
+    border-radius: 5px;
+    margin-bottom: 23px;
+    width: 312px;
+    height: 43px;
+    padding: 0px 25px;
+    font-size: 16px;
+}
+
+.magic_mock_body .mock_box form button.submit,
+.agent_overlay_sec button.submit {
+    background: var(--btn-gradient);
+    color: var(--white-color);
+    font-family: var(--Roboto-font);
+    width: 360px;
+    height: 64px;
+    border-radius: 5px;
+    font-size: 18px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0px auto;
+    cursor: pointer;
+    border: none !important;
+}
+
+.magic_mock_body .mock_box form button.submit:hover,
+.agent_overlay_sec button.submit:hover {
+    background: #1976D2;
+}
+
+.magic_mock_body .mock_box form button.submit img,
+.agent_overlay_sec button.submit img {
+    width: 24px;
+    height: 24px;
+}

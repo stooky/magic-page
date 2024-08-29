@@ -1,0 +1,94 @@
+/* ------------------------------------------------------ 
+    TABLE OF CONTENT
+---------------------------------------------------------
+06. Chris's weird stuff
+------------------------------*/
+
+/* BULLETS */
+/* Status List */
+/* Status Container - Centers the list under the image */
+.status_container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.status-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    text-align: left; /* Left-aligns the bullets within the list */
+}
+
+.status-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    font-size: 14px;
+    color: #B0B0B0;
+    padding-left: 15px; /* Adds space between bullet and list item */
+}
+
+/* Bullet Style */
+.bullet {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    margin-right: 5px; /* Adds space to the right of the bullet for text alignment */
+    border-radius: 50%;
+    border: 2px solid #B0B0B0;
+    background-color: transparent;
+    animation: lightUp 2s forwards;
+    opacity: 0;
+}
+
+.status-item.active .bullet {
+    opacity: 1;
+    animation: lightUp 1s forwards;
+}
+
+/* Keyframe for the bullet animation */
+@keyframes lightUp {
+    0% {
+        background-color: transparent;
+        border-color: #B0B0B0;
+    }
+    100% {
+        background-color: #00FF00;
+        border-color: #00FF00;
+    }
+}
+
+/* Scan Bar */
+.scan-bar {
+    position: absolute;
+    top: 0;
+    left: -7px; /* Extend 7px to the left */
+    width: calc(100% + 14px); /* Extend 7px on both sides of the image */
+    height: 6px; /* Adjust the height of the bar as needed */
+    background-color: rgba(211, 211, 211, 0.5); /* Light gray with some transparency */
+    animation: scan 6s linear infinite, glow 3s linear infinite; /* Combine the scan and glow animations */
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.5); /* Initial subtle glow */
+}
+
+@keyframes scan {
+    0% {
+        top: 0;
+    }
+    50% {
+        top: calc(100% - 35px); /* Stops at the bottom of the thumbnail */
+    }
+    100% {
+        top: 0; /* Moves back to the top */
+    }
+}
+
+@keyframes glow {
+    0%, 100% {
+        box-shadow: 0 0 10px rgba(255, 255, 255, 0.5); /* Subtle glow at start and end */
+    }
+    50% {
+        box-shadow: 0 0 20px rgba(255, 255, 255, 1), 0 0 40px rgba(255, 255, 255, 0.7); /* Bright spark at the center */
+    }
+}

@@ -1,5 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import '../src/css/main.css';
+import './css/main.css';
+import './css/mockbox.css';
+import './css/thumbnail.css';
+import './css/ai_agent.css';
+import './css/weird_stuff.css';
 import '../src/css/style.css';
 
 export default function ScanningComponent({ screenshotUrl, messageItems }) {
