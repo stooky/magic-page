@@ -18,5 +18,5 @@ const StaticMarketingComponent = () => (
         `}</style>
     </div>
 );
-
+// to commit
 export default StaticMarketingComponent;
