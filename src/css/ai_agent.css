@@ -12,6 +12,12 @@
     position: relative; /* Allows positioning child elements absolutely */
 }
 
+
+.mock-ai-ready {
+    position: absolute;
+    z-index: 2;
+    }
+
 /* Fuzzy overlay styling for the preview screen */
 .preview-screen {
     position: relative; /* Ensures the overlay content is positioned correctly */
@@ -63,22 +69,32 @@
 }
 
 .full-screen-iframe {
-    position: absolute;
+    /*position: absolute;*/
     top: 0;
     left: 0;
     width: 100%;
-    height: 100%;
+    height: 735px;
     border: none;
     z-index: 0; /* Places the iframe behind everything else */
     overflow: hidden;
 }
 
+.full-screen-iframe {
+    margin-block-start: 90px;
+    margin-block-end: 60px;
+    }
+    
+    
 .magic_mock_ai_body .ai_agent_header {
     color: var(--white-color);
     display: flex;
     justify-content: space-between;
     padding: 20px 40px;
+    width: 100%;
+    position: absolute;
+    top: 0;
 }
+
 
 .magic_mock_ai_body .ai_agent_footer {
     color: var(--white-color);
