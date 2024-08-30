@@ -33,11 +33,25 @@ const MainContainer = () => {
     const [messageItems, setMessageItems] = useState(null);
     const [aiListingUrl, setaiListingUrl] = useState('EMPTY');
     const [screenState, setScreenState] = useState(SCREEN_STATES.FORM);
-    let sessionID = '';
+    const [sessionID, setSessionID] = useState('');
+
 
 
     // Define the delay function
     const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));    
+
+
+    // On component mount, check if sessionID exists in localStorage
+    useEffect(() => {
+        let existingSessionID = localStorage.getItem('sessionID');
+        if (existingSessionID) {
+            setSessionID(existingSessionID);
+        } else {
+            const newSessionID = Math.random().toString(36).substring(2, 8);
+            localStorage.setItem('sessionID', newSessionID);
+            setSessionID(newSessionID);
+        }
+    }, []);
 
     // Function to strip our stuff from the Zapier message
     const processZapierResponse = (response) => {
