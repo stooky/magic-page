@@ -13,10 +13,15 @@ export default async function handler(req, res) {
 
     const { email, website, company, sessionID } = req.body;
 
-    // const webhookUrl = 'http://automations.businessapp.io/start/VMF/7badf74f-283c-48e7-9e81-5fae5935671f';
-    // BYPASS - const webhookUrl = 'http://automations.businessapp.io/start/VMF/b7d26d34-fd9f-4392-bb26-aef39ed912a9';
-    // const webhookUrl = 'http://automations.businessapp.io/start/VUNI/dcbead72-2c5f-45dc-af42-f8fa603df905';
-    const webhookUrl = process.env.WEBHOOK;
+    // Determine the webhook URL based on BYPASS_MODE
+    let webhookUrl;
+    if (process.env.BYPASS_MODE === 'ON') {
+        webhookUrl = process.env.BYPASS_WEBHOOK;
+        console.log(chalk.yellow('BYPASS_MODE is ON. Using BYPASS_WEBHOOK URL.'));
+    } else {
+        webhookUrl = process.env.WEBHOOK;
+        console.log(chalk.green('BYPASS_MODE is OFF. Using standard WEBHOOK URL.'));
+    }
 
     const payload = {
         email,
