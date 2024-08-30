@@ -6,6 +6,14 @@ import '../src/css/ai_agent.css';
 import '../src/css/weird_stuff.css';
 import '../src/css/style.css';
 
+    // New functions for button actions
+    const handleGetDemo = () => {
+        window.location.href = 'https://vendasta.com/request-demo/';
+    };
+
+    const handleTryForFree = () => {
+        window.location.href = 'https://signup.vendasta.com/';
+    };
 
 export default function Valhallah({ aiListingUrl }) {
     const [showChat, setShowChat] = useState(false);
@@ -62,8 +70,9 @@ export default function Valhallah({ aiListingUrl }) {
                     </svg>
                 </p>
                 <div>
-                    <button className="action-button btn_dark">Get a Demo</button>
-                    <button className="action-button btn_light">Get a Snapshot</button>
+                    {/* Update button text and links */}
+                    <button className="action-button btn_dark" onClick={handleGetDemo}>Get a Demo</button>
+                    <button className="action-button btn_light" onClick={handleTryForFree}>Try for Free</button>
                 </div>
             </div>
 
