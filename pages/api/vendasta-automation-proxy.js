@@ -17,10 +17,10 @@ export default async function handler(req, res) {
     let webhookUrl;
     if (process.env.BYPASS_MODE === 'ON') {
         webhookUrl = process.env.BYPASS_WEBHOOK;
-        console.log(chalk.yellow('BYPASS_MODE is ON. Using BYPASS_WEBHOOK URL.'));
+        console.log(chalk.yellow('BYPASS_MODE is ON. Using BYPASS_WEBHOOK URL.', webhookUrl));
     } else {
         webhookUrl = process.env.WEBHOOK;
-        console.log(chalk.green('BYPASS_MODE is OFF. Using standard WEBHOOK URL.'));
+        console.log(chalk.green('BYPASS_MODE is OFF. Using standard WEBHOOK URL.', webhookUrl));
     }
 
     const payload = {
