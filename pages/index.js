@@ -40,18 +40,20 @@ const MainContainer = () => {
 
 
     // On component mount, check if sessionID exists in localStorage
-    useEffect(() => {
-        let existingSessionID = localStorage.getItem('sessionID');
-        if (existingSessionID) {
-            setSessionID(existingSessionID);
-            console.log('Existing sessionID:'), existingSessionID);
-        } else {
-            const newSessionID = Math.random().toString(36).substring(2, 8);
-            localStorage.setItem('sessionID', newSessionID);
-            setSessionID(newSessionID);
-            console.log(chalk.hex('#ffb6c1')('New sessionID:'), newSessionID);
-        }
-    }, []);
+// On component mount, check if sessionID exists in localStorage
+useEffect(() => {
+    let existingSessionID = localStorage.getItem('sessionID');
+    if (existingSessionID) {
+        setSessionID(existingSessionID);
+        console.log('Existing sessionID:', existingSessionID);
+    } else {
+        const newSessionID = Math.random().toString(36).substring(2, 8);
+        localStorage.setItem('sessionID', newSessionID);
+        setSessionID(newSessionID);
+        console.log('New sessionID:', newSessionID);
+    }
+}, []);
+
 
     // Function to strip our stuff from the Zapier message
     const processZapierResponse = (response) => {
