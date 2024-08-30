@@ -44,10 +44,12 @@ const MainContainer = () => {
         let existingSessionID = localStorage.getItem('sessionID');
         if (existingSessionID) {
             setSessionID(existingSessionID);
+            console.log(chalk.hex('#ffb6c1')('Existing sessionID:'), existingSessionID);
         } else {
             const newSessionID = Math.random().toString(36).substring(2, 8);
             localStorage.setItem('sessionID', newSessionID);
             setSessionID(newSessionID);
+            console.log(chalk.hex('#ffb6c1')('New sessionID:'), newSessionID);
         }
     }, []);
 
