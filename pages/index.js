@@ -178,7 +178,6 @@ const MainContainer = () => {
 
         await fetch('/api/clear-response', { method: 'POST' });
 
-        sessionID = Math.random().toString(36).substring(2, 8); // Generate random 6 character alphanumeric string
         console.log('Generated sessionID:', sessionID);
 
 
