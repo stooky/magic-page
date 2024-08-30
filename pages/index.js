@@ -7,7 +7,6 @@ import FormComponent from '../components/FormComponent';
 import LoadingComponent from '../components/LoadingComponent';
 import ScanningComponent from '../components/ScanningComponent';
 import Valhallah from '../components/Valhallah.js';
-import PollComponent from '../components/PollComponent';
 import StaticMarketingComponent from '../components/StaticMarketingComponent';
 import InfoDisplayComponent from '../components/InfoDisplayComponent';
 import axios from 'axios';
@@ -20,7 +19,6 @@ const MainContainer = () => {
     const [screenshotUrl, setScreenshotUrl] = useState(null);
     const [currentScreenIndex, setCurrentScreenIndex] = useState(0);
     const [responses, setResponses] = useState({});
-    const [showPoll, setShowPoll] = useState(false);
     const [iframeUrl, setIframeUrl] = useState('');
     const [showIframe, setShowIframe] = useState(false);
     const [formVisible, setFormVisible] = useState(true);
@@ -122,7 +120,6 @@ const MainContainer = () => {
                         setLoading(false);
                         setCallbackReceived(true);
                         clearInterval(pollingInterval);
-                        setShowPoll(false);
                     }
                 } catch (error) {
                     console.error('Error polling latest response:', error);
@@ -182,7 +179,6 @@ const MainContainer = () => {
 
 
         setLoading(true); // Ensure loading is set to true
-        setShowPoll(true);
 
         try {
             console.log('Calling Vendasta Automation API');
