@@ -42,16 +42,16 @@ const MainContainer = () => {
     // On component mount, check if sessionID exists in localStorage
 // On component mount, check if sessionID exists in localStorage
 useEffect(() => {
-    let existingSessionID = localStorage.getItem('sessionID');
+    /*let existingSessionID = localStorage.getItem('sessionID');
     if (existingSessionID) {
         setSessionID(existingSessionID);
         console.log('Existing sessionID:', existingSessionID);
-    } else {
+    } else {*/
         const newSessionID = Math.random().toString(36).substring(2, 8);
         localStorage.setItem('sessionID', newSessionID);
         setSessionID(newSessionID);
         console.log('New sessionID:', newSessionID);
-    }
+    //}
 }, []);
 
 
@@ -178,8 +178,6 @@ useEffect(() => {
         }
 
         await fetch('/api/clear-response', { method: 'POST' });
-
-        console.log('Generated sessionID:', sessionID);
 
 
         setLoading(true); // Ensure loading is set to true
