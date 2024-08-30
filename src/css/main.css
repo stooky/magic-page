@@ -82,12 +82,14 @@ body {
     height: 30px;
 }
 
-/*.footer {
+
+/* Specific adjustments to footer */
+.footer {
     text-align: center;
     padding: 10px 0;
-    background-color: #003366;
+    background-color: none;
     color: #ffffff;
     font-size: 12px;
     position: relative;
     width: 100%;
-}*/
+}
