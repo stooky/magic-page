@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import valhallah from '../../components/Valhallah'; // Use the correct casing here
+import Valhallah from '../../components/Valhallah'; // Use the correct casing here
 
 const ChatPage = () => {
     const router = useRouter();
@@ -38,7 +38,7 @@ const ChatPage = () => {
 
     return (
         <div>
-            <valhallah aiListingUrl={aiListingUrl} /> {/* Use the correct component name and pass aiListingUrl */}
+            <Valhallah aiListingUrl={aiListingUrl} /> {/* Use the correct component name and pass aiListingUrl */}
         </div>
     );
 };
