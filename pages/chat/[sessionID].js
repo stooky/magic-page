@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import Valhallah from '../components/Valhallah'; // Import your Valhallah component
+import Valhallah from '../components/valhallah'; // Import your Valhallah component
 
 const ChatPage = () => {
     const router = useRouter();
@@ -36,7 +36,7 @@ const ChatPage = () => {
 
     return (
         <div>
-            <Valhallah aiListingUrl={aiListingUrl} />
+            <valhallah aiListingUrl={aiListingUrl} />
         </div>
     );
 };
