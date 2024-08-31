@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import valhallah from '../../components/valhallah'; // Import your Valhallah component
+import valhallah from '../../components/valhallah'; // Use the correct casing here
 
 const ChatPage = () => {
     const router = useRouter();
@@ -10,6 +10,8 @@ const ChatPage = () => {
 
     useEffect(() => {
         if (sessionID) {
+            console.log(`Detected sessionID: ${sessionID}`); // Log the sessionID to the console
+
             // Fetch the mylistingurl using the sessionID
             const fetchListingUrl = async () => {
                 try {
@@ -36,7 +38,7 @@ const ChatPage = () => {
 
     return (
         <div>
-            <valhallah aiListingUrl={aiListingUrl} />
+            <valhallah aiListingUrl={aiListingUrl} /> {/* Use the correct component name and pass aiListingUrl */}
         </div>
     );
 };
