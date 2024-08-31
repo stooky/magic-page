@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import valhallah from '../components/valhallah'; // Import your Valhallah component
+import valhallah from '../../components/valhallah'; // Import your Valhallah component
 
 const ChatPage = () => {
     const router = useRouter();
