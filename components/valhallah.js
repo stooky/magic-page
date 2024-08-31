@@ -15,7 +15,7 @@ import '../src/css/style.css';
         window.location.href = 'https://signup.vendasta.com/';
     };
 
-export default function valhallah({ aiListingUrl }) {
+export default function Valhallah({ aiListingUrl }) {
     const [showChat, setShowChat] = useState(false);
 
     const handleShowChat = () => {
