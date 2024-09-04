@@ -6,7 +6,7 @@ import { SCREEN_STATES } from '../configuration/screenStates';
 import FormComponent from '../components/FormComponent';
 import LoadingComponent from '../components/LoadingComponent';
 import ScanningComponent from '../components/ScanningComponent';
-import valhallah from '../components/Valhallah.js';
+import Valhallah from '../components/Valhallah.js';
 import StaticMarketingComponent from '../components/StaticMarketingComponent';
 import InfoDisplayComponent from '../components/InfoDisplayComponent';
 import axios from 'axios';
@@ -301,7 +301,7 @@ useEffect(() => {
             ) : screenState === SCREEN_STATES.SCANNING ? (
                 <ScanningComponent screenshotUrl={screenshotUrl} messageItems={messageItems} />
             ) : screenState === SCREEN_STATES.CHAT_TEASE ? (
-                <valhallah aiListingUrl={aiListingUrl} />
+                <Valhallah aiListingUrl={aiListingUrl} />
             ) : (
                 <div className="centered-content">
                     <FormComponent onSubmit={handleSubmit} />
