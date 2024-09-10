@@ -7,14 +7,24 @@ import '../src/css/ai_agent.css';
 import '../src/css/weird_stuff.css';
 import '../src/css/style.css';
 
-
 const FormComponent = ({ onSubmit }) => {
     const [email, setEmail] = useState('');
     const [website, setWebsite] = useState('');
 
+    // Function to validate and format website URL
+    const formatUrl = (url) => {
+        // Add http:// if the URL doesn't start with http:// or https://
+        if (!/^https?:\/\//i.test(url)) {
+            return `http://${url}`;
+        }
+        return url;
+    };
+
     const handleSubmit = (e) => {
         e.preventDefault();
-        onSubmit(email, website);  // Pass the email and website to the parent component's submit handler
+
+        const formattedWebsite = formatUrl(website);  // Format the website URL before submitting
+        onSubmit(email, formattedWebsite);  // Pass the email and formatted website to the parent component's submit handler
     };
 
     return (
@@ -33,14 +43,14 @@ const FormComponent = ({ onSubmit }) => {
                     /> 
                     <br/>
                     <input 
-                        type="url" 
+                        type="text"  // Change to text to allow naked domains
                         placeholder="Website URL" 
                         value={website}
                         onChange={(e) => setWebsite(e.target.value)}  // Bind input to state
                         required 
                     /> 
                     <br/>
-                    <button type="submit" className="submit"> 
+                    <button type="submit" className="submit">  
                         <Image src={require('../src/images/spark-button-icon.png')} alt=""/> 
                         Build your AI Agent 
                     </button>
