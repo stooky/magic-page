@@ -32,8 +32,53 @@ const MainContainer = () => {
     const [aiListingUrl, setaiListingUrl] = useState('EMPTY');
     const [screenState, setScreenState] = useState(SCREEN_STATES.FORM);
     const [sessionID, setSessionID] = useState('');
+    const apiKey = process.env.NEXT_PUBLIC_PDL_API_KEY;
+    const apiUrl = process.env.NEXT_PUBLIC_PDL_API_URL;
 
 
+    // Function to call People Data Labs API and get the company name
+async function getCompanyName(website) {
+    
+
+    console.log('apiUrl: ', apiUrl);
+    console.log('website: ', website);
+    try {
+
+        // Log the API URL, Website, and API Key (for debugging)
+        console.log('API Request Details:');
+        console.log('API URL: ', apiUrl);
+        console.log('Website: ', website);
+        console.log('API Key: ', apiKey); // Be cautious about printing sensitive information like API keys.
+
+
+        // Make the API request
+        const response = await axios.get(apiUrl, {
+            params: {
+                website: website,
+                min_likelihood: 5
+            },
+            headers: {
+                'X-Api-Key': apiKey
+            }
+        });
+
+        // Extract company name and display name from the response
+        const { name, display_name } = response.data;
+
+        // Consolidate the names, preferring 'name' first
+        const companyName = name || display_name || 'Unknown Company';
+
+        // Log the names to console for debugging
+        console.log('Company Name:', companyName);
+
+        // Return the first valid company name, or a default value
+        return companyName;
+
+    } catch (error) {
+        console.error('Error fetching company name:', error.message);
+        return 'Unknown Company';
+    }
+}
 
     // Define the delay function
     const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));    
@@ -184,7 +229,9 @@ useEffect(() => {
 
         try {
             console.log('Calling Vendasta Automation API');
-            let companyName = website;
+            let companyName = await getCompanyName(website);
+            console.log('Retrieved Company Name:', companyName);
+
             const vendastaAutomationResponse = await fetch('/api/vendasta-automation-proxy', {
                 method: 'POST',
                 headers: {
