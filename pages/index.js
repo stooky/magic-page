@@ -31,7 +31,9 @@ const MainContainer = () => {
     const apiUrl = process.env.NEXT_PUBLIC_PDL_API_URL;
 
 
-// Function to call People Data Labs API and get the company name
+
+
+    // Function to call People Data Labs API and get the company name
 async function getCompanyName(website) {
     
 

@@ -6,6 +6,33 @@ export const clearLatestZapierResponse = () => {
     latestResponse = null;
 };
 
+// Safe JSON parse function
+function safeJsonParse(rawBody) {
+    try {
+        // Try parsing the JSON directly
+        return JSON.parse(rawBody);
+    } catch (error) {
+        console.log('Error parsing JSON:', error.message);
+
+        // Identify problematic quotes and escape them
+        let cleanedBody = rawBody.replace(/"([^"]*?)"/g, (match, group) => {
+            // Escape only the inner quotes, not those defining JSON keys/values
+            if (group.includes('\"')) {
+                return match; // already escaped
+            }
+            return match.replace(/"/g, '\\"');  // Escape double quotes within the string
+        });
+
+        // Retry parsing after cleaning up unescaped double quotes
+        try {
+            return JSON.parse(cleanedBody);
+        } catch (retryError) {
+            console.log('Failed to parse JSON after cleaning:', retryError.message);
+            return null;  // Handle the error or return the cleaned string as a fallback
+        }
+    }
+}
+
 export default async function handler(req, res) {
     console.log('Zapier Callback received:');
     console.log('Method:', req.method);
@@ -21,12 +48,12 @@ export default async function handler(req, res) {
         // Ensure the body is parsed correctly
         let body;
         if (typeof req.body === 'string') {
-            try {
-                body = JSON.parse(req.body.replace(/(\r\n|\n|\r)/gm, ""));
-            } catch (error) {
-                console.error('Error parsing body string:', error);
-                latestResponse = { status: 'error', message: `Error parsing body string: ${error.message}`, rawBody: req.body };
-                <span style="color: hotpink;">body = req.body; // Return the body as it is if JSON.parse fails</span>
+            // Use safeJsonParse instead of direct JSON.parse
+            body = safeJsonParse(req.body.replace(/(\r\n|\n|\r)/gm, ""));
+            if (!body) {
+                // If parsing failed even after cleaning
+                latestResponse = { status: 'error', message: 'Error parsing body string', rawBody: req.body };
+                return res.status(400).json({ message: 'Invalid JSON payload', rawBody: req.body });
             }
         } else {
             body = req.body;
