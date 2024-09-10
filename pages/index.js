@@ -31,7 +31,7 @@ const MainContainer = () => {
     const apiUrl = process.env.NEXT_PUBLIC_PDL_API_URL;
 
 
-    // Function to call People Data Labs API and get the company name
+// Function to call People Data Labs API and get the company name
 async function getCompanyName(website) {
     
 
@@ -60,8 +60,9 @@ async function getCompanyName(website) {
         // Extract company name and display name from the response
         const { name, display_name } = response.data;
 
-        // Consolidate the names, preferring 'name' first
-        const companyName = name || display_name || 'Unknown Company';
+        // Consolidate the names, preferring 'name' first, and capitalize each word using a regex
+        const companyName = (name || display_name || 'Unknown Company').replace(/\b\w/g, (char) => char.toUpperCase());
+
 
         // Log the names to console for debugging
         console.log('Company Name:', companyName);
@@ -79,7 +80,7 @@ async function getCompanyName(website) {
     const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));    
 
 
-    // On component mount, check if sessionID exists in localStorage
+
 // On component mount, check if sessionID exists in localStorage
 useEffect(() => {
     /*let existingSessionID = localStorage.getItem('sessionID');
