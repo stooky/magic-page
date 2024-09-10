@@ -15,15 +15,12 @@ const MainContainer = () => {
     const [callbackReceived, setCallbackReceived] = useState(true);
     const [zapierResponse, setZapierResponse] = useState(null);
     const [screenshotUrl, setScreenshotUrl] = useState(null);
-    const [currentScreenIndex, setCurrentScreenIndex] = useState(0);
-    const [responses, setResponses] = useState({});
     const [iframeUrl, setIframeUrl] = useState('');
     const [showIframe, setShowIframe] = useState(false);
     const [formVisible, setFormVisible] = useState(true);
     const [enteredWebsite, setEnteredWebsite] = useState('');
     const [messages, setMessages] = useState([]); // Hold parsed messages from Zapier
     const [currentMessageIndex, setCurrentMessageIndex] = useState(0); // Keep track of where we are in the message index
-    const gifPath = process.env.NEXT_PUBLIC_GIF_PATH; // Highlight this line
     const [isLoading, setIsLoading] = useState(false);
     const [isScanning, setIsScanning] = useState(false);  // New state for scanning
     const [messageItems, setMessageItems] = useState(null);
@@ -391,10 +388,5 @@ useEffect(() => {
     
 };    
 
-/*
-                 <div className="overlay-gif">
-                    <img src={gifPath} alt="Overlay GIF" />
-                </div>
-*/
 
 export default MainContainer;
