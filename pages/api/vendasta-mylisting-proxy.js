@@ -2,6 +2,7 @@ import axios from 'axios';
 import jwt from 'jsonwebtoken';
 import chalk from 'chalk';
 
+
 async function pollForValidResponse(url, payload, config, interval, timeout) {
     const start = Date.now();
     while (Date.now() - start < timeout) {
@@ -103,10 +104,11 @@ export default async function handler(req, res) {
         console.log(chalk.green('sessionId:', sessionId));
 
         try {
-            await axios.post('https://crkid.com/api/dbUpdateVisitor', {
+            await axios.post(`https://${process.env.DOMAIN}/api/dbUpdateVisitor`, {
                 sessionID: sessionId,
                 myListingUrl: publicMyListingUrl
             });
+            
             console.log('Visitor inserted successfully.', sessionId, publicMyListingUrl);
         } catch (error) {
             console.error('Error inserting visitor:', error);

@@ -2,6 +2,7 @@ import axios from 'axios';
 import chalk from 'chalk';
 import cookie from 'cookie';
 
+
 export default async function handler(req, res) {
     console.log(chalk.blue('webhookListener.js handler invoked')); // Log at the top
 
@@ -27,13 +28,14 @@ export default async function handler(req, res) {
     console.log(chalk.green('businessId :', businessId));
     console.log(chalk.green('partnerId :', partnerId));
     console.log(chalk.green('sessionId :', sessionId));
-    const vendastaResponse = await fetch('https://crkid.com/api/vendasta-mylisting-proxy', {
+    const vendastaResponse = await fetch(`https://${process.env.DOMAIN}/api/vendasta-mylisting-proxy`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({ partnerId, businessId, sessionId })
     });
+    
     const vendastaData = await vendastaResponse.json();
     console.log('Vendasta MyListingAPI Response:', vendastaData);
     

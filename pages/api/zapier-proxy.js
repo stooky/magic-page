@@ -11,15 +11,16 @@ export default async function handler(req, res) {
         return res.status(405).json({ message: 'Method not allowed' });
     }
 
-    const { email, website } = req.body;
+    const { email, website, webhookListener } = req.body;
 
     console.log('Extracted email:', email);
     console.log('Extracted website:', website);
+    console.log('Extracted webhookListener:', webhookListener);
 
-    const webhookUrl = 'https://hooks.zapier.com/hooks/catch/15076287/3vv4bs9/'; // Replace with your Zapier webhook URL
+    const webhookUrl = `${process.env.NEXT_PUBLIC_ZAP_URL}`; // Replace with your Zapier webhook URL
 
     try {
-        const response = await axios.post(webhookUrl, { email, website }, {
+        const response = await axios.post(webhookUrl, { email, website, webhookListener }, {
             headers: {
                 'Content-Type': 'application/json'
             }

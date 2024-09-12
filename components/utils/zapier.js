@@ -1,11 +1,12 @@
 import axios from 'axios';
 
-export const callZapierWebhook = async (email, website) => {
+export const callZapierWebhook = async (email, website, webhookListener) => {
     const apiUrl = '/api/zapier-proxy'; // Your API route
 
     const payload = {
         email,
-        website
+        website,
+        webhookListener
     };
 
     console.log('Calling Zapier Webhook with the following details:');

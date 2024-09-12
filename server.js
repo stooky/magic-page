@@ -1,3 +1,8 @@
+const dotenv = require('dotenv');
+
+// Load environment variables from .env.local
+dotenv.config({ path: '.env.local' });
+
 const { createServer } = require('https');
 const http = require('http');
 const { parse } = require('url');
@@ -7,12 +12,14 @@ const path = require('path');
 const express = require('express');
 
 const dev = process.env.NODE_ENV !== 'production';
+const key = process.env.SSL_KEY_PATH;
+const cert = process.env.SSL_CERT_PATH;
 const app = next({ dev });
 const handle = app.getRequestHandler();
 
 const httpsOptions = {
-    key: fs.readFileSync('/etc/letsencrypt/live/crkid.com-0001/privkey.pem'),
-    cert: fs.readFileSync('/etc/letsencrypt/live/crkid.com-0001/fullchain.pem')
+    key: fs.readFileSync(key),
+    cert: fs.readFileSync(cert)
 };
 
 app.prepare().then(() => {
@@ -31,7 +38,7 @@ app.prepare().then(() => {
         handle(req, res, parsedUrl);
     }).listen(443, err => {
         if (err) throw err;
-        console.log('> Ready on https://crkid.com:443');
+        console.log('> Ready on https://hlyfk.com:443');
     });
 
     // Create HTTP server and redirect all requests to HTTPS

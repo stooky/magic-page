@@ -29,7 +29,7 @@ const MainContainer = () => {
     const [sessionID, setSessionID] = useState('');
     const apiKey = process.env.NEXT_PUBLIC_PDL_API_KEY;
     const apiUrl = process.env.NEXT_PUBLIC_PDL_API_URL;
-
+    const DOMAIN = process.env.NEXT_PUBLIC_DOMAIN;
 
 
 
@@ -109,9 +109,10 @@ useEffect(() => {
     // Function to get myListingUrl from the database using sessionID
     async function fetchMyListingUrl(sessionID) {
         try {
-            const response = await axios.get('https://crkid.com/api/dbGetVisitor', {
+            const response = await axios.get(`https://${process.env.NEXT_PUBLIC_DOMAIN}/api/dbGetVisitor`, {
                 params: { sessionID: sessionID }
             });
+            
     
             if (response.status === 200) {
                 const myListingUrl = response.data.data.mylistingurl;
@@ -265,7 +266,7 @@ useEffect(() => {
             }
 
             console.log('Calling Zapier Webhook');
-            const response = await callZapierWebhook(email, website);
+            const response = await callZapierWebhook(email, website, `https://${process.env.NEXT_PUBLIC_DOMAIN}/api/zapier-callback`);
             console.log('Zapier Response:', response);  // Log the full response
             setZapierResponse(response);
 
@@ -292,7 +293,7 @@ useEffect(() => {
             
                     if (myListingUrl && myListingUrl !== 'EMPTY') {
                         try {
-                            await axios.post('https://crkid.com/api/dbUpdateVisitor', {
+                            await axios.post(`https://${process.env.NEXT_PUBLIC_DOMAIN}/api/dbUpdateVisitor`, {
                                 sessionID: sessionID,
                                 myListingUrl: myListingUrl
                             });
