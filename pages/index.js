@@ -271,9 +271,10 @@ useEffect(() => {
             console.log('Zapier Response:', response);  // Log the full response
             setZapierResponse(response);
 
+            if (companyName === 'Unknown Company') {
             companyName = response && response.message ? extractCompanyName(response.message, website) : `magic-page-company-${website.replace(/^https?:\/\//, '').replace(/\./g, '-')}`;
             console.log("Extracted Company Name: " + companyName);
-            
+            }
             
             const startTime = Date.now();
             const oneMinute = 170000;
