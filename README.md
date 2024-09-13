@@ -5,6 +5,24 @@ Magic Page is a working prototype of building on the
 platform and making it simple for anyone to access
 the ai lead generation webchat.
 
+## Some Nice to Haves
+1) Find out the best way to get the "naked chat"
+using the chat ID so you can get creative on how
+you display the webchat without being bound to
+the MyListing format. It might require a free
+version of Inbox that we are comfortable 
+activating for magic page purposes.
+
+2) Concurrent session support. I have started on
+this but was unable to complete it. If five people
+hit the site at the same time, I will create a
+unique ID for them and update the main database
+but there is not a good system to keep track of
+this through all of the things and showing the
+final response.
+
+
+
 ## The Goal
 The goal of this project was to get Vendasta's
 products into the hands of anyone with zero
