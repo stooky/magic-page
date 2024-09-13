@@ -24,7 +24,9 @@ SET xmloption = content;
 SET client_min_messages = warning;
 SET row_security = off;
 
-SET default_tablespace = 'mp';
+-- Remove the default tablespace setting as it causes issues
+-- SET default_tablespace = 'mp'; -- Removed this line
+
 SET default_table_access_method = heap;
 
 -- Create the table "websitevisitors"
@@ -39,6 +41,13 @@ CREATE TABLE IF NOT EXISTS public.websitevisitors (
 -- Set the owner of the table
 ALTER TABLE public.websitevisitors OWNER TO postgres;
 
--- Add the primary key constraint
-ALTER TABLE ONLY public.websitevisitors
-    ADD CONSTRAINT IF NOT EXISTS websitevisitors_pkey PRIMARY KEY (sessionid);
+-- Add the primary key constraint, but first check if it exists
+DO
+$$
+BEGIN
+    IF NOT EXISTS (SELECT 1 FROM pg_constraint WHERE conname = 'websitevisitors_pkey') THEN
+        ALTER TABLE public.websitevisitors
+        ADD CONSTRAINT websitevisitors_pkey PRIMARY KEY (sessionid);
+    END IF;
+END
+$$;
