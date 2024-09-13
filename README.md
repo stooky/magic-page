@@ -90,5 +90,10 @@ into the appropriate location in your .env.local file.
 
 ## Clone Magic Page
 git clone https://github.com/stooky/magic-page
+git ls-files -z | xargs -0 git update-index --assume-unchanged
+
 
 ## Install Nextjs
+npm
+npm install next react react-dom
+scripts/installnpm.sh
