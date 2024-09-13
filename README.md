@@ -97,3 +97,10 @@ git ls-files -z | xargs -0 git update-index --assume-unchanged
 npm
 npm install next react react-dom
 scripts/installnpm.sh
+
+## Install Postgres
+## Run the command below in psql
+CREATE EXTENSION dblink;
+## Run the creation script database_scheme.sql in /scripts
+
+

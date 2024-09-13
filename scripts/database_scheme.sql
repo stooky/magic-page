@@ -1,9 +1,17 @@
---
--- PostgreSQL database dump
---
+-- Ensure the database "mp" exists
+DO
+$$
+BEGIN
+    IF NOT EXISTS (SELECT FROM pg_database WHERE datname = 'mp') THEN
+        PERFORM dblink_exec('dbname=postgres', 'CREATE DATABASE mp');
+    END IF;
+END
+$$;
 
--- Dumped from database version 16.4 (Ubuntu 16.4-0ubuntu0.24.04.1)
--- Dumped by pg_dump version 16.4 (Ubuntu 16.4-0ubuntu0.24.04.1)
+-- Connect to the "mp" database
+\connect mp
+
+-- Set up the table and schema in the "mp" database
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -16,15 +24,11 @@ SET xmloption = content;
 SET client_min_messages = warning;
 SET row_security = off;
 
-SET default_tablespace = '';
-
+SET default_tablespace = 'mp';
 SET default_table_access_method = heap;
 
---
--- Name: websitevisitors; Type: TABLE; Schema: public; Owner: postgres
---
-
-CREATE TABLE public.websitevisitors (
+-- Create the table "websitevisitors"
+CREATE TABLE IF NOT EXISTS public.websitevisitors (
     sessionid text NOT NULL,
     email text,
     website text,
@@ -32,18 +36,9 @@ CREATE TABLE public.websitevisitors (
     mylistingurl text
 );
 
-
+-- Set the owner of the table
 ALTER TABLE public.websitevisitors OWNER TO postgres;
 
---
--- Name: websitevisitors websitevisitors_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
---
-
+-- Add the primary key constraint
 ALTER TABLE ONLY public.websitevisitors
-    ADD CONSTRAINT websitevisitors_pkey PRIMARY KEY (sessionid);
-
-
---
--- PostgreSQL database dump complete
---
-
+    ADD CONSTRAINT IF NOT EXISTS websitevisitors_pkey PRIMARY KEY (sessionid);
