@@ -242,7 +242,7 @@ useEffect(() => {
             //console.log('Vendasta Automation API Response:', vendastaAutomationData);
             
             console.log('Calling Screenshot');
-            const screenshotResponse = await fetch(`/api/get-screenshot?url=${encodeURIComponent(website)}`,sessionID);
+            const screenshotResponse = await fetch(`/api/get-screenshot?url=${encodeURIComponent(website)}&sessionID=${sessionID}`);
             const screenshotData = await screenshotResponse.json();
             if (screenshotData.screenshotUrl) {
                 setScreenshotUrl(screenshotData.screenshotUrl);
