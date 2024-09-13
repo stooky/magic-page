@@ -258,7 +258,8 @@ useEffect(() => {
                     email: email,
                     website: website,
                     companyName: companyName,
-                    myListingUrl: "EMPTY"
+                    myListingUrl: "EMPTY",
+                    screenshotUrl: screenshotUrl || "EMPTY",
                 });
                 console.log('Visitor inserted successfully.', sessionID );
             } catch (error) {
@@ -354,36 +355,6 @@ useEffect(() => {
                 </div>
             )}
 
-            <style jsx>{`
-                .full-screen-container {
-                    display: block;
-                    height: 100vh;
-                    width: 100vw;
-                    background: linear-gradient(135deg, #003366 0%, #1a1a73 100%);
-                    color: white;
-                    padding: 0;
-                    margin: 0;
-                    box-sizing: border-box;
-                }
-                .centered-content, .loading-screen {
-                    text-align: center;
-                    max-width: 100%;
-                    padding: 0px;
-                    display: flex;
-                    flex-direction: column;
-                    justify-content: center;
-                    align-items: center;
-                    height: 100vh;
-                }
-                .loading-screen h2 {
-                    font-size: 2.5em;
-                    margin-bottom: 20px;
-                    color: #ffffff;
-                }
-                .loading-screen img {
-                    margin-top: 20px;
-                }
-            `}</style>
         </div>
     );
     
