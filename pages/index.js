@@ -253,6 +253,12 @@ useEffect(() => {
 
             // Insert the visitor data into the database
             try {
+                console.log('SessionID: ', sessionID);
+                console.log('email: ', email);
+                console.log('website: ', website);
+                console.log('companyName: ', companyName);
+                console.log('myListingUrl: ', myListingUrl);
+                console.log('screenshotUrl: ', screenshotUrl);
                 await axios.post('/api/dbInsertVisitor', {
                     sessionID: sessionID,
                     email: email,
