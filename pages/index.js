@@ -211,7 +211,7 @@ useEffect(() => {
         }
 
         let myListingUrl = "EMPTY"; // Define and initialize myListingUrl here
-        
+
         setZapierResponse(null);
         setScreenshotUrl(null);
         setEnteredWebsite(website);
@@ -248,7 +248,7 @@ useEffect(() => {
             const screenshotData = await screenshotResponse.json();
             if (screenshotData.screenshotUrl) {
                 setScreenshotUrl(screenshotData.screenshotUrl);
-                console.log('Thumbnail successfully captured and generated.');
+                console.log('Thumbnail successfully captured and generated.', screenshotUrl, ' : ', screenshotData.screenshotUrl);
             } else {
                 console.error('Error fetching screenshot:', screenshotData.error);
             }
