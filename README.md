@@ -119,6 +119,10 @@ scripts/installnpm.sh
 ## Install Postgres
 ## Run the command below in psql
 CREATE EXTENSION dblink;
+## then
+CREATE DATABASE mp;
 ## Run the creation script database_scheme.sql in /scripts
+\i /path/to/database_scheme.sql
+
 
 
