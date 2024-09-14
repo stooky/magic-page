@@ -260,14 +260,14 @@ useEffect(() => {
                 console.log('website: ', website);
                 console.log('companyName: ', companyName);
                 console.log('myListingUrl: ', myListingUrl || "EMPTY");
-                console.log('ScreenshotUrl:', screenshotData.screenshotUrl || "NO URL");
+                console.log('ScreenshotUrl:', screenshotData.screenshotUrl || "EMPTY");
                 await axios.post('/api/dbInsertVisitor', {
                     sessionID: sessionID,
                     email: email,
                     website: website,
                     companyName: companyName,
                     myListingUrl: "EMPTY",
-                    screenshotUrl: screenshotUrl || "EMPTY",
+                    screenshotUrl: screenshotData.screenshotUrl || "EMPTY",
                 });
                 console.log('Visitor inserted successfully.', sessionID );
             } catch (error) {
