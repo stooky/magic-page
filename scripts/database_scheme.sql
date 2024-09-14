@@ -35,7 +35,8 @@ CREATE TABLE IF NOT EXISTS public.websitevisitors (
     email text,
     website text,
     companyname text,
-    mylistingurl text
+    mylistingurl text,
+    screenshotUrl bytea
 );
 
 -- Set the owner of the table
